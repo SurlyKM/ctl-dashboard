@@ -1,63 +1,63 @@
 {
  "week_start": "2026-07-27",
- "coach_says": "TSB is critically low at -55.5 and Garmin reports UNPRODUCTIVE_3: this week is a planned recovery microcycle with only one quality session (Tuesday's committed hard MTB). All other days are easy, active recovery, or rest to allow parasympathetic adaptation. Wednesday remains mandatory easy per constraints. Aerobic high is also short, so Thursday includes a moderate tempo ride to address this deficit without overloading.",
+ "coach_says": "TSB is critically low at -55.5 and Garmin status is UNPRODUCTIVE, which triggers the hard constraint: one quality session maximum this week, everything else easy or rest. The Tuesday evening MTB group ride is that quality session and is non-negotiable; all other sessions are kept easy, short, or restorative to allow fatigue to clear. Aerobic-high shortage is noted but cannot be addressed safely this week \u2014 that priority carries forward to next week once TSB recovers.",
  "days": [
   {
    "day": "Mon",
    "sport": "yoga",
-   "session": "Active Recovery Yoga",
-   "duration_min": 45,
+   "session": "Morning Yoga / Mobility",
+   "duration_min": 40,
    "intensity": "easy",
-   "details": "Gentle flow, mobility focus. Hip openers, shoulder mobility, breathing work. No intensity."
+   "details": "Full-body mobility and light yoga flow. Focus on hip flexors, thoracic spine, hamstrings and glutes. No loading. Treat as active recovery only."
   },
   {
    "day": "Tue",
    "sport": "mtb",
-   "session": "Hard MTB Group Ride (Committed)",
-   "duration_min": 60,
+   "session": "MTB Group Ride (Committed)",
+   "duration_min": 75,
    "intensity": "hard",
-   "details": "Non-negotiable committed session. Hard effort, group setting, typical intensity as per usual group dynamics."
+   "details": "Non-negotiable committed group ride. Ride to effort with the group \u2014 no additional structure required. This is the single quality session for the week. If a morning road ride also occurs, keep it Zone 1-2 only and cap at 45 min to limit cumulative damage on an already fatigued system."
   },
   {
    "day": "Wed",
    "sport": "rest",
-   "session": "Complete Rest",
+   "session": "Mandatory Rest",
    "duration_min": 0,
    "intensity": "easy",
-   "details": "Mandatory recovery day. No structured activity. Sleep, hydration, nutrition focus."
+   "details": "Mandatory recovery day post-Tuesday. No cycling, no gym, no structured activity. Sleep, nutrition, and hydration are the priority. Light walking around the house is fine but no deliberate exercise."
   },
   {
    "day": "Thu",
    "sport": "cycling",
-   "session": "Aerobic High \u2014 Tempo Ride",
-   "duration_min": 50,
-   "intensity": "moderate",
-   "details": "50 min total | Objective: Address Aerobic High Shortage, light recovery stimulus\n10 min Zone 2 warm-up\n2 x 12 min Zone 3 (5 min Zone 1 recovery between)\n10 min cool-down\nKeep effort controlled, RPE 5-6/10. Build aerobic high capacity without fatigue accumulation."
+   "session": "Easy Endurance Spin",
+   "duration_min": 45,
+   "intensity": "easy",
+   "details": "45 min | Objective: Active Recovery / Aerobic Flush\n10 min Zone 1 easy warm-up\n25 min Zone 1-2 steady (RPE 2-3, conversational, HR well below threshold)\n10 min Zone 1 cool-down\nNo surges, no efforts. If legs feel dead, shorten to 30 min or swap for a walk."
   },
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Easy Endurance Spin",
-   "duration_min": 60,
+   "session": "Longer Easy Endurance Ride",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "60 min | Objective: Active recovery, maintain base fitness\nZone 1-2 throughout, conversational pace. Flat terrain preferred. Low cognitive demand."
+   "details": "90 min | Objective: Low-stress aerobic volume / TSB restoration\n15 min Zone 1 warm-up\n60 min Zone 2 steady (RPE 3-4, fully conversational, no drifting into Zone 3)\n15 min Zone 1 cool-down\nKeep cadence comfortable. This is not a tempo ride \u2014 discipline on intensity is critical this week. If TSB is still very negative or fatigue remains high, shorten to 60 min."
   },
   {
    "day": "Sat",
    "sport": "walk_hike",
-   "session": "Easy Walk or Hike",
-   "duration_min": 45,
+   "session": "Easy Walk / Hike",
+   "duration_min": 60,
    "intensity": "easy",
-   "details": "45 min easy walk or nature hike. Non-structured, low intensity. Active recovery modality."
+   "details": "60 min easy walk or light hike. Flat to moderate terrain only \u2014 no hard climbing. Focus on mental recovery and time outdoors. This supports parasympathetic recovery without adding meaningful training stress."
   },
   {
    "day": "Sun",
    "sport": "rest",
-   "session": "Complete Rest or Light Mobility",
-   "duration_min": 0,
+   "session": "Rest or Gentle Yoga",
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "Rest day. Optional: 15-20 min light stretching or foam rolling if desired. Prioritise sleep, recovery nutrition."
+   "details": "Full rest day or optional 20-30 min gentle yoga / stretching if motivation is present. No structured training. Use the day to consolidate the week's recovery before next week's load begins."
   }
  ],
- "generated_at": "2026-07-25T02:29:39.000446+00:00"
+ "generated_at": "2026-07-25T02:38:57.613042+00:00"
 }

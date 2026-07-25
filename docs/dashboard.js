@@ -24,7 +24,7 @@ function renderReadiness(daily) {
   ).join("");
 }
 
-function renderStats(metrics, activities, ts) {
+function renderStats(metrics, activities, daily, ts) {
   const cur = metrics.current || {};
   const s = metrics.series;
   const [, tsbBg, tsbFg] = tsbZone(cur.tsb ?? 0);
@@ -56,7 +56,6 @@ function renderStats(metrics, activities, ts) {
   const rhr = latestDaily.resting_hr;
   if (rhr) {
     $("rhr-stat").textContent = rhr + " bpm";
-    // Trend from last 7 days
     const rhrVals = Object.entries(daily).sort().slice(-7).map(([,v]) => v.resting_hr).filter(Boolean);
     if (rhrVals.length >= 3) {
       const first = rhrVals.slice(0, Math.floor(rhrVals.length/2)).reduce((a,b)=>a+b,0) / Math.floor(rhrVals.length/2);
@@ -67,6 +66,14 @@ function renderStats(metrics, activities, ts) {
         trendEl.textContent = diff > 1.5 ? "rising" : diff < -1.5 ? "falling" : "stable";
         trendEl.style.color = diff > 1.5 ? css("--fatigue") : diff < -1.5 ? css("--fitness") : css("--muted");
       }
+    }
+  }
+  // VO2 max
+  if (ts) {
+    const v = ts.vo2max_cycling || ts.vo2max_generic;
+    if (v) {
+      $("vo2-stat").textContent = v.toFixed(1);
+      if (ts.fitness_age) $("vo2-sub").textContent = "age " + ts.fitness_age;
     }
   }
 }
@@ -203,7 +210,7 @@ async function main() {
     ]);
     renderSynced(meta);
     renderReadiness(daily);
-    renderStats(metrics, activities, ts);
+    renderStats(metrics, activities, daily, ts);
     _chartMetrics = metrics;
     _chartPlan = plan;
     buildChart();

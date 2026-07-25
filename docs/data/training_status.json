@@ -1,0 +1,29 @@
+{
+ "vo2max_generic": 56.1,
+ "vo2max_cycling": 56.1,
+ "fitness_age": 20,
+ "training_status_code": 2,
+ "training_status": "UNPRODUCTIVE_3",
+ "fitness_trend": 1,
+ "acwr_percent": 42,
+ "acwr_status": "OPTIMAL",
+ "garmin_acute_load": 899,
+ "garmin_chronic_load": 825,
+ "garmin_acwr_ratio": 1.0,
+ "load_aerobic_low": 1729,
+ "load_aerobic_low_target": [
+  698,
+  1535
+ ],
+ "load_aerobic_high": 405,
+ "load_aerobic_high_target": [
+  837,
+  1675
+ ],
+ "load_anaerobic": 1039,
+ "load_anaerobic_target": [
+  279,
+  837
+ ],
+ "load_balance_feedback": "AEROBIC_HIGH_SHORTAGE"
+}

@@ -11,9 +11,10 @@ import datetime as dt
 from pathlib import Path
 
 import anthropic
+from fetch_weather import get_weather_summary
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-5")
+MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
 
 SYSTEM = """You are an elite endurance performance coach specialising in cycling performance,
 concurrent strength training, recovery management, and exercise science.
@@ -411,6 +412,9 @@ def build_summary() -> dict:
     }
     if compliance_data:
         summary["last_week_compliance"] = compliance_data
+    weather = get_weather_summary()
+    if weather:
+        summary["weather_forecast_7day"] = weather
     return summary
 def next_monday() -> dt.date:
     today = dt.date.today()
@@ -435,6 +439,10 @@ def main():
     )
     text = "".join(b.text for b in msg.content if b.type == "text")
     text = text.replace("```json", "").replace("```", "").strip()
+    if not text:
+        print(f"Model returned empty response. Stop reason: {msg.stop_reason}")
+        print(f"Content blocks: {msg.content}")
+        raise ValueError("Empty response from model")
     plan = json.loads(text)
     plan["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     (DATA_DIR / "plan.json").write_text(json.dumps(plan, indent=1))

@@ -12,7 +12,7 @@ A personal fitness dashboard that pulls training data automatically and generate
 
 ## Privacy
 
-No personally identifying information is stored or displayed. GPS tracks, location names, activity titles and device IDs are never extracted. The site has a noindex tag. Schedule and constraint details are stored in a GitHub encrypted secret, not in the repo.
+No personally identifying information is stored or displayed. GPS tracks, location names, activity titles and device IDs are not extracted. The site has a noindex tag. Schedule and constraint details are stored in a GitHub encrypted secret, not in the repo.
 
 ## Requirements
 

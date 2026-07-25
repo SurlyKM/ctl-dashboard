@@ -423,7 +423,7 @@ def main():
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
-        max_tokens=2000,
+        max_tokens=8000,
         system=SYSTEM,
         messages=[{
             "role": "user",

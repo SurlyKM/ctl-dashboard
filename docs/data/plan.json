@@ -1,14 +1,14 @@
 {
  "week_start": "2026-07-27",
- "coach_says": "TSB is -55.5 and Garmin reports UNPRODUCTIVE with rising resting HR, so this is a mandated recovery week with only one quality session \u2014 your non-negotiable Tuesday MTB group ride. All other sessions are easy Zone 1-2 or active recovery to restore freshness and address the deep fatigue hole. The aerobic-high shortage will be targeted once TSB recovers above -30; adding intensity now would compromise safety and adaptation.",
+ "coach_says": "TSB is at -55.5, Garmin status is UNPRODUCTIVE and resting HR is trending upward, so this is a mandated recovery week with only one quality session \u2014 your non-negotiable Tuesday MTB group ride. All other days are easy aerobic work or rest to shed fatigue, and gym is replaced with mobility to protect recovery. The goal is to return next week with a positive freshness trend so we can address the aerobic-high shortage with proper threshold work.",
  "days": [
   {
    "day": "Mon",
    "sport": "yoga",
-   "session": "Restorative yoga + mobility",
-   "duration_min": 40,
+   "session": "Recovery yoga and mobility",
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "40 min | Objective: Active recovery\nGentle flow focusing on hips, hamstrings, thoracic spine and breathing.\nKeep heart rate low \u2014 this is preparation for Tuesday, not training."
+   "details": "30 min gentle yoga flow at lunch. Focus: hips, hamstrings, thoracic spine, deep breathing. Objective: active recovery and parasympathetic activation ahead of Tuesday's hard ride. No loading, no strain."
   },
   {
    "day": "Tue",
@@ -16,23 +16,23 @@
    "session": "Hard MTB group ride (committed)",
    "duration_min": 90,
    "intensity": "hard",
-   "details": "90 min | Objective: Sole quality session of the week\nRide the group ride as it comes \u2014 this is your one hard session.\nSkip any optional morning ride this week given TSB -55.5.\nFuel well before and during, prioritise post-ride recovery meal and early sleep.\nIf weather is wet, substitute a 45 min easy Zone 1-2 indoor spin."
+   "details": "90 min | Objective: Committed group session \u2014 the single quality session of this recovery week\n15 min Zone 1-2 easy warm-up spin before the group rolls out\nRide as the group dictates, but avoid unnecessary surges beyond what the trail demands\n10 min Zone 1 easy spin to finish\nEat and hydrate immediately afterwards \u2014 recovery from this session is the week's priority. Skip any hard morning road ride today; keep the morning free or an easy 20 min spin at most."
   },
   {
    "day": "Wed",
    "sport": "rest",
-   "session": "Full rest (mandatory recovery)",
+   "session": "Full rest day (mandatory)",
    "duration_min": 0,
    "intensity": "easy",
-   "details": "Complete rest day.\nOptional 10-15 min gentle stretching or short walk only.\nFocus on sleep, hydration and nutrition."
+   "details": "Complete rest \u2014 mandatory recovery from Tuesday. Prioritise 8+ hours sleep, hydration and nutrition. Optional 10-15 min gentle walk or stretching only if you feel the need to move."
   },
   {
    "day": "Thu",
    "sport": "swim",
-   "session": "Easy recovery swim (lunch)",
+   "session": "Easy recovery swim",
    "duration_min": 30,
    "intensity": "easy",
-   "details": "Warmup: 200m easy freestyle\nMain: 4x100m easy freestyle, 20 sec rest \u2014 smooth technique focus\nCooldown: 100m easy backstroke/choice\nTotal: ~700m\nObjective: Low-impact circulation and recovery, RPE 2-3."
+   "details": "Warmup: 200m easy freestyle\nMain: 4x100m easy freestyle, relaxed technique focus, 20 sec rest\nCooldown: 100m easy backstroke or freestyle\nTotal: ~700m\nObjective: low-impact active recovery, keep effort conversational throughout."
   },
   {
    "day": "Fri",
@@ -40,24 +40,24 @@
    "session": "Easy endurance ride",
    "duration_min": 90,
    "intensity": "easy",
-   "details": "90 min | Objective: Easy aerobic maintenance\n90 min steady Zone 1-2, RPE 3-4, flat or gently rolling terrain\nHigh cadence 90+ rpm, no surges, no hills pushed hard\nCap the ride here \u2014 no extended long ride this week due to recovery status."
+   "details": "90 min | Objective: Easy aerobic endurance (recovery week volume \u2014 capped deliberately)\n90 min steady Zone 1-2, strictly below 75% max HR\nFlat or rolling terrain, high cadence 90+ rpm, no surges or hills at effort\nIf legs feel heavy, cut to 60 min without hesitation."
   },
   {
    "day": "Sat",
    "sport": "walk_hike",
-   "session": "Easy walk",
+   "session": "Easy walk or hike",
    "duration_min": 60,
    "intensity": "easy",
-   "details": "60 min | Objective: Active recovery\nRelaxed walk at conversational pace, ideally in nature.\nNo pack weight, no pace targets."
+   "details": "60 min relaxed walk or gentle hike. Objective: active recovery, time on feet, variety. Conversational pace, no steep sustained climbs. Optional to shorten or swap for yoga if fatigue persists."
   },
   {
    "day": "Sun",
    "sport": "cycling",
-   "session": "Easy Zone 1-2 spin",
-   "duration_min": 60,
+   "session": "Easy Zone 2 endurance ride",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "60 min | Objective: Gentle aerobic flush\n60 min Zone 1-2, RPE 3, easy gearing and high cadence\nIf HRV or resting HR has not improved by Sunday, replace with full rest or 30 min yoga."
+   "details": "90 min | Objective: Aerobic maintenance at strictly easy intensity\n90 min continuous Zone 2, nose-breathing / conversational effort\nSmooth pedalling, cadence 85-95 rpm, avoid all hard efforts\nThis closes a genuine recovery week \u2014 if HRV and resting HR have improved by next week, we reintroduce threshold work to address the aerobic-high shortage."
   }
  ],
- "generated_at": "2026-07-25T02:43:49.308710+00:00"
+ "generated_at": "2026-07-25T03:15:45.357389+00:00"
 }

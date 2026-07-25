@@ -5,23 +5,22 @@ function renderReadiness(daily) {
   const fmtSleep = s => s ? Math.floor(s/3600) + "h " + Math.round((s%3600)/60) + "m" : "–";
   const hrvStatus = (latest.hrv_status || "").toLowerCase();
   const hrvColor = hrvStatus === "balanced" ? "var(--fitness)" : hrvStatus === "low" ? "var(--danger)" : "var(--muted)";
+  const stressVal = latest.stress_avg || 0;
+  const stressSub = stressVal < 30 ? "low" : stressVal < 60 ? "moderate" : "high";
+  const stressColor = stressVal < 30 ? "var(--fitness)" : stressVal < 60 ? "var(--fatigue)" : "var(--danger)";
 
-  const items = [
-    { label: "HRV", value: latest.hrv_last_night ? latest.hrv_last_night + " ms" : "–", sub: hrvStatus, subColor: hrvColor },
-    { label: "Sleep", value: fmtSleep(latest.sleep_s), sub: latest.sleep_score ? "score " + latest.sleep_score : "" },
-    { label: "Body battery", value: latest.body_battery_high ?? "–", sub: "" },
-    { label: "Stress avg", value: latest.stress_avg ?? "–",
-      sub: (latest.stress_avg || 0) < 30 ? "low" : (latest.stress_avg || 0) < 60 ? "moderate" : "high",
-      subColor: (latest.stress_avg || 0) < 30 ? "var(--fitness)" : (latest.stress_avg || 0) < 60 ? "var(--fatigue)" : "var(--danger)" },
-  ];
+  const render = (id, label, value, sub, subColor) => {
+    const el = $(id);
+    if (!el) return;
+    el.innerHTML = '<span class="label">' + label + '</span>' +
+      '<span class="num">' + value + '</span>' +
+      (sub ? '<span class="delta" style="color:' + (subColor || "var(--muted)") + '">' + sub + '</span>' : '');
+  };
 
-  $("readiness").innerHTML = items.map(it =>
-    '<div class="stat">' +
-      '<span class="label">' + it.label + '</span>' +
-      '<span class="num">' + it.value + '</span>' +
-      (it.sub ? '<span class="delta" style="color:' + (it.subColor || "var(--muted)") + '">' + it.sub + '</span>' : '') +
-    '</div>'
-  ).join("");
+  render("readiness-hrv",     "HRV",          latest.hrv_last_night ? latest.hrv_last_night + " ms" : "–", hrvStatus, hrvColor);
+  render("readiness-sleep",   "Sleep",         fmtSleep(latest.sleep_s), latest.sleep_score ? "score " + latest.sleep_score : "");
+  render("readiness-battery", "Body battery",  latest.body_battery_high ?? "–", "");
+  render("readiness-stress",  "Stress avg",    latest.stress_avg ?? "–", stressSub, stressColor);
 }
 
 function renderStats(metrics, activities, daily, ts) {

@@ -386,14 +386,10 @@ def next_monday() -> dt.date:
 
 def main():
     summary = build_summary()
-    import sys
-    print("\n=== DATA SENT TO LLM ===", file=sys.stderr)
-    print(json.dumps(summary, indent=2), file=sys.stderr)
-    print("=== END DATA ===\n", file=sys.stderr)
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
-        max_tokens=2000,
+        max_tokens=4000,
         system=SYSTEM,
         messages=[{
             "role": "user",

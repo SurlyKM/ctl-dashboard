@@ -423,6 +423,8 @@ nav { display: flex; border: 1px solid var(--line2); border-radius: 8px; overflo
 }
 .ex-item:last-child { border-bottom: none; }
 .ex-name { font-size: 15px; color: var(--ink); }
+.ex-left { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.ex-inline-note { font-size: 11px; color: var(--muted); }
 .ex-meta { text-align: right; flex-shrink: 0; margin-left: 12px; }
 .ex-sets { font-size: 13px; font-weight: 500; color: var(--fitness); }
 .ex-reps { font-size: 10px; color: var(--muted); margin-top: 2px; }

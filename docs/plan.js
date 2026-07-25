@@ -1,12 +1,16 @@
 // Plan page — plan.html
 
 function parseGymLine(line) {
-  // Matches: "Romanian Deadlift 4x4-6" or "Dead Bug 3x8 each side" or "Plank 3x30-60 sec"
-  const m = line.match(/^(.+?)\s+(\d+\s*[xX×]\s*[\d\s\-]+(?:sec|min|each side|reps?)?)\s*$/i);
+  // Strip parenthetical notes e.g. "(light load, 2-3 RIR)" before matching
+  const stripped = line.replace(/\s*\(.*?\)\s*/g, " ").trim();
+  const m = stripped.match(/^(.+?)\s+(\d+\s*[xX×]\s*[\d\s\-]+(?:sec|min|each side|reps?)?)\s*$/i);
   if (!m) return null;
   const name = m[1].trim();
   const sets = m[2].trim();
-  return { name, sets };
+  // Preserve the original note if present
+  const noteMatch = line.match(/\(([^)]+)\)/);
+  const note = noteMatch ? noteMatch[1] : null;
+  return { name, sets, note };
 }
 
 function parseDetails(details, sport) {
@@ -30,12 +34,15 @@ function parseDetails(details, sport) {
         const parsed = exercises.map(ex => {
           const p = parseGymLine(ex);
           if (!p) return '<p class="detail-prose">' + ex + '</p>';
-          // Determine role by position / sets notation
           const isFour = /^4\s*[xX×]/.test(p.sets);
           const roleColor = isFour ? "var(--fitness)" : "var(--muted)";
-          return '<div class="ex-item"><span class="ex-name">' + p.name +
-            '</span><div class="ex-meta"><div class="ex-sets" style="color:' + roleColor + '">' +
-            p.sets + '</div></div></div>';
+          return '<div class="ex-item">' +
+            '<div class="ex-left">' +
+              '<span class="ex-name">' + p.name + '</span>' +
+              (p.note ? '<span class="ex-inline-note">' + p.note + '</span>' : '') +
+            '</div>' +
+            '<div class="ex-sets" style="color:' + roleColor + '">' + p.sets + '</div>' +
+            '</div>';
         }).join("");
         return '<div class="ex-block">' +
           '<div class="ex-block-title">' + header + '</div>' +

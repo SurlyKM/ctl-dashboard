@@ -12,13 +12,13 @@ A personal fitness dashboard that pulls training data automatically and generate
 
 ## Privacy
 
-No personally identifying information is stored or displayed. GPS tracks, location names, activity titles and device IDs are not extracted. The site has a noindex tag. Schedule and constraint details are stored in a GitHub encrypted secret, not in the repo.
+No personally identifying information is stored or displayed. GPS tracks, location names, activity titles and device IDs are never extracted. The site has a noindex tag. Schedule and constraint details are stored in a GitHub encrypted secret, not in the repo.
 
 ## Requirements
 
 - Python 3.12+
 - Garmin Connect account
-- AI API key of your choice 
+- Any AI API key
 - GitHub account (for Actions and Pages)
 
 ## Setup
@@ -46,7 +46,7 @@ Add these in repo Settings → Secrets and variables → Actions:
 | Secret | Description |
 |---|---|
 | `GARMIN_TOKEN_B64` | Output of `setup_token.py` |
-| `ANTHROPIC_API_KEY` | Your Anthropic API key (use whatever AI) |
+| `ANTHROPIC_API_KEY` | Your AI API key |
 | `ATHLETE_PROFILE_PRIVATE` | Output of `build_profile.py` (schedule and constraints) |
 | `DISCORD_WEBHOOK_URL` | Optional — posts weekly plan to a channel |
 

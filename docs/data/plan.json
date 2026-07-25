@@ -1,63 +1,63 @@
 {
  "week_start": "2026-07-27",
- "coach_says": "TSB is -55.5 and Garmin flags UNPRODUCTIVE with declining fitness trend, so this week prioritises recovery above all else. The only quality session is Tuesday's non-negotiable hard MTB group ride; every other session is easy, short, or substituted with a light deload gym day to protect consistency without adding fatigue. Volume is cut roughly in half versus last week to allow ATL to fall and TSB to recover before reintroducing structured tempo/threshold work.",
+ "coach_says": "TSB is -55.5 and Garmin reports UNPRODUCTIVE with declining fitness trend, so recovery takes absolute priority this week over the aerobic-high shortage flag. Tuesday's committed hard MTB group ride serves as the week's single quality/anaerobic session; every other ride is easy Zone 1-2 and gym load is cut to light maintenance only. Volume is trimmed across the board to restore TSB before reintroducing tempo/threshold work next week.",
  "days": [
   {
    "day": "Mon",
-   "sport": "rest",
-   "session": "Full Rest Day",
-   "duration_min": 0,
+   "sport": "swim",
+   "session": "Easy Recovery Swim",
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "Complete rest. TSB -55.5 and Garmin UNPRODUCTIVE status require full recovery before Tuesday's committed hard MTB. Prioritise sleep, hydration, and light mobility if desired (optional 5-10 min gentle stretching only)."
+   "details": "Warmup: 200m easy freestyle\nMain: 3x150m (easy/moderate alternating), 30 sec rest\nCooldown: 150m easy\nTotal: ~800m, kept easy - recovery focus given high fatigue, not a structured quality swim this week."
   },
   {
    "day": "Tue",
    "sport": "mtb",
-   "session": "Committed Hard MTB Group Ride",
-   "duration_min": 60,
+   "session": "Morning Easy Spin + Evening Committed Hard MTB Group Ride",
+   "duration_min": 105,
    "intensity": "hard",
-   "details": "AM: Rest \u2014 no morning hard road ride this week, protecting the committed evening session given severe fatigue (TSB -55.5). PM: 60 min | Objective: Group ride intensity (Zone 4-5 surges). 10 min Zone 2 warm-up, group ride with variable hard efforts, 10 min Zone 1 cool-down. This is the week's single designated quality/high-intensity session \u2014 non-negotiable regardless of recovery status."
+   "details": "Morning (45 min, before work): Zone 1-2 easy flat spin, low HR, purely aerobic - hills ride downgraded to easy given TSB -55.5, avoiding a true double-hard day.\n\nEvening (60 min): Committed hard MTB group ride (non-negotiable) - Zone 3-5 technical effort, treated as this week's sole quality/anaerobic session. Ride the terrain as required by the group but don't chase extra Strava efforts - conserve where possible."
   },
   {
    "day": "Wed",
-   "sport": "cycling",
-   "session": "Mandatory Easy Recovery Spin",
+   "sport": "yoga",
+   "session": "Active Recovery Yoga",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "40 min | Objective: Active recovery from Tuesday's hard MTB\n40 min continuous Zone 1-2, flat terrain, cadence 85-95rpm, conversational effort throughout. No intervals, no hills. Mandatory easy day per constraint."
+   "details": "Full-body gentle flow: hip flexors, hamstrings, thoracic spine mobility, diaphragmatic breathing work. Mandatory easy/no-load day post Tuesday's double session per constraint - no cycling, no lifting."
   },
   {
    "day": "Thu",
-   "sport": "swim",
-   "session": "Structured Swim - Technique Focus",
-   "duration_min": 40,
+   "sport": "gym",
+   "session": "Easy AM Spin + Light Recovery Strength (Workout A - reduced load)",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "Warmup: 200m easy freestyle\nMain: 4x150m (first 50m easy / next 100m moderate), 20 sec rest\nCooldown: 100m easy\nTotal: ~1000m\nKeep effort easy-moderate; this is a technique/aerobic maintenance session, not a quality workout given current fatigue."
+   "details": "Before work (45 min): Zone 1-2 endurance spin, flat/rolling terrain, conversational effort.\n\nLunch (45 min) - Workout A, light/maintenance loading (RIR 3-4, no grinding reps):\nWarm-up: 5-10 min easy bike + dynamic mobility\n\nRomanian Deadlift 3x6 (light)\nBulgarian Split Squat 2x8 each leg\nChest Supported Row 3x10\nDumbbell Bench Press 3x10\nCopenhagen Plank 2x20 sec\nDead Bug 2x8 each side\n\nMain lifts: 2 min rest\nAccessories: 60 sec rest\n\nGoal: maintain strength/movement quality without adding systemic fatigue."
   },
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Easy Endurance Ride",
-   "duration_min": 70,
+   "session": "Steady Endurance Ride (volume reduced for recovery)",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "70 min | Objective: Aerobic maintenance (recovery week - shorter than usual Friday long ride)\n70 min steady Zone 1-2, flat-to-rolling terrain, no structured intervals. Aerobic_low load is already above target this training block, so keep this ride restrained rather than extending duration."
+   "details": "90 min | Objective: Aerobic endurance, no intensity work this week\n15 min Zone 1 warm-up\n60 min Zone 2 steady\n15 min Zone 1 cool-down\n\nNo tempo/threshold intervals despite aerobic-high shortage flag - recovery is prioritised this week."
   },
   {
    "day": "Sat",
-   "sport": "gym",
-   "session": "Light Deload Strength Session",
-   "duration_min": 45,
+   "sport": "cycling",
+   "session": "Long Endurance Ride (reduced volume)",
+   "duration_min": 120,
    "intensity": "easy",
-   "details": "Workout A:\nWarm-up: 5-10 min easy bike + dynamic mobility\n\nTrap Bar Deadlift 3x5 (light-moderate load, RIR 3-4)\nReverse Lunge 2x8 each leg\nChest Supported Row 2x10\nDumbbell Bench Press 2x10\nPallof Press 2x10 each side\nDead Bug 2x8 each side\n\nMain lifts: 2-3 min rest\nAccessories: 60-90 sec rest\n\nNote: Deload week \u2014 reduced sets/loads vs normal programming, nothing near failure, purpose is movement quality and light stimulus only given high accumulated fatigue."
+   "details": "120 min | Objective: Long aerobic endurance, fully Zone 1-2\n20 min Zone 1 warm-up\n80 min Zone 2 steady\n20 min Zone 1 cool-down\n\nShorter than usual weekend long ride given accumulated fatigue - focus on smooth, low-stress aerobic volume."
   },
   {
    "day": "Sun",
-   "sport": "cycling",
-   "session": "Easy Long Endurance Ride",
-   "duration_min": 90,
+   "sport": "rest",
+   "session": "Full Rest Day",
+   "duration_min": 0,
    "intensity": "easy",
-   "details": "90 min | Objective: Aerobic endurance without added fatigue\n90 min Zone 1-2 steady state, rolling terrain acceptable, avoid climbs that push into Zone 3+. No intervals. Shorter than a typical big weekend ride to support ongoing recovery from unproductive training status."
+   "details": "Complete rest - no structured training. Prioritise sleep, hydration and nutrition given TSB -55.5 and Garmin UNPRODUCTIVE status. Optional short easy walk if desired, nothing more."
   }
  ],
- "generated_at": "2026-07-25T04:15:56.960052+00:00"
+ "generated_at": "2026-07-25T04:29:45.621015+00:00"
 }

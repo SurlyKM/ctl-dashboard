@@ -18,7 +18,7 @@ No personally identifying information is stored or displayed. GPS tracks, locati
 
 - Python 3.12+
 - Garmin Connect account
-- Anthropic API key
+- AI API key of your choice 
 - GitHub account (for Actions and Pages)
 
 ## Setup

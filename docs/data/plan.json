@@ -1,63 +1,63 @@
 {
- "week_start": "2026-07-20",
- "generated_at": "2026-07-24T12:59:04.320572+00:00",
- "coach_says": "Form is slightly negative and midweek sleep dipped, so this week trades one hard ride for an easy swim and keeps two quality sessions.",
+ "week_start": "2026-07-27",
+ "coach_says": "TSB is a brutal -55.5 and Garmin flags UNPRODUCTIVE \u2014 this is a mandatory recovery week: one quality session maximum, everything else easy or rest. The committed Tuesday hard MTB group ride is that one quality session; everything around it must be low-stress. Aerobic high shortage is noted but cannot be addressed this week \u2014 restoring TSB takes priority, and anaerobic load is already well above target so no extra hard efforts.",
  "days": [
   {
    "day": "Mon",
    "sport": "gym",
-   "session": "Upper push + core",
+   "session": "Gym \u2014 Workout A (easy recovery lift)",
    "duration_min": 45,
-   "intensity": "moderate",
-   "details": "Bench 4x6, OHP 3x8, dips 3x10, plank circuit"
+   "intensity": "easy",
+   "details": "Workout A:\nBench press 3x(15-18 / 12-15 / 8-12)\nLat pulldown 3x(15-18 / 12-15 / 8-12)\nRomanian DL 3x(15-18 / 12-15 / 8-12)\nSingle-leg press 3x(15-18 / 12-15 / 8-12)\nPlank 3x45 sec\n\nPerform 3 sets of each exercise. Rep ranges progress across sets: 1st set 15-18 reps, 2nd set 12-15 reps, 3rd set 8-12 reps. Keep loads light \u2014 this is a recovery stimulus, not a strength push. Rest 60-90 sec between sets."
   },
   {
    "day": "Tue",
-   "sport": "cycling",
-   "session": "Tempo intervals",
-   "duration_min": 75,
+   "sport": "mtb",
+   "session": "Hard MTB group ride (committed)",
+   "duration_min": 60,
    "intensity": "hard",
-   "details": "2x15 min at tempo, 10 min easy between"
+   "details": "Tuesday evening hard MTB group ride \u2014 non-negotiable committed session. This is the single quality session for the recovery week. Ride at group pace, no extra efforts beyond what the ride demands. If a morning road ride also happens today, treat it as easy spinning only (zone 1-2, 45-60 min) to preserve something for the evening group ride."
   },
   {
    "day": "Wed",
-   "sport": "swim",
-   "session": "Technique swim",
-   "duration_min": 40,
+   "sport": "rest",
+   "session": "Full rest \u2014 mandatory recovery",
+   "duration_min": 0,
    "intensity": "easy",
-   "details": "8x50 drill focus, 4x100 steady"
+   "details": "Complete rest day. Mandatory recovery from Tuesday's hard effort. No exceptions \u2014 no easy spin, no stretching session that creeps into moderate effort. Eat well, hydrate, sleep."
   },
   {
    "day": "Thu",
-   "sport": "gym",
-   "session": "Lower + posterior chain",
-   "duration_min": 50,
-   "intensity": "moderate",
-   "details": "Squat 4x5, RDL 3x8, lunges 3x10, calf raises"
+   "sport": "cycling",
+   "session": "Easy spin \u2014 zone 1-2 flush",
+   "duration_min": 45,
+   "intensity": "easy",
+   "details": "45 min easy road spin \u2014 zone 1-2 only (RPE 2-3). Flat or gently rolling route. 10 min warmup, 25 min steady easy cadence (90+ rpm encouraged), 10 min cooldown. No surges, no climbs that push HR. Purpose is blood flow and leg flush, not training stimulus."
   },
   {
    "day": "Fri",
-   "sport": "rest",
-   "session": "Rest or short walk",
-   "duration_min": 30,
+   "sport": "yoga",
+   "session": "Yoga \u2014 active recovery",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "Optional 30 min easy walk"
+   "details": "45 min yoga focused on hip flexors, hamstrings, thoracic spine, and glutes. Suggested sequence: cat-cow, pigeon pose, lizard lunge, supine twist, downward dog, child's pose. Move slowly and breathe \u2014 no hot yoga or power yoga this week. This supports hip stability and mobility that feeds back into cycling mechanics."
   },
   {
    "day": "Sat",
-   "sport": "mtb",
-   "session": "Endurance MTB",
-   "duration_min": 120,
-   "intensity": "moderate",
-   "details": "2 h zone 2, keep HR under control on climbs"
+   "sport": "cycling",
+   "session": "Easy endurance ride \u2014 zone 2",
+   "duration_min": 75,
+   "intensity": "easy",
+   "details": "75 min easy road or gravel ride \u2014 zone 2 only (RPE 3-4, conversational pace). Flat to rolling terrain. 10 min warmup zone 1, 55 min steady zone 2, 10 min cooldown zone 1. Keep HR below threshold at all times. Longer is fine only if you feel genuinely good \u2014 cap at 90 min and stay in zone 2. No intervals, no chasing."
   },
   {
    "day": "Sun",
-   "sport": "cycling",
-   "session": "Long ride",
-   "duration_min": 150,
-   "intensity": "moderate",
-   "details": "2.5 h endurance, fuel every 45 min"
+   "sport": "swim",
+   "session": "Easy swim \u2014 active recovery",
+   "duration_min": 30,
+   "intensity": "easy",
+   "details": "Warmup: 200m easy freestyle\nMain: 4x150m (first 50m easy / next 100m strong pace), 20 sec rest\nCooldown: 100m backstroke or easy choice\nTotal: ~1000m\n\nNote: This week keep the main sets at easy-to-moderate effort only \u2014 treat the entire swim as recovery. Focus on technique and breathing rhythm rather than pace."
   }
- ]
+ ],
+ "generated_at": "2026-07-25T02:10:57.801267+00:00"
 }

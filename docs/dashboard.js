@@ -71,7 +71,7 @@ function renderStats(metrics, activities, daily, ts) {
   if (ts) {
     const v = ts.vo2max_cycling || ts.vo2max_generic;
     if (v) {
-      $("vo2-stat").textContent = v.toFixed(1);
+      $("vo2-stat").textContent = Math.round(v);
       if (ts.fitness_age) $("vo2-sub").textContent = "age " + ts.fitness_age;
     }
   }

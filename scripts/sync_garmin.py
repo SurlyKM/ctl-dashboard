@@ -129,9 +129,8 @@ def fetch_daily(client: Garmin, existing: dict) -> dict:
 def fetch_training_status(client: Garmin) -> dict:
     """Pull Garmin's own training status, load balance and VO2 max.
 
-    These are the numbers Garmin's app displays. We store them alongside
-    our own CTL/ATL so the trainer has both perspectives and so we can
-    show the intensity balance breakdown on the dashboard.
+    Privacy: strips userId, deviceId, deviceName, imageURL and raw timestamps.
+    Only performance and recovery metrics are stored.
     """
     today = dt.date.today().isoformat()
     try:
@@ -142,7 +141,7 @@ def fetch_training_status(client: Garmin) -> dict:
 
     out = {}
 
-    # VO2 max
+    # VO2 max — use precise value, no user/device identifiers
     vo2 = raw.get("mostRecentVO2Max") or {}
     generic = vo2.get("generic") or {}
     cycling = vo2.get("cycling") or {}
@@ -150,21 +149,25 @@ def fetch_training_status(client: Garmin) -> dict:
     out["vo2max_cycling"] = cycling.get("vo2MaxPreciseValue")
     out["fitness_age"] = generic.get("fitnessAge")
 
-    # Training status (use first device key)
+    # Training status — no userId, deviceId, deviceName, imageURL, timestamp
     status_map = (raw.get("mostRecentTrainingStatus") or {}).get("latestTrainingStatusData") or {}
     if status_map:
         s = next(iter(status_map.values()))
-        out["training_status_code"] = s.get("trainingStatus")
         out["training_status"] = s.get("trainingStatusFeedbackPhrase")
         out["fitness_trend"] = s.get("fitnessTrend")
+        out["fitness_trend_sport"] = s.get("fitnessTrendSport")
+        out["status_since_date"] = s.get("sinceDate")
+        out["training_paused"] = s.get("trainingPaused")
         acwr = s.get("acuteTrainingLoadDTO") or {}
         out["acwr_percent"] = acwr.get("acwrPercent")
         out["acwr_status"] = acwr.get("acwrStatus")
         out["garmin_acute_load"] = acwr.get("dailyTrainingLoadAcute")
         out["garmin_chronic_load"] = acwr.get("dailyTrainingLoadChronic")
+        out["garmin_chronic_load_min"] = acwr.get("minTrainingLoadChronic")
+        out["garmin_chronic_load_max"] = acwr.get("maxTrainingLoadChronic")
         out["garmin_acwr_ratio"] = acwr.get("dailyAcuteChronicWorkloadRatio")
 
-    # Load balance
+    # Load balance — no deviceId, deviceName, imageURL
     balance_map = (raw.get("mostRecentTrainingLoadBalance") or {}).get("metricsTrainingLoadBalanceDTOMap") or {}
     if balance_map:
         b = next(iter(balance_map.values()))
@@ -176,7 +179,7 @@ def fetch_training_status(client: Garmin) -> dict:
         out["load_anaerobic_target"] = [b.get("monthlyLoadAnaerobicTargetMin"), b.get("monthlyLoadAnaerobicTargetMax")]
         out["load_balance_feedback"] = b.get("trainingBalanceFeedbackPhrase")
 
-    print(f"Training status: {out.get('training_status')} | VO2max: {out.get('vo2max_cycling')} | ACWR: {out.get('acwr_ratio')}")
+    print(f"Training status: {out.get('training_status')} | VO2max: {out.get('vo2max_cycling')} | ACWR: {out.get('garmin_acwr_ratio')}")
     return out
 
 

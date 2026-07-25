@@ -13,11 +13,8 @@ from pathlib import Path
 import anthropic
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-#Switch if wanting to save money
-#MODEL = os.environ.get("TRAINER_MODEL", "claude-haiku-4-5-20251001")
-#MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-4-6")
-#yolo
 MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
+
 SYSTEM = """You are an elite endurance performance coach specialising in cycling performance,
 concurrent strength training, recovery management, and exercise science.
 
@@ -284,6 +281,43 @@ def _avg(vals):
     return round(sum(vals) / len(vals), 1) if vals else None
 
 
+def _translate_status(raw: str | None) -> str:
+    """Convert Garmin internal training status codes to plain English."""
+    mapping = {
+        "PRODUCTIVE":       "productive — fitness is improving",
+        "MAINTAINING":      "maintaining — load is sustaining current fitness",
+        "RECOVERY":         "recovery — deliberately reduced load",
+        "RECOVERY_ACTIVE":  "active recovery",
+        "UNPRODUCTIVE_1":   "unproductive — training load not producing fitness gains",
+        "UNPRODUCTIVE_2":   "unproductive — training load not producing fitness gains",
+        "UNPRODUCTIVE_3":   "unproductive — high fatigue with no fitness improvement, reduce load",
+        "OVERREACHING":     "overreaching — dangerously high acute load, significant rest required",
+        "DETRAINING":       "detraining — insufficient load to maintain fitness",
+        "PEAKING":          "peaking — well-positioned for performance",
+    }
+    return mapping.get(raw or "", raw or "unknown")
+
+
+def _translate_trend(code: int | None) -> str:
+    """Convert Garmin fitness trend integer to plain English."""
+    mapping = {1: "declining", 2: "stable", 3: "improving"}
+    return mapping.get(code, "unknown")  # type: ignore[arg-type]
+
+
+def _translate_feedback(raw: str | None) -> str:
+    """Convert Garmin load balance feedback codes to plain English."""
+    mapping = {
+        "AEROBIC_HIGH_SHORTAGE":   "aerobic high shortage — not enough tempo/threshold work, increase quality sessions",
+        "AEROBIC_LOW_SHORTAGE":    "aerobic low shortage — not enough easy volume, add zone 1-2 riding",
+        "ANAEROBIC_SHORTAGE":      "anaerobic shortage — not enough high-intensity work",
+        "AEROBIC_HIGH_EXCESS":     "aerobic high excess — too much tempo/threshold, reduce intensity",
+        "AEROBIC_LOW_EXCESS":      "aerobic low excess — too much easy volume",
+        "ANAEROBIC_EXCESS":        "anaerobic excess — too many hard efforts, reduce high-intensity work",
+        "BALANCED":                "balanced — load distribution is within target ranges",
+    }
+    return mapping.get(raw or "", raw or "unknown")
+
+
 def build_summary() -> dict:
     metrics  = json.loads((DATA_DIR / "metrics.json").read_text())
     daily    = json.loads((DATA_DIR / "daily.json").read_text())
@@ -322,17 +356,22 @@ def build_summary() -> dict:
         "weekly_history": metrics.get("weekly"),
         "recovery": recovery,
         "garmin_assessment": {
-            "vo2max":          garmin_status.get("vo2max_cycling"),
-            "fitness_age":     garmin_status.get("fitness_age"),
-            "training_status": garmin_status.get("training_status"),
-            "fitness_trend":   garmin_status.get("fitness_trend"),
-            "acwr_ratio":      garmin_status.get("garmin_acwr_ratio"),
-            "acwr_status":     garmin_status.get("acwr_status"),
+            "vo2max_cycling":        garmin_status.get("vo2max_cycling"),
+            "fitness_age":           garmin_status.get("fitness_age"),
+            "training_status":       _translate_status(garmin_status.get("training_status")),
+            "training_status_since": garmin_status.get("status_since_date"),
+            "fitness_trend":         _translate_trend(garmin_status.get("fitness_trend")),
+            "acwr_ratio":            garmin_status.get("garmin_acwr_ratio"),
+            "acwr_percent":          garmin_status.get("acwr_percent"),
+            "acwr_status":           (garmin_status.get("acwr_status") or "").lower(),
+            "acute_load":            garmin_status.get("garmin_acute_load"),
+            "chronic_load":          garmin_status.get("garmin_chronic_load"),
+            "chronic_load_range":    [garmin_status.get("garmin_chronic_load_min"), garmin_status.get("garmin_chronic_load_max")],
             "load_balance": {
                 "aerobic_low":  {"actual": garmin_status.get("load_aerobic_low"),  "target": garmin_status.get("load_aerobic_low_target")},
                 "aerobic_high": {"actual": garmin_status.get("load_aerobic_high"), "target": garmin_status.get("load_aerobic_high_target")},
                 "anaerobic":    {"actual": garmin_status.get("load_anaerobic"),    "target": garmin_status.get("load_anaerobic_target")},
-                "feedback":     garmin_status.get("load_balance_feedback"),
+                "feedback":     _translate_feedback(garmin_status.get("load_balance_feedback")),
             },
         },
         "last_week_plan_compliance": compliance(last_plan, activities),
@@ -347,6 +386,10 @@ def next_monday() -> dt.date:
 
 def main():
     summary = build_summary()
+    import sys
+    print("\n=== DATA SENT TO LLM ===", file=sys.stderr)
+    print(json.dumps(summary, indent=2), file=sys.stderr)
+    print("=== END DATA ===\n", file=sys.stderr)
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,

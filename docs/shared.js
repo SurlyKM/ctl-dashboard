@@ -60,10 +60,10 @@ function renderGarminStatus(ts) {
     '<div class="status-pill" style="background:' + bg + ';color:' + fg + '">' + label + '</div>' +
     '<table class="garmin-kv">' +
     "<tr><td>Fitness trend</td><td style=\"color:" + trendColor + "\">" + trendLabel + "</td></tr>" +
-    "<tr><td>ACWR ratio</td><td>" + (ts.garmin_acwr_ratio ? ts.garmin_acwr_ratio.toFixed(2) : "–") +
-      ' <span style="color:var(--fitness);font-size:10px">' + (ts.acwr_status ? ts.acwr_status.toLowerCase() : "") + "</span></td></tr>" +
-    "<tr><td>Acute load</td><td>" + (ts.garmin_acute_load ?? "–") + "</td></tr>" +
-    "<tr><td>Chronic load</td><td>" + (ts.garmin_chronic_load ?? "–") + "</td></tr>" +
+    "<tr><td>ACWR ratio</td><td>" + (ts.acwr_ratio ?? ts.garmin_acwr_ratio ? (ts.acwr_ratio ?? ts.garmin_acwr_ratio).toFixed(2) : "–") +
+      ' <span style="color:var(--fitness);font-size:10px">' + (ts.acwr_status || "") + "</span></td></tr>" +
+    "<tr><td>Acute load</td><td>" + (ts.acute_load ?? ts.garmin_acute_load ?? "–") + "</td></tr>" +
+    "<tr><td>Chronic load</td><td>" + (ts.chronic_load ?? ts.garmin_chronic_load ?? "–") + "</td></tr>" +
     "</table>";
 }
 

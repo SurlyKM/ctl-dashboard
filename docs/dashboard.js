@@ -51,11 +51,22 @@ function renderStats(metrics, activities, ts) {
     .reduce((t, a) => t + (a.duration_s || 0) / 3600, 0);
   $("week-hours").textContent = hrs.toFixed(1) + " h";
 
-  if (ts) {
-    const v = ts.vo2max_cycling || ts.vo2max_generic;
-    if (v) {
-      $("vo2-stat").textContent = v.toFixed(1);
-      if (ts.fitness_age) $("vo2-sub").textContent = "age " + ts.fitness_age;
+  // Resting HR from latest daily entry
+  const latestDaily = Object.entries(daily).sort().at(-1)?.[1] || {};
+  const rhr = latestDaily.resting_hr;
+  if (rhr) {
+    $("rhr-stat").textContent = rhr + " bpm";
+    // Trend from last 7 days
+    const rhrVals = Object.entries(daily).sort().slice(-7).map(([,v]) => v.resting_hr).filter(Boolean);
+    if (rhrVals.length >= 3) {
+      const first = rhrVals.slice(0, Math.floor(rhrVals.length/2)).reduce((a,b)=>a+b,0) / Math.floor(rhrVals.length/2);
+      const last  = rhrVals.slice(Math.ceil(rhrVals.length/2)).reduce((a,b)=>a+b,0) / (rhrVals.length - Math.ceil(rhrVals.length/2));
+      const diff = last - first;
+      const trendEl = $("rhr-sub");
+      if (trendEl) {
+        trendEl.textContent = diff > 1.5 ? "rising" : diff < -1.5 ? "falling" : "stable";
+        trendEl.style.color = diff > 1.5 ? css("--fatigue") : diff < -1.5 ? css("--fitness") : css("--muted");
+      }
     }
   }
 }

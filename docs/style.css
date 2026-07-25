@@ -1,0 +1,592 @@
+:root {
+  --bg: #f4f7f4;
+  --card: #ffffff;
+  --ink: #111111;
+  --ink2: #333333;
+  --muted: #666666;
+  --line: #dceadd;
+  --line2: #c8deca;
+  --fitness: #2d6a35;
+  --fitness-bg: #edf7ee;
+  --fatigue: #b85c00;
+  --danger: #b52b20;
+  --danger-bg: #fde8e8;
+  --today-bg: #f0f9f0;
+}
+
+
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  padding: 24px 20px 52px;
+  max-width: 800px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.6 -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  font-size: 10px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.mono { font-family: "SF Mono", ui-monospace, "Fira Code", monospace; }
+.muted { color: var(--muted); font-size: 11px; }
+.label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+#synced { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+h1 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+}
+
+/* Base card */
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+
+/* Gauge */
+#form-gauge { padding: 18px 20px 16px; }
+
+.gauge-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.big {
+  font-size: 40px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+.zone-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  align-self: center;
+}
+
+.gauge-track {
+  position: relative;
+  display: flex;
+  height: 5px;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.seg { height: 5px; border-radius: 999px; }
+.s-over  { flex: 20; background: var(--danger); opacity: 0.55; }
+.s-fat   { flex: 20; background: var(--fatigue); opacity: 0.5; }
+.s-neu   { flex: 15; background: var(--line2); }
+.s-fresh { flex: 20; background: var(--fitness); opacity: 0.55; }
+.s-det   { flex: 15; background: var(--line2); opacity: 0.6; }
+
+#gauge-marker {
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 15px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: left 0.8s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Stat grid */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.num {
+  font-size: 30px;
+  font-weight: 200;
+  letter-spacing: -0.8px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.delta { font-size: 10px; color: var(--fitness); font-weight: 600; }
+
+/* Chart */
+.chart-wrap { position: relative; height: 210px; }
+
+/* Two col */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+/* Mix bars */
+.mix-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 40px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 9px;
+}
+.mix-row:last-child { margin-bottom: 0; }
+.mix-label { font-size: 12px; color: var(--ink2); }
+.mix-bar-wrap { background: var(--line); border-radius: 999px; height: 4px; }
+.mix-bar { height: 4px; border-radius: 999px; background: var(--fitness); min-width: 3px; }
+.mix-hours { font-size: 11px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Recovery table */
+.kv { width: 100%; font-size: 13px; border-collapse: collapse; }
+.kv td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.kv td:first-child { color: var(--muted); font-size: 12px; }
+.kv td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-size: 12px; }
+.kv tr:last-child td { border-bottom: none; }
+
+/* Plan */
+.plan-head { display: flex; justify-content: space-between; align-items: baseline; }
+
+#coach-says {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.65;
+  border-left: 2px solid var(--line2);
+  padding: 5px 0 5px 12px;
+  margin: 10px 0 14px;
+  font-style: italic;
+}
+
+#plan { width: 100%; border-collapse: collapse; }
+
+#plan td { padding: 9px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+#plan tr:last-child td { border-bottom: none; }
+
+#plan tr.today { background: var(--today-bg); }
+#plan tr.today td:first-child {
+  border-left: 2px solid var(--fitness);
+  padding-left: 5px;
+  border-radius: 0;
+}
+
+#plan .day {
+  width: 34px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding-top: 11px;
+  white-space: nowrap;
+}
+
+#plan .session { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--ink); }
+.session-dur { font-size: 10px; color: var(--muted); margin-left: 5px; font-weight: 400; }
+#plan .details { font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+#plan .status { width: 46px; text-align: right; font-size: 10px; font-weight: 600; padding-top: 11px; white-space: nowrap; }
+
+.st-done { color: var(--fitness); }
+.st-today { color: var(--fatigue); }
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: 1px;
+  flex-shrink: 0;
+}
+.i-easy     { background: var(--fitness); }
+.i-moderate { background: var(--fatigue); }
+.i-hard     { background: var(--danger); }
+
+footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+/* VO2 max + Garmin status */
+.vo2-row { display: flex; align-items: flex-end; gap: 16px; }
+.vo2-num { font-size: 30px; font-weight: 200; letter-spacing: -0.8px; line-height: 1; }
+.vo2-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+.vo2-trend { flex: 1; }
+.vo2-trend-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+.vo2-trend svg { width: 100%; height: 38px; overflow: visible; display: block; }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; padding: 4px 12px;
+  border-radius: 999px; text-transform: uppercase;
+  letter-spacing: 0.07em; margin-bottom: 10px;
+}
+.garmin-kv { width: 100%; font-size: 12px; border-collapse: collapse; }
+.garmin-kv td { padding: 5px 0; border-bottom: 1px solid var(--line); color: var(--muted); }
+.garmin-kv td:last-child { text-align: right; color: var(--ink); border-bottom: 1px solid var(--line); }
+.garmin-kv tr:last-child td { border-bottom: none; }
+
+/* Load balance bars */
+.balance-row { margin-bottom: 14px; }
+.balance-row:last-child { margin-bottom: 0; }
+.balance-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.balance-name { font-size: 11px; font-weight: 500; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+.balance-nums { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar-track { height: 6px; background: var(--line); border-radius: 999px; position: relative; }
+.bar-fill { height: 6px; border-radius: 999px; position: absolute; left: 0; top: 0; }
+.bar-target {
+  position: absolute; top: -3px; height: 12px;
+  border-radius: 2px;
+  background: rgba(45,106,53,0.1);
+  border: 1px solid rgba(45,106,53,0.3);
+}
+.balance-hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.bal-ok   { background: var(--fitness); opacity: 0.65; }
+.bal-warn { background: var(--fatigue); opacity: 0.65; }
+.bal-over { background: var(--danger);  opacity: 0.6;  }
+.dot-status { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+/* Nav */
+nav { display: flex; border: 1px solid var(--line2); border-radius: 8px; overflow: hidden; }
+.nav-link {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.07em; padding: 6px 14px; color: var(--muted);
+  text-decoration: none; background: var(--card);
+  transition: background 0.15s;
+}
+.nav-link.active { background: var(--fitness); color: #fff; }
+.nav-link:not(.active):hover { background: var(--line); }
+
+/* Today card */
+#today-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 10px;
+}
+.today-session { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.today-details { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+.today-readiness {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 10px;
+}
+.readiness-item { text-align: center; }
+.readiness-val { font-size: 16px; font-weight: 300; letter-spacing: -0.3px; margin-top: 3px; }
+
+/* Intensity pill (plan page) */
+.int-pill {
+  font-size: 9px; font-weight: 700; padding: 3px 8px;
+  border-radius: 999px; text-transform: uppercase; letter-spacing: 0.06em;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* Collapsible day cards */
+.day-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.day-card.expanded { border-color: var(--fitness); }
+
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 16px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.day-header:active { background: var(--line); }
+
+.day-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  width: 30px;
+  flex-shrink: 0;
+}
+.day-today { color: var(--fitness); }
+
+.day-session {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.day-dur { font-weight: 400; color: var(--muted); font-size: 13px; }
+
+.day-status { font-size: 10px; font-weight: 600; flex-shrink: 0; }
+.day-chevron {
+  font-size: 18px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  line-height: 1;
+}
+.day-card.expanded .day-chevron { transform: rotate(90deg); }
+
+.day-body {
+  display: none;
+  padding: 0 16px 14px;
+  border-top: 1px solid var(--line);
+}
+.day-card.expanded .day-body { display: block; }
+
+/* Exercise block (gym) */
+.ex-block { margin-top: 12px; }
+.ex-block + .ex-block { margin-top: 16px; }
+.ex-block-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--fitness);
+  margin-bottom: 4px;
+}
+.ex-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.ex-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ex-item:last-child { border-bottom: none; }
+.ex-name { font-size: 15px; color: var(--ink); }
+.ex-meta { text-align: right; flex-shrink: 0; margin-left: 12px; }
+.ex-sets { font-size: 13px; font-weight: 500; color: var(--fitness); }
+.ex-reps { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* Swim block */
+.swim-block { margin-top: 10px; }
+.swim-row {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.swim-row:last-child { border-bottom: none; }
+.swim-phase {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fitness);
+  width: 64px;
+  flex-shrink: 0;
+}
+.swim-content { font-size: 13px; color: var(--ink2); line-height: 1.5; }
+
+/* Prose detail (cycling, rest etc) */
+.detail-prose {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-top: 10px;
+}
+
+/* Theme switcher */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px 0 36px;
+}
+.theme-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-right: 4px;
+}
+.theme-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+  outline: none;
+  box-shadow: 0 0 0 0px rgba(0,0,0,0);
+}
+.theme-btn:hover { box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 15%, transparent); }
+.theme-btn.active {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink);
+}
+
+/* Theme: slate blue (default — already in :root) */
+body[data-theme="slate"] {
+  --bg: #f8f9fc;
+  --card: #ffffff;
+  --ink: #111827;
+  --ink2: #374151;
+  --muted: #9ca3af;
+  --line: #e2e8f0;
+  --line2: #cbd5e1;
+  --fitness: #1d4ed8;
+  --fitness-bg: #eff6ff;
+  --fatigue: #b45309;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --today-bg: #eff6ff;
+}
+
+/* Theme: warm neutral */
+body[data-theme="warm"] {
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --ink: #1c1917;
+  --ink2: #44403c;
+  --muted: #a8a29e;
+  --line: #e8e4de;
+  --line2: #d6d0c8;
+  --fitness: #b45309;
+  --fitness-bg: #fffbeb;
+  --fatigue: #b45309;
+  --danger: #b91c1c;
+  --danger-bg: #fef2f2;
+  --today-bg: #fffbeb;
+}
+
+/* Theme: monochrome */
+body[data-theme="mono"] {
+  --bg: #ffffff;
+  --card: #f9fafb;
+  --ink: #000000;
+  --ink2: #1f2937;
+  --muted: #9ca3af;
+  --line: #e5e7eb;
+  --line2: #d1d5db;
+  --fitness: #374151;
+  --fitness-bg: #f3f4f6;
+  --fatigue: #6b7280;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --today-bg: #f3f4f6;
+}
+
+/* Theme: forest green (current) */
+body[data-theme="green"] {
+  --bg: #f4f7f4;
+  --card: #ffffff;
+  --ink: #111111;
+  --ink2: #333333;
+  --muted: #666666;
+  --line: #dceadd;
+  --line2: #c8deca;
+  --fitness: #2d6a35;
+  --fitness-bg: #edf7ee;
+  --fatigue: #b85c00;
+  --danger: #b52b20;
+  --danger-bg: #fde8e8;
+  --today-bg: #f0f9f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body[data-theme="green"] {
+    --bg: #101a11; --card: #162018;
+    --ink: #e8efe9; --ink2: #b0ccb2; --muted: #5a7a5c;
+    --line: #243d27; --line2: #1e3320;
+    --fitness: #5cb86a; --fitness-bg: #152018;
+    --fatigue: #e09a40; --danger: #e07070; --danger-bg: #2e1515;
+    --today-bg: #132015;
+  }
+  body[data-theme="slate"] {
+    --bg: #0f1117; --card: #1a1f2e;
+    --ink: #e8eaf6; --ink2: #b0b8d0; --muted: #6b7599;
+    --line: #252d42; --line2: #1e2538;
+    --fitness: #60a5fa; --fitness-bg: #1e3a5f;
+    --fatigue: #fb923c; --danger: #f87171; --danger-bg: #2d1515;
+    --today-bg: #1e2d42;
+  }
+  body[data-theme="warm"] {
+    --bg: #1c1917; --card: #292524;
+    --ink: #f5f0eb; --ink2: #c9c2bb; --muted: #857770;
+    --line: #3a3330; --line2: #2e2b28;
+    --fitness: #fbbf24; --fitness-bg: #2d2200;
+    --fatigue: #fb923c; --danger: #f87171; --danger-bg: #2d1515;
+    --today-bg: #2d2200;
+  }
+  body[data-theme="mono"] {
+    --bg: #111111; --card: #1f1f1f;
+    --ink: #f5f5f5; --ink2: #d4d4d4; --muted: #737373;
+    --line: #2e2e2e; --line2: #404040;
+    --fitness: #a3a3a3; --fitness-bg: #262626;
+    --fatigue: #a3a3a3; --danger: #f87171; --danger-bg: #2d1515;
+    --today-bg: #262626;
+  }
+}

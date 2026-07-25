@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Training</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body><script>
+(function() {
+  var t = localStorage.getItem("theme") || "green";
+  document.body.setAttribute("data-theme", t);
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".theme-btn").forEach(function(btn) {
+      if (btn.dataset.theme === t) btn.classList.add("active");
+      btn.addEventListener("click", function() {
+        var theme = btn.dataset.theme;
+        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        document.querySelectorAll(".theme-btn").forEach(function(b) {
+          b.classList.toggle("active", b.dataset.theme === theme);
+        });
+        document.dispatchEvent(new Event("themechange"));
+      });
+    });
+  });
+})();
+</script>
+<header>
+  <h1>Training</h1>
+  <nav>
+    <a href="index.html" class="nav-link active">Dashboard</a>
+    <a href="plan.html" class="nav-link">Plan</a>
+  </nav>
+  <span id="synced" class="muted"></span>
+</header>
+
+<section class="stats" id="readiness" aria-label="Today's readiness"></section>
+
+<section class="stats" aria-label="Training load">
+  <div class="stat" id="tsb-card"></div>
+  <div class="stat">
+    <span class="label">Fitness (CTL)</span>
+    <span class="num" id="ctl"></span>
+    <span class="delta" id="ctl-delta"></span>
+  </div>
+  <div class="stat">
+    <span class="label">Fatigue (ATL)</span>
+    <span class="num" id="atl"></span>
+  </div>
+  <div class="stat">
+    <span class="label">This week</span>
+    <span class="num" id="week-hours"></span>
+  </div>
+  <div class="stat">
+    <span class="label">VO2 max</span>
+    <span class="num" id="vo2-stat"></span>
+    <span class="delta" id="vo2-sub"></span>
+  </div>
+</section>
+
+<section>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h2 style="margin:0">Training load, 12 weeks</h2>
+    <span id="chart-today-label" class="muted" style="font-size:11px"></span>
+  </div>
+  <div class="chart-wrap"><canvas id="loadChart"></canvas></div>
+</section>
+
+<div class="two-col">
+  <section>
+    <h2>Activity mix, 4 weeks</h2>
+    <div id="mix"></div>
+  </section>
+  <section>
+    <h2>VO2 max trend</h2>
+    <div id="vo2-panel"></div>
+  </section>
+</div>
+
+<div class="two-col">
+  <section>
+    <h2>Garmin assessment</h2>
+    <div id="garmin-status"></div>
+  </section>
+  <section>
+    <h2>Monthly load balance</h2>
+    <div id="load-balance"></div>
+  </section>
+</div>
+
+
+<script src="chart.umd.min.js"></script>
+<script src="shared.js"></script>
+<script src="dashboard.js"></script>
+<div class="theme-switcher">
+  <span class="theme-label">Theme</span>
+  <button class="theme-btn" data-theme="green" title="Forest green" style="background:#2d6a35"></button>
+  <button class="theme-btn" data-theme="slate" title="Slate blue"   style="background:#1d4ed8"></button>
+  <button class="theme-btn" data-theme="warm"  title="Warm neutral" style="background:#b45309"></button>
+  <button class="theme-btn" data-theme="mono"  title="Monochrome"   style="background:#374151"></button>
+</div>
+</body>
+</html>

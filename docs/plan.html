@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Training — Plan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body><script>
+(function() {
+  var t = localStorage.getItem("theme") || "green";
+  document.body.setAttribute("data-theme", t);
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".theme-btn").forEach(function(btn) {
+      if (btn.dataset.theme === t) btn.classList.add("active");
+      btn.addEventListener("click", function() {
+        var theme = btn.dataset.theme;
+        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+        document.querySelectorAll(".theme-btn").forEach(function(b) {
+          b.classList.toggle("active", b.dataset.theme === theme);
+        });
+        document.dispatchEvent(new Event("themechange"));
+      });
+    });
+  });
+})();
+</script>
+<header>
+  <h1>Training</h1>
+  <nav>
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="plan.html" class="nav-link active">Plan</a>
+  </nav>
+  <span id="synced" class="muted"></span>
+</header>
+
+<section id="plan-section">
+  <div class="plan-head">
+    <h2 id="plan-week">This week's plan</h2>
+    <span id="plan-generated" class="muted"></span>
+  </div>
+  <p id="coach-says"></p>
+  <div id="plan-days"></div>
+</section>
+
+<div class="two-col">
+  <section>
+    <h2>Last week — planned vs actual</h2>
+    <div id="compliance"></div>
+  </section>
+  <section>
+    <h2>Load balance</h2>
+    <div id="load-balance"></div>
+  </section>
+</div>
+
+<section>
+  <h2>Garmin assessment</h2>
+  <div id="garmin-status"></div>
+</section>
+
+
+<script src="shared.js"></script>
+<script src="plan.js"></script>
+<div class="theme-switcher">
+  <span class="theme-label">Theme</span>
+  <button class="theme-btn" data-theme="green" title="Forest green" style="background:#2d6a35"></button>
+  <button class="theme-btn" data-theme="slate" title="Slate blue"   style="background:#1d4ed8"></button>
+  <button class="theme-btn" data-theme="warm"  title="Warm neutral" style="background:#b45309"></button>
+  <button class="theme-btn" data-theme="mono"  title="Monochrome"   style="background:#374151"></button>
+</div>
+</body>
+</html>

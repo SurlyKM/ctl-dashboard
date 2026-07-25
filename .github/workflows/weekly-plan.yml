@@ -1,0 +1,55 @@
+name: Generate weekly plan
+
+on:
+  schedule:
+    # Sat 20:00 UTC = Sun 6am AEST (7am during AEDT, Oct-Apr). 
+    # for a training plan; adjust if the DST drift bothers you.
+    - cron: "0 6 * * 0"
+      timezone: "Australia/Sydney"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fresh sync before planning
+        env:
+          GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+        run: |
+          python scripts/sync_garmin.py
+          python scripts/compute_metrics.py
+
+      - name: Generate plan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ATHLETE_PROFILE_PRIVATE: ${{ secrets.ATHLETE_PROFILE_PRIVATE }}
+        run: python scripts/generate_plan.py
+
+      - name: Commit plan
+        run: |
+          git config user.name "fitness-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git stash
+          git pull --rebase
+          git stash pop 2>/dev/null || true
+          git add docs/data/
+          git diff --cached --quiet || git commit -m "weekly plan $(date -u +%F)"
+          git push

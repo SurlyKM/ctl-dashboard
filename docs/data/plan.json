@@ -1,0 +1,63 @@
+{
+ "week_start": "2026-07-20",
+ "generated_at": "2026-07-24T12:59:04.320572+00:00",
+ "coach_says": "Form is slightly negative and midweek sleep dipped, so this week trades one hard ride for an easy swim and keeps two quality sessions.",
+ "days": [
+  {
+   "day": "Mon",
+   "sport": "gym",
+   "session": "Upper push + core",
+   "duration_min": 45,
+   "intensity": "moderate",
+   "details": "Bench 4x6, OHP 3x8, dips 3x10, plank circuit"
+  },
+  {
+   "day": "Tue",
+   "sport": "cycling",
+   "session": "Tempo intervals",
+   "duration_min": 75,
+   "intensity": "hard",
+   "details": "2x15 min at tempo, 10 min easy between"
+  },
+  {
+   "day": "Wed",
+   "sport": "swim",
+   "session": "Technique swim",
+   "duration_min": 40,
+   "intensity": "easy",
+   "details": "8x50 drill focus, 4x100 steady"
+  },
+  {
+   "day": "Thu",
+   "sport": "gym",
+   "session": "Lower + posterior chain",
+   "duration_min": 50,
+   "intensity": "moderate",
+   "details": "Squat 4x5, RDL 3x8, lunges 3x10, calf raises"
+  },
+  {
+   "day": "Fri",
+   "sport": "rest",
+   "session": "Rest or short walk",
+   "duration_min": 30,
+   "intensity": "easy",
+   "details": "Optional 30 min easy walk"
+  },
+  {
+   "day": "Sat",
+   "sport": "mtb",
+   "session": "Endurance MTB",
+   "duration_min": 120,
+   "intensity": "moderate",
+   "details": "2 h zone 2, keep HR under control on climbs"
+  },
+  {
+   "day": "Sun",
+   "sport": "cycling",
+   "session": "Long ride",
+   "duration_min": 150,
+   "intensity": "moderate",
+   "details": "2.5 h endurance, fuel every 45 min"
+  }
+ ]
+}

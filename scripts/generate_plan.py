@@ -14,7 +14,7 @@ import anthropic
 from fetch_weather import get_weather_summary
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
+MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-5")
 
 SYSTEM = """You are an elite endurance performance coach specialising in cycling performance,
 concurrent strength training, recovery management, and exercise science.

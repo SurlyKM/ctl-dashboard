@@ -36,6 +36,14 @@
   <span id="synced" class="muted"></span>
 </header>
 
+<section>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h2 style="margin:0">Training load, 12 weeks</h2>
+    <span id="chart-today-label" class="muted" style="font-size:11px"></span>
+  </div>
+  <div class="chart-wrap"><canvas id="loadChart"></canvas></div>
+</section>
+
 <section class="stats" aria-label="Key metrics">
   <div class="stat" id="readiness-hrv"></div>
   <div class="stat" id="readiness-sleep"></div>
@@ -65,14 +73,6 @@
     <span class="num" id="vo2-stat"></span>
     <span class="delta" id="vo2-sub"></span>
   </div>
-</section>
-
-<section>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <h2 style="margin:0">Training load, 12 weeks</h2>
-    <span id="chart-today-label" class="muted" style="font-size:11px"></span>
-  </div>
-  <div class="chart-wrap"><canvas id="loadChart"></canvas></div>
 </section>
 
 <div class="two-col">

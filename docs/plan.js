@@ -1,36 +1,47 @@
 // Plan page — plan.html
 
+function parseGymLine(line) {
+  // Matches: "Romanian Deadlift 4x4-6" or "Dead Bug 3x8 each side" or "Plank 3x30-60 sec"
+  const m = line.match(/^(.+?)\s+(\d+\s*[xX×]\s*[\d\s\-]+(?:sec|min|each side|reps?)?)\s*$/i);
+  if (!m) return null;
+  const name = m[1].trim();
+  const sets = m[2].trim();
+  return { name, sets };
+}
+
 function parseDetails(details, sport) {
   if (!details) return "";
 
   // Gym: detect "Workout A/B:" followed by exercise lines
   if (sport === "gym" && /workout [ab]/i.test(details)) {
-    const blocks = details.split(/\n\n+/);
+    const blocks = details.split(/\n(?=Workout [AB]:)/i);
     return blocks.map(block => {
       const lines = block.trim().split("\n").map(l => l.trim()).filter(Boolean);
       if (!lines.length) return "";
       const header = lines[0];
       const isWorkout = /^workout [ab]/i.test(header);
       if (isWorkout) {
-        const noteMatch = details.match(/perform \d+ sets[^.]*\./i) ||
-                         details.match(/rep ranges?[^.]*\./i) ||
-                         details.match(/rest \d+[^.]*\./i);
+        const restMatch = lines.find(l => /^rest:/i.test(l));
+        const warmupMatch = lines.find(l => /^warm.?up/i.test(l));
         const exercises = lines.slice(1).filter(l =>
-          !/^perform/i.test(l) && !/^rep range/i.test(l) &&
-          !/^rest /i.test(l) && !/^alternate/i.test(l) && l.length > 2
+          !/^warm.?up/i.test(l) && !/^rest:/i.test(l) &&
+          !/^alternate/i.test(l) && l.length > 2
         );
-        const note = noteMatch ? noteMatch[0] : "3 sets · 15-18 / 12-15 / 8-12 reps";
+        const parsed = exercises.map(ex => {
+          const p = parseGymLine(ex);
+          if (!p) return '<p class="detail-prose">' + ex + '</p>';
+          // Determine role by position / sets notation
+          const isFour = /^4\s*[xX×]/.test(p.sets);
+          const roleColor = isFour ? "var(--fitness)" : "var(--muted)";
+          return '<div class="ex-item"><span class="ex-name">' + p.name +
+            '</span><div class="ex-meta"><div class="ex-sets" style="color:' + roleColor + '">' +
+            p.sets + '</div></div></div>';
+        }).join("");
         return '<div class="ex-block">' +
           '<div class="ex-block-title">' + header + '</div>' +
-          '<div class="ex-note">' + note + '</div>' +
-          exercises.map(ex => {
-            const m = ex.match(/^(.+?)\s+(\d+x[\w\s\-\/()]+|3x[\w\s\-\/()]+|\d+\s*sets?.*)$/i);
-            const name = m ? m[1].trim() : ex.replace(/\s+\d+x.*/i, "").trim();
-            const sets = m ? m[2].trim() : "3 sets";
-            return '<div class="ex-item"><span class="ex-name">' + name +
-              '</span><div class="ex-meta"><div class="ex-sets">' + sets +
-              '</div><div class="ex-reps">15-18 / 12-15 / 8-12</div></div></div>';
-          }).join("") +
+          (warmupMatch ? '<div class="ex-note">' + warmupMatch + '</div>' : "") +
+          parsed +
+          (restMatch ? '<div class="ex-note" style="margin-top:8px">' + restMatch + '</div>' : "") +
           '</div>';
       }
       return '<p class="detail-prose">' + block + '</p>';

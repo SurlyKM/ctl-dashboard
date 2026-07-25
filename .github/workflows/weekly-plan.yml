@@ -2,8 +2,6 @@ name: Generate weekly plan
 
 on:
   schedule:
-    # Sat 20:00 UTC = Sun 6am AEST (7am during AEDT, Oct-Apr). 
-    # for a training plan; adjust if the DST drift bothers you.
     - cron: "0 6 * * 0"
       timezone: "Australia/Sydney"
   workflow_dispatch: {}

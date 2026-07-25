@@ -74,12 +74,12 @@ python -m http.server -d docs 8000
 ## How it works
 
 ```
-Garmin Connect ──(4x daily, Sydney time)──> sync_garmin.py ──> docs/data/*.json
+Garmin Connect ──(4x daily)──> sync_garmin.py ──> docs/data/*.json
                                                   │
                                           compute_metrics.py
                                           (CTL / ATL / TSB)
                                                   │
-Sun 6am Sydney ──> generate_plan.py ──> weather forecast
+Sun 8pm ──> generate_plan.py ──> weather forecast
                          │            + Garmin readiness
                          │            + athlete profile (private)
                          │                    │

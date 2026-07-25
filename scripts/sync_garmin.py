@@ -149,23 +149,13 @@ def fetch_training_status(client: Garmin) -> dict:
     out["vo2max_cycling"] = cycling.get("vo2MaxPreciseValue")
     out["fitness_age"] = generic.get("fitnessAge")
 
-    # Training status — no userId, deviceId, deviceName, imageURL, timestamp
+    # Training status — whitelist only, no userId, deviceId, deviceName, imageURL, timestamp
+    # Only store fields that are actually used by generate_plan.py or the dashboard
     status_map = (raw.get("mostRecentTrainingStatus") or {}).get("latestTrainingStatusData") or {}
     if status_map:
         s = next(iter(status_map.values()))
         out["training_status"] = s.get("trainingStatusFeedbackPhrase")
         out["fitness_trend"] = s.get("fitnessTrend")
-        out["fitness_trend_sport"] = s.get("fitnessTrendSport")
-        out["status_since_date"] = s.get("sinceDate")
-        out["training_paused"] = s.get("trainingPaused")
-        acwr = s.get("acuteTrainingLoadDTO") or {}
-        out["acwr_percent"] = acwr.get("acwrPercent")
-        out["acwr_status"] = acwr.get("acwrStatus")
-        out["garmin_acute_load"] = acwr.get("dailyTrainingLoadAcute")
-        out["garmin_chronic_load"] = acwr.get("dailyTrainingLoadChronic")
-        out["garmin_chronic_load_min"] = acwr.get("minTrainingLoadChronic")
-        out["garmin_chronic_load_max"] = acwr.get("maxTrainingLoadChronic")
-        out["garmin_acwr_ratio"] = acwr.get("dailyAcuteChronicWorkloadRatio")
 
     # Load balance — no deviceId, deviceName, imageURL
     balance_map = (raw.get("mostRecentTrainingLoadBalance") or {}).get("metricsTrainingLoadBalanceDTOMap") or {}

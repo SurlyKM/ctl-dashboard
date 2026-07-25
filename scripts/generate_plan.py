@@ -247,6 +247,9 @@ Respond ONLY with valid JSON. No markdown. No explanations.
 }
 
 The days array MUST contain exactly seven entries: Monday through Sunday.
+One entry per day, no exceptions. If Tuesday has both a morning ride and an evening MTB ride,
+combine them into a single Tuesday entry — note both sessions in the details field.
+Do not create duplicate day entries.
 
 Output only the JSON object.
 """
@@ -420,7 +423,7 @@ def main():
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
-        max_tokens=4000,
+        max_tokens=2000,
         system=SYSTEM,
         messages=[{
             "role": "user",

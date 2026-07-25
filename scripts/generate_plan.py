@@ -318,9 +318,23 @@ def _translate_feedback(raw: str | None) -> str:
     return mapping.get(raw or "", raw or "unknown")
 
 
+def _resting_hr_trend(daily_items: list) -> str:
+    """Derive a simple trend from the last 14 days of resting HR."""
+    vals = [v.get("resting_hr") for _, v in daily_items if v.get("resting_hr")]
+    if len(vals) < 4:
+        return "insufficient data"
+    mid = len(vals) // 2
+    first_half = sum(vals[:mid]) / mid
+    second_half = sum(vals[mid:]) / (len(vals) - mid)
+    diff = second_half - first_half
+    if diff > 2:   return "rising"
+    if diff < -2:  return "falling"
+    return "stable"
+
+
 def build_summary() -> dict:
-    metrics  = json.loads((DATA_DIR / "metrics.json").read_text())
-    daily    = json.loads((DATA_DIR / "daily.json").read_text())
+    metrics    = json.loads((DATA_DIR / "metrics.json").read_text())
+    daily      = json.loads((DATA_DIR / "daily.json").read_text())
     activities = json.loads((DATA_DIR / "activities.json").read_text())
 
     status_path = DATA_DIR / "training_status.json"
@@ -328,56 +342,73 @@ def build_summary() -> dict:
 
     profile_path = DATA_DIR / "athlete_profile.json"
     athlete_profile = json.loads(profile_path.read_text()) if profile_path.exists() else {}
-    # Merge private profile from secret if present — overrides/extends the public file
     private_raw = os.environ.get("ATHLETE_PROFILE_PRIVATE", "").strip()
     if private_raw:
         try:
-            private = json.loads(private_raw)
-            athlete_profile.update(private)
+            athlete_profile.update(json.loads(private_raw))
         except json.JSONDecodeError as e:
             print(f"Warning: ATHLETE_PROFILE_PRIVATE is not valid JSON: {e}")
 
     last14 = sorted(daily.items())[-14:]
-    recovery = {
-        "sleep_score_avg_7d":  _avg([v.get("sleep_score")          for _, v in last14[-7:]]),
-        "sleep_hours_avg_7d":  _avg([(v.get("sleep_s") or 0) / 3600 for _, v in last14[-7:]]),
-        "hrv_last_night":      last14[-1][1].get("hrv_last_night") if last14 else None,
-        "hrv_status":          last14[-1][1].get("hrv_status")     if last14 else None,
-        "resting_hr_trend_14d":[v.get("resting_hr") for _, v in last14],
-    }
+    last7  = last14[-7:]
 
+    # Current week hours by sport
+    now = dt.datetime.now()
+    monday = now - dt.timedelta(days=now.weekday())
+    monday = monday.replace(hour=0, minute=0, second=0, microsecond=0)
+    week_hours: dict = {}
+    for a in activities:
+        if not a.get("start"):
+            continue
+        try:
+            start = dt.datetime.fromisoformat(a["start"])
+        except ValueError:
+            continue
+        if start >= monday:
+            sport = a.get("sport", "other")
+            week_hours[sport] = round(week_hours.get(sport, 0) + (a.get("duration_s") or 0) / 3600, 1)
+
+    # Only include compliance if the plan covers a fully completed week
     plan_path = DATA_DIR / "plan.json"
     last_plan = json.loads(plan_path.read_text()) if plan_path.exists() else {}
+    compliance_data = None
+    if last_plan.get("week_start"):
+        week_end = dt.date.fromisoformat(last_plan["week_start"]) + dt.timedelta(days=7)
+        if dt.date.today() >= week_end:
+            compliance_data = compliance(last_plan, activities)
 
-    return {
+    cur = metrics.get("current") or {}
+
+    summary = {
         "today": dt.date.today().isoformat(),
         "athlete_profile": athlete_profile,
-        "load_banister": metrics.get("current"),
-        "weekly_history": metrics.get("weekly"),
-        "recovery": recovery,
+        "load": {
+            "ctl": cur.get("ctl"),
+            "atl": cur.get("atl"),
+            "tsb": cur.get("tsb"),
+        },
+        "this_week_hours": week_hours,
+        "recovery": {
+            "sleep_score_7d_avg": _avg([v.get("sleep_score") for _, v in last7]),
+            "sleep_hours_7d_avg": _avg([(v.get("sleep_s") or 0) / 3600 for _, v in last7]),
+            "hrv_last_night":     last14[-1][1].get("hrv_last_night") if last14 else None,
+            "hrv_status":         last14[-1][1].get("hrv_status") if last14 else None,
+            "resting_hr_trend":   _resting_hr_trend(last14),
+        },
         "garmin_assessment": {
-            "vo2max_cycling":        garmin_status.get("vo2max_cycling"),
-            "fitness_age":           garmin_status.get("fitness_age"),
-            "training_status":       _translate_status(garmin_status.get("training_status")),
-            "training_status_since": garmin_status.get("status_since_date"),
-            "fitness_trend":         _translate_trend(garmin_status.get("fitness_trend")),
-            "acwr_ratio":            garmin_status.get("garmin_acwr_ratio"),
-            "acwr_percent":          garmin_status.get("acwr_percent"),
-            "acwr_status":           (garmin_status.get("acwr_status") or "").lower(),
-            "acute_load":            garmin_status.get("garmin_acute_load"),
-            "chronic_load":          garmin_status.get("garmin_chronic_load"),
-            "chronic_load_range":    [garmin_status.get("garmin_chronic_load_min"), garmin_status.get("garmin_chronic_load_max")],
+            "training_status": _translate_status(garmin_status.get("training_status")),
+            "fitness_trend":   _translate_trend(garmin_status.get("fitness_trend")),
             "load_balance": {
-                "aerobic_low":  {"actual": garmin_status.get("load_aerobic_low"),  "target": garmin_status.get("load_aerobic_low_target")},
                 "aerobic_high": {"actual": garmin_status.get("load_aerobic_high"), "target": garmin_status.get("load_aerobic_high_target")},
-                "anaerobic":    {"actual": garmin_status.get("load_anaerobic"),    "target": garmin_status.get("load_anaerobic_target")},
+                "aerobic_low":  {"actual": garmin_status.get("load_aerobic_low"),  "target": garmin_status.get("load_aerobic_low_target")},
+                "anaerobic":    {"actual": garmin_status.get("load_anaerobic"),     "target": garmin_status.get("load_anaerobic_target")},
                 "feedback":     _translate_feedback(garmin_status.get("load_balance_feedback")),
             },
         },
-        "last_week_plan_compliance": compliance(last_plan, activities),
     }
-
-
+    if compliance_data:
+        summary["last_week_compliance"] = compliance_data
+    return summary
 def next_monday() -> dt.date:
     today = dt.date.today()
     days_ahead = (7 - today.weekday()) % 7

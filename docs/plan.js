@@ -3,7 +3,7 @@
 function parseGymLine(line) {
   // Strip parenthetical notes e.g. "(light load, 2-3 RIR)" before matching
   const stripped = line.replace(/\s*\(.*?\)\s*/g, " ").trim();
-  const m = stripped.match(/^(.+?)\s+(\d+\s*[xX×]\s*[\d\s\-]+(?:sec|min|each side|reps?)?)\s*$/i);
+  const m = stripped.match(/^(.+?)\s+(\d+\s*[xX×]\s*[\d\s\-]+(?:sec|min|each leg|each side|reps?)?)\s*$/i);
   if (!m) return null;
   const name = m[1].trim();
   const sets = m[2].trim();
@@ -96,7 +96,22 @@ function renderPlan(plan, activities) {
     new Date(plan.generated_at).toLocaleDateString("en-AU");
 
   const csEl = $("coach-says");
-  if (csEl) csEl.textContent = plan.coach_says || "";
+  if (csEl && plan.coach_says) {
+    csEl.textContent = plan.coach_says;
+    // Add read more toggle for long rationale on mobile
+    const words = plan.coach_says.split(" ").length;
+    if (words > 40) {
+      csEl.classList.add("coach-clamped");
+      const toggle = document.createElement("span");
+      toggle.className = "coach-toggle";
+      toggle.textContent = "Read more";
+      toggle.onclick = function() {
+        const expanded = csEl.classList.toggle("coach-expanded");
+        toggle.textContent = expanded ? "Show less" : "Read more";
+      };
+      csEl.parentNode.insertBefore(toggle, csEl.nextSibling);
+    }
+  }
 
   const weekStart = new Date(plan.week_start + "T00:00");
   const todayStr = new Date().toDateString();

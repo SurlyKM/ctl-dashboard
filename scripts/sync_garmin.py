@@ -169,7 +169,32 @@ def fetch_training_status(client: Garmin) -> dict:
         out["load_anaerobic_target"] = [b.get("monthlyLoadAnaerobicTargetMin"), b.get("monthlyLoadAnaerobicTargetMax")]
         out["load_balance_feedback"] = b.get("trainingBalanceFeedbackPhrase")
 
-    print(f"Training status: {out.get('training_status')} | VO2max: {out.get('vo2max_cycling')} | ACWR: {out.get('garmin_acwr_ratio')}")
+    # Training readiness — the most interpretable single recovery signal
+    try:
+        tr_list = client.get_training_readiness(today) or []
+        # Use the most recent entry (first in list)
+        tr = tr_list[0] if tr_list else {}
+        def _tr_feedback(code):
+            m = {"VERY_GOOD": "very good", "GOOD": "good", "MODERATE": "moderate",
+                 "POOR": "poor", "VERY_POOR": "very poor"}
+            return m.get(code, (code or "").lower().replace("_", " "))
+        recovery_min = tr.get("recoveryTime") or 0
+        out["readiness_score"]            = tr.get("score")
+        out["readiness_level"]            = (tr.get("level") or "").lower()
+        out["readiness_feedback"]         = (tr.get("feedbackShort") or "").lower().replace("_", " ")
+        out["readiness_recovery_hours"]   = round(recovery_min / 60) if recovery_min else None
+        out["readiness_hrv_factor"]       = _tr_feedback(tr.get("hrvFactorFeedback"))
+        out["readiness_acwr_factor"]      = _tr_feedback(tr.get("acwrFactorFeedback"))
+        out["readiness_sleep_factor"]     = _tr_feedback(tr.get("sleepScoreFactorFeedback"))
+        out["readiness_sleep_history"]    = _tr_feedback(tr.get("sleepHistoryFactorFeedback"))
+        out["readiness_stress_history"]   = _tr_feedback(tr.get("stressHistoryFactorFeedback"))
+        out["readiness_recovery_factor"]  = _tr_feedback(tr.get("recoveryTimeFactorFeedback"))
+        out["readiness_hrv_weekly_avg"]   = tr.get("hrvWeeklyAverage")
+        print(f"Training readiness: {out.get('readiness_score')} ({out.get('readiness_level')})")
+    except Exception as e:
+        print(f"training_readiness fetch failed: {e}")
+
+    print(f"Training status: {out.get('training_status')} | VO2max: {out.get('vo2max_cycling')}")
     return out
 
 

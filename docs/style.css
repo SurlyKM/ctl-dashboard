@@ -614,3 +614,13 @@ body[data-theme="green"] {
     --today-bg: #262626;
   }
 }
+
+/* Training readiness panel */
+.readiness-wrap { margin-bottom: 2px; }
+.readiness-score-row { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 8px; }
+.readiness-num { font-size: 30px; font-weight: 200; letter-spacing: -0.5px; line-height: 1; }
+.readiness-bar-wrap { flex: 1; }
+.readiness-bar-track { height: 5px; background: var(--line); border-radius: 999px; margin-bottom: 3px; }
+.readiness-bar-fill { height: 5px; border-radius: 999px; }
+.readiness-bar-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--muted); }
+.readiness-feedback { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; line-height: 1.5; }

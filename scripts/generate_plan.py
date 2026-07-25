@@ -400,8 +400,22 @@ def build_summary() -> dict:
             "resting_hr_trend":   _resting_hr_trend(last14),
         },
         "garmin_assessment": {
-            "training_status": _translate_status(garmin_status.get("training_status")),
-            "fitness_trend":   _translate_trend(garmin_status.get("fitness_trend")),
+            "training_status":  _translate_status(garmin_status.get("training_status")),
+            "fitness_trend":    _translate_trend(garmin_status.get("fitness_trend")),
+            "training_readiness": {
+                "score":              garmin_status.get("readiness_score"),
+                "level":              garmin_status.get("readiness_level"),
+                "feedback":           garmin_status.get("readiness_feedback"),
+                "recovery_hours":     garmin_status.get("readiness_recovery_hours"),
+                "factors": {
+                    "hrv":            garmin_status.get("readiness_hrv_factor"),
+                    "acwr":           garmin_status.get("readiness_acwr_factor"),
+                    "stress_history": garmin_status.get("readiness_stress_history"),
+                    "sleep_history":  garmin_status.get("readiness_sleep_history"),
+                    "sleep_tonight":  garmin_status.get("readiness_sleep_factor"),
+                    "recovery_time":  garmin_status.get("readiness_recovery_factor"),
+                },
+            },
             "load_balance": {
                 "aerobic_high": {"actual": garmin_status.get("load_aerobic_high"), "target": garmin_status.get("load_aerobic_high_target")},
                 "aerobic_low":  {"actual": garmin_status.get("load_aerobic_low"),  "target": garmin_status.get("load_aerobic_low_target")},

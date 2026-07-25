@@ -49,23 +49,68 @@ function tsbZone(tsb) {
   return                ["Detraining",  "var(--line)",       "var(--muted)"];
 }
 
+function _factorColor(val) {
+  if (!val) return "var(--muted)";
+  if (val === "very good" || val === "good") return "var(--fitness)";
+  if (val === "moderate") return "var(--fatigue)";
+  return "var(--danger)";
+}
+
 function renderGarminStatus(ts) {
   const el = $("garmin-status");
   if (!el || !ts) return;
+
+  const r = ts.readiness_score != null;
+  const readinessHtml = r ? (function() {
+    const score = ts.readiness_score;
+    const level = ts.readiness_level || "";
+    const feedback = (ts.readiness_feedback || "").replace(/_/g, " ");
+    const hours = ts.readiness_recovery_hours;
+    const levelColors = {
+      low:      ["var(--danger-bg)", "var(--danger)"],
+      moderate: ["#fff4e5",          "var(--fatigue)"],
+      high:     ["var(--fitness-bg)","var(--fitness)"],
+    };
+    const [pillBg, pillFg] = levelColors[level] || ["var(--line)", "var(--muted)"];
+    const factors = [
+      ["HRV",             ts.readiness_hrv_factor],
+      ["Recovery time",   ts.readiness_recovery_factor],
+      ["Sleep last night",ts.readiness_sleep_factor],
+      ["Sleep history",   ts.readiness_sleep_history],
+      ["Stress history",  ts.readiness_stress_history],
+      ["ACWR",            ts.readiness_acwr_factor],
+    ];
+    return "<div class=\"readiness-wrap\">" +
+      "<div class=\"readiness-score-row\">" +
+        "<div><div class=\"label\">Readiness</div><div class=\"readiness-num\">" + score + "</div></div>" +
+        "<div class=\"readiness-bar-wrap\">" +
+          "<div class=\"readiness-bar-track\">" +
+            "<div class=\"readiness-bar-fill\" style=\"width:" + score + "%;background:" + pillFg + ";opacity:0.7\"></div>" +
+          "</div>" +
+          "<div class=\"readiness-bar-labels\"><span>0</span><span>100</span></div>" +
+        "</div>" +
+      "</div>" +
+      "<div class=\"status-pill\" style=\"background:" + pillBg + ";color:" + pillFg + "\">" + level + "</div>" +
+      (feedback ? "<div class=\"readiness-feedback\">" + feedback + (hours ? " · " + hours + " hrs recovery remaining" : "") + "</div>" : "") +
+      "<table class=\"garmin-kv\" style=\"margin-top:10px\">" +
+      factors.map(function(f) {
+        return "<tr><td>" + f[0] + "</td><td style=\"color:" + _factorColor(f[1]) + "\">" + (f[1] || "–") + "</td></tr>";
+      }).join("") +
+      "</table></div>";
+  })() : "";
+
   const key = ts.training_status || "";
-  const [label, bg, fg] = STATUS_LABELS[key] || ["Unknown", "var(--line)", "var(--muted)"];
+  const statusDetail = key.includes("—") ? key.split("—").slice(1).join("—").trim() : "";
   const trendLabel = ts.fitness_trend === 1 ? "declining" : ts.fitness_trend === 2 ? "stable" : "improving";
   const trendColor = ts.fitness_trend === 1 ? "var(--danger)" : ts.fitness_trend === 2 ? "var(--fatigue)" : "var(--fitness)";
-  el.innerHTML =
-    '<div class="status-pill" style="background:' + bg + ';color:' + fg + '">' + label + '</div>' +
-    '<table class="garmin-kv">' +
+
+  el.innerHTML = readinessHtml +
+    (statusDetail ? "<div class=\"readiness-feedback\" style=\"margin-top:" + (r ? "14px" : "0") + ";border-top:" + (r ? "1px solid var(--line)" : "none") + ";padding-top:" + (r ? "10px" : "0") + "\">" + statusDetail + "</div>" : "") +
+    "<table class=\"garmin-kv\" style=\"margin-top:8px\">" +
     "<tr><td>Fitness trend</td><td style=\"color:" + trendColor + "\">" + trendLabel + "</td></tr>" +
-    "<tr><td>ACWR ratio</td><td>" + (ts.acwr_ratio ?? ts.garmin_acwr_ratio ? (ts.acwr_ratio ?? ts.garmin_acwr_ratio).toFixed(2) : "–") +
-      ' <span style="color:var(--fitness);font-size:10px">' + (ts.acwr_status || "") + "</span></td></tr>" +
-    "<tr><td>Acute load</td><td>" + (ts.acute_load ?? ts.garmin_acute_load ?? "–") + "</td></tr>" +
-    "<tr><td>Chronic load</td><td>" + (ts.chronic_load ?? ts.garmin_chronic_load ?? "–") + "</td></tr>" +
     "</table>";
 }
+
 
 function renderLoadBalance(ts) {
   const el = $("load-balance");

@@ -1,22 +1,22 @@
 {
  "week_start": "2026-07-27",
- "coach_says": "TSB is -55.5 and Garmin flags UNPRODUCTIVE with a declining fitness trend, so this week prioritises recovery over everything else, dropping to a single quality block (Tuesday's committed double hard day) with all other sessions easy or full rest. Strength work is trimmed to one lighter session to preserve movement quality without adding fatigue, and the aerobic-high (tempo/threshold) shortage will be addressed once TSB recovers into a sustainable range. Consistency and recovery this week protect long-term progression rather than chasing this week's load targets.",
+ "coach_says": "Garmin flags UNPRODUCTIVE with TSB at -55.5, anaerobic and low-aerobic loads already well above target \u2014 this is a clear signal to cut volume and intensity hard this week. The only quality session is Tuesday's non-negotiable MTB group ride; everything else is deliberately easy, short, or restorative to restore training stress balance. Long ride volume is shifted to Saturday's good weather window at an easy Zone 2 pace, not as an intensity session.",
  "days": [
   {
    "day": "Mon",
-   "sport": "swim",
-   "session": "Structured Recovery Swim",
+   "sport": "yoga",
+   "session": "Recovery Yoga Flow",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "Warmup: 200m easy freestyle\nMain: 4x150m (first 50m easy / next 100m moderate), 20 sec rest\nCooldown: 100m easy\nTotal: ~1000m\nObjective: light aerobic stimulus, no fatigue accumulation ahead of Tuesday's double hard day."
+   "details": "40 min gentle mobility and recovery flow: focus on hips, hamstrings, thoracic spine, and breathing. No cycling today given severe accumulated fatigue (TSB -55.5, Garmin UNPRODUCTIVE). Objective: parasympathetic recovery ahead of Tuesday's committed hard ride."
   },
   {
    "day": "Tue",
    "sport": "mtb",
-   "session": "AM Hills Road Ride + PM Hard MTB Group Ride (committed double hard day)",
-   "duration_min": 110,
+   "session": "AM easy spin + PM committed hard MTB group ride",
+   "duration_min": 90,
    "intensity": "hard",
-   "details": "AM (45-50 min) | Objective: Hill strength/threshold\n10 min Zone 2 warm-up\n5-6 x 3 min Zone 4 hill efforts (3 min Zone 1-2 recovery)\n10 min cool-down\n\nPM (60 min) | Objective: MTB group ride - technical/anaerobic\nHard group pace, varied terrain, surges Zone 4-5\nRide within group dynamics, manage effort where possible\nThis is a non-negotiable committed double hard day - no additional hard work scheduled around it."
+   "details": "AM (before work): 30 min Zone 1 easy spin, legs-only shake-out, no intensity. PM (committed, non-negotiable): Hard MTB group ride ~60 min, high effort technical terrain, Zone 4-5 surges. This is the single quality/hard session for the week \u2014 proceed regardless of fatigue per commitment, but AM kept deliberately minimal to protect recovery."
   },
   {
    "day": "Wed",
@@ -24,23 +24,23 @@
    "session": "Full Rest Day",
    "duration_min": 0,
    "intensity": "easy",
-   "details": "Complete rest - mandatory recovery from Tuesday's double hard day per constraint. Optional light stretching or short walk only if desired, no structured training. Focus on sleep, hydration, and nutrition to support recovery given TSB of -55.5."
+   "details": "Complete rest \u2014 mandatory recovery from Tuesday's hard double session per constraint (never hard/moderate Wednesday). Prioritise sleep, hydration, and nutrition. No structured training."
   },
   {
    "day": "Thu",
    "sport": "gym",
-   "session": "Light Strength Maintenance",
+   "session": "Light/Deload Full Body Strength",
    "duration_min": 45,
    "intensity": "moderate",
-   "details": "Workout A (light load - deload style):\nWarm-up: 5-10 min easy bike + dynamic mobility\n\nRomanian Deadlift 3x6 (light-moderate load, 2-3 reps in reserve)\nReverse Lunge 3x8 each leg\nChest Supported Row 3x10\nDumbbell Bench Press 3x10\nPallof Press 3x10 each side\nDead Bug 2x10 each side\n\nMain lifts: 2 min rest\nAccessories: 60 sec rest\nObjective: maintain strength stimulus and movement quality without adding systemic fatigue."
+   "details": "Workout A (Deload \u2014 reduced load, 3+ reps in reserve on all lifts):\nWarm-up: 5-10 min easy bike + dynamic mobility\n\nRomanian Deadlift 3x6-8 (light-moderate load)\nBulgarian Split Squat 2x8-10\nChest Supported Row 3x8-12\nDumbbell Bench Press 3x8-12\nCopenhagen Plank 2x15-20 sec\nDead Bug 2x8 each side\n\nMain lifts: 2 min rest\nAccessories: 60 sec rest\n\nObjective: maintain strength stimulus and movement quality without adding systemic fatigue."
   },
   {
    "day": "Fri",
-   "sport": "cycling",
-   "session": "Easy Endurance Ride",
-   "duration_min": 75,
+   "sport": "swim",
+   "session": "Structured Recovery Swim",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "75 min | Objective: Aerobic endurance, low fatigue cost\n75 min continuous Zone 1-2, flat/rolling terrain preferred\nNo intervals, conversational pace throughout\nKeep effort restrained given current fatigue status."
+   "details": "Warmup: 200m easy freestyle\nMain: 4x150m (first 50m easy / next 100m moderate), 20 sec rest\nCooldown: 100m easy\nTotal: ~1000m\nObjective: low-impact aerobic recovery; poor weather (drizzle, 41% rain) and high fatigue mean no ride today."
   },
   {
    "day": "Sat",
@@ -48,16 +48,16 @@
    "session": "Long Endurance Ride",
    "duration_min": 150,
    "intensity": "moderate",
-   "details": "150 min | Objective: Aerobic base, weekly long ride\n20 min Zone 2 warm-up\n100 min steady Zone 1-2 (fuel and hydrate consistently, watch for wind ~18.5 km/h)\n30 min Zone 1-2 cool-down\nNo structured intensity - purely aerobic volume, stop early if fatigue signals appear."
+   "details": "150 min | Objective: Aerobic endurance (Zone 2 only)\n20 min Zone 1-2 warm-up\n100 min steady Zone 2, conversational pace, no intervals or surges\n30 min Zone 1 cool-down\nIdeal weather window \u2014 volume prioritised over intensity given current fatigue status; keep power/HR strictly capped in Zone 2."
   },
   {
    "day": "Sun",
-   "sport": "yoga",
-   "session": "Recovery Flow Yoga",
-   "duration_min": 45,
+   "sport": "mtb",
+   "session": "Easy Recovery MTB Spin",
+   "duration_min": 60,
    "intensity": "easy",
-   "details": "45 min gentle flow yoga focused on hip mobility, thoracic rotation, and breathing. Emphasis on relaxation and parasympathetic recovery after Saturday's long ride, closing the week in a low-stress state ahead of next week's reassessment."
+   "details": "60 min easy MTB, Zone 1-2 only, flowy/non-technical trails, no hard efforts. Purely recreational and restorative to close the week; avoid any climbing repeats or hard surges."
   }
  ],
- "generated_at": "2026-07-25T04:45:22.548350+00:00"
+ "generated_at": "2026-07-25T06:07:53.293101+00:00"
 }

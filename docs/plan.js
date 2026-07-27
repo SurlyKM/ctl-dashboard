@@ -129,7 +129,7 @@ function renderPlan(plan, activities) {
   container.innerHTML = plan.days.map((d, i) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + i);
-    const dateStr = date.toISOString().slice(0,10);
+    const dateStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
     const isToday = date.toDateString() === todayStr;
     const isPast = date < new Date() && !isToday;
     const actual_set = doneByDate[dateStr] || new Set();
@@ -185,7 +185,7 @@ function renderCompliance(plan, activities) {
   const rows = plan.days.map((d, i) => {
     const date = new Date(weekStartC);
     date.setDate(weekStartC.getDate() + i);
-    const dateStr = date.toISOString().slice(0,10);
+    const dateStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
     const actual_set = doneByDate[dateStr] || new Set();
     const done = d.sport === "rest"
       ? date < new Date() && (actual_set.size === 0 || [...actual_set].every(s => REST_SUBS_C.has(s)))
@@ -194,7 +194,8 @@ function renderCompliance(plan, activities) {
     const actual = actual_set.size
       ? Array.from(actual_set).map(s => SPORT_LABELS[s]||s).join(", ")
       : "—";
-    const future = date > new Date();
+    const nowDate = new Date(); nowDate.setHours(0,0,0,0);
+    const future = date > nowDate;
     const color = done ? "var(--fitness)" : future ? "var(--muted)" : "var(--fatigue)";
     const status = done ? "done" : future ? "upcoming" : "missed";
     return "<tr><td class='day'>" + d.day + "</td>" +

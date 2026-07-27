@@ -113,9 +113,11 @@ function renderPlan(plan, activities) {
     }
   }
 
-  const weekStart = new Date(plan.week_start + "T00:00");
+  let weekStart = new Date(plan.week_start + "T00:00");
+  if (weekStart.getDay() === 0) weekStart.setDate(weekStart.getDate() + 1);
   const todayStr = new Date().toDateString();
   const todayIdx = todayIndex();
+  const REST_SUBS = new Set(["walk_hike", "yoga"]);
 
   const doneByDate = {};
   activities.forEach(a => {
@@ -131,8 +133,10 @@ function renderPlan(plan, activities) {
     const dateStr = date.toISOString().slice(0,10);
     const isToday = date.toDateString() === todayStr;
     const isPast = date < new Date() && !isToday;
-    const done = doneByDate[dateStr]?.has(d.sport) ||
-      (d.sport === "rest" && isPast && !doneByDate[dateStr]);
+    const actual_set = doneByDate[dateStr] || new Set();
+    const done = d.sport === "rest"
+      ? isPast && (actual_set.size === 0 || [...actual_set].every(s => REST_SUBS.has(s)))
+      : actual_set.has(d.sport);
 
     const [intLabel, intBg, intFg] = INTENSITY_PILL[d.intensity] || INTENSITY_PILL.easy;
     const statusHtml = done
@@ -172,21 +176,25 @@ function renderCompliance(plan, activities) {
     if (el) el.innerHTML = '<span class="muted">No previous plan data</span>';
     return;
   }
-  const weekStart = new Date(plan.week_start + "T00:00");
+  let weekStartC = new Date(plan.week_start + "T00:00");
+  if (weekStartC.getDay() === 0) weekStartC.setDate(weekStartC.getDate() + 1);
   const doneByDate = {};
   activities.forEach(a => {
     if (a.start) (doneByDate[a.start.slice(0,10)] ||= new Set()).add(a.sport);
   });
+  const REST_SUBS_C = new Set(["walk_hike", "yoga"]);
   let matched = 0;
   const rows = plan.days.map((d, i) => {
-    const date = new Date(weekStart);
-    date.setDate(weekStart.getDate() + i);
+    const date = new Date(weekStartC);
+    date.setDate(weekStartC.getDate() + i);
     const dateStr = date.toISOString().slice(0,10);
-    const done = doneByDate[dateStr]?.has(d.sport) ||
-      (d.sport === "rest" && date < new Date() && !doneByDate[dateStr]);
+    const actual_set = doneByDate[dateStr] || new Set();
+    const done = d.sport === "rest"
+      ? date < new Date() && (actual_set.size === 0 || [...actual_set].every(s => REST_SUBS_C.has(s)))
+      : actual_set.has(d.sport);
     if (done) matched++;
-    const actual = doneByDate[dateStr]
-      ? Array.from(doneByDate[dateStr]).map(s => SPORT_LABELS[s]||s).join(", ")
+    const actual = actual_set.size
+      ? Array.from(actual_set).map(s => SPORT_LABELS[s]||s).join(", ")
       : "—";
     const future = date > new Date();
     const color = done ? "var(--fitness)" : future ? "var(--muted)" : "var(--fatigue)";

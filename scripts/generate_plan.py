@@ -14,7 +14,7 @@ import anthropic
 from fetch_weather import get_weather_summary
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-5")
+MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
 
 SYSTEM = """You are an elite endurance performance coach specialising in cycling performance,
 concurrent strength training, recovery management, and exercise science.
@@ -256,11 +256,22 @@ Output only the JSON object.
 """
 
 
+# Activities that count as valid substitutes for rest days
+_REST_SUBSTITUTES = {"walk_hike", "yoga"}
+
 def compliance(plan: dict, activities: list) -> dict:
-    """How did last week's plan compare to what actually happened?"""
+    """How did last week's plan compare to what actually happened?
+
+    week_start in the plan JSON is the Monday of the plan week.
+    Day index 0 = Monday, 1 = Tuesday ... 6 = Sunday.
+    """
     if not plan:
         return {}
+    # week_start should be Monday; if it's Sunday shift forward one day
     week_start = dt.date.fromisoformat(plan["week_start"])
+    if week_start.weekday() == 6:  # Sunday
+        week_start += dt.timedelta(days=1)
+
     done_sports_by_day = {}
     for a in activities:
         if not a.get("start"):
@@ -269,11 +280,20 @@ def compliance(plan: dict, activities: list) -> dict:
         offset = (d - week_start).days
         if 0 <= offset < 7:
             done_sports_by_day.setdefault(offset, set()).add(a.get("sport"))
+
     results = []
     for i, day in enumerate(plan.get("days", [])):
         planned = day.get("sport")
-        actual = sorted(done_sports_by_day.get(i, set()))
-        hit = (planned == "rest" and not actual) or planned in actual
+        actual_set = done_sports_by_day.get(i, set())
+        actual = sorted(actual_set)
+        # Count as done if:
+        # - planned sport was recorded
+        # - rest day with no activity or only gentle substitutes
+        # - any activity on a rest day (athlete chose to do something easy)
+        if planned == "rest":
+            hit = not actual_set or actual_set.issubset(_REST_SUBSTITUTES)
+        else:
+            hit = planned in actual_set
         results.append({"day": day.get("day"), "planned": planned,
                         "actual": actual, "matched": hit})
     matched = sum(1 for r in results if r["matched"])

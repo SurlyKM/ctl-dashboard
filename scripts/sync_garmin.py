@@ -86,8 +86,17 @@ def fetch_activities(client: Garmin) -> list[dict]:
 
 def fetch_daily(client: Garmin, existing: dict) -> dict:
     """Fetch per-day wellness. Only fetches days we don't already have,
-    plus the most recent days (which keep updating during the day)."""
-    today = dt.date.today()
+    plus the most recent days (which keep updating during the day).
+
+    Uses Sydney local time so the correct calendar date is fetched
+    regardless of where GitHub Actions runs (UTC).
+    """
+    import zoneinfo
+    try:
+        sydney = zoneinfo.ZoneInfo("Australia/Sydney")
+        today = dt.datetime.now(sydney).date()
+    except Exception:
+        today = dt.date.today()
     daily = dict(existing)
     for i in range(LOOKBACK_DAYS + 1):
         day = today - dt.timedelta(days=i)
@@ -132,7 +141,12 @@ def fetch_training_status(client: Garmin) -> dict:
     Privacy: strips userId, deviceId, deviceName, imageURL and raw timestamps.
     Only performance and recovery metrics are stored.
     """
-    today = dt.date.today().isoformat()
+    import zoneinfo
+    try:
+        sydney = zoneinfo.ZoneInfo("Australia/Sydney")
+        today = dt.datetime.now(sydney).date().isoformat()
+    except Exception:
+        today = dt.date.today().isoformat()
     try:
         raw = client.get_training_status(today) or {}
     except Exception as e:

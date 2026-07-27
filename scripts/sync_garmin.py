@@ -20,11 +20,17 @@ from garminconnect import Garmin
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
 
 
-def _today_sydney() -> dt.date:
-    """Return today's date in Sydney local time, not UTC."""
+def _today_local() -> dt.date:
+    """Return today's date in the configured local timezone.
+
+    Reads TIMEZONE environment variable (e.g. 'Australia/Sydney').
+    Falls back to UTC if not set or invalid.
+    Set this as a GitHub Actions secret or repo variable.
+    """
+    tz_name = os.environ.get("TIMEZONE", "Australia/Sydney")
     try:
         import zoneinfo
-        return dt.datetime.now(zoneinfo.ZoneInfo("Australia/Sydney")).date()
+        return dt.datetime.now(zoneinfo.ZoneInfo(tz_name)).date()
     except Exception:
         return dt.date.today()
 LOOKBACK_DAYS = 60          # how far back to fetch activities
@@ -84,7 +90,7 @@ def slim_activity(a: dict) -> dict:
 
 
 def fetch_activities(client: Garmin) -> list[dict]:
-    end = _today_sydney()
+    end = _today_local()
     start = end - dt.timedelta(days=LOOKBACK_DAYS)
     raw = client.get_activities_by_date(start.isoformat(), end.isoformat())
     acts = [slim_activity(a) for a in raw]
@@ -96,7 +102,7 @@ def fetch_activities(client: Garmin) -> list[dict]:
 def fetch_daily(client: Garmin, existing: dict) -> dict:
     """Fetch per-day wellness. Only fetches days we don't already have,
     plus the most recent days (which keep updating during the day)."""
-    today = _today_sydney()
+    today = _today_local()
     daily = dict(existing)
     for i in range(LOOKBACK_DAYS + 1):
         day = today - dt.timedelta(days=i)
@@ -141,7 +147,7 @@ def fetch_training_status(client: Garmin) -> dict:
     Privacy: strips userId, deviceId, deviceName, imageURL and raw timestamps.
     Only performance and recovery metrics are stored.
     """
-    today = _today_sydney().isoformat()
+    today = _today_local().isoformat()
     try:
         raw = client.get_training_status(today) or {}
     except Exception as e:

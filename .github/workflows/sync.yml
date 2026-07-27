@@ -29,6 +29,7 @@ jobs:
       - name: Sync from Garmin
         env:
           GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
         run: python scripts/sync_garmin.py
 
       - name: Compute metrics

@@ -1,6 +1,6 @@
 # ctl-dashboard
 
-A personal fitness dashboard that pulls training data automatically and generates a weekly training plan using a AI. Static site hosted on GitHub Pages, no backend required.
+A personal fitness dashboard that pulls training data automatically and generates a weekly training plan using AI. Static site hosted on GitHub Pages, no backend required.
 
 ## What it does
 
@@ -19,7 +19,7 @@ No personally identifying information is stored or displayed. GPS tracks, locati
 
 - Python 3.12+
 - Garmin Connect account
-- Any compatible AI API key
+- Any Anthropic-compatible API key
 - GitHub account (for Actions and Pages)
 
 ## Setup
@@ -53,6 +53,7 @@ Add these in repo Settings → Secrets and variables → Actions:
 | `LOCATION_LON` | Longitude for weather forecast |
 | `DISCORD_WEBHOOK_URL` | Optional — posts weekly plan to a channel |
 | `TRAINER_MODEL` | Optional — override the default model |
+| `TIMEZONE` | Optional — your local timezone e.g. `Europe/London`, `America/New_York` (default: `Australia/Sydney`) |
 
 **4. GitHub Pages**
 
@@ -74,12 +75,12 @@ python -m http.server -d docs 8000
 ## How it works
 
 ```
-Garmin Connect ──(4x daily)──> sync_garmin.py ──> docs/data/*.json
+Garmin Connect ──(few time daily )──> sync_garmin.py ──> docs/data/*.json
                                                   │
                                           compute_metrics.py
                                           (CTL / ATL / TSB)
                                                   │
-Sun 8pm ──> generate_plan.py ──> weather forecast
+Sun 8pm Sydney ──> generate_plan.py ──> weather forecast
                          │            + Garmin readiness
                          │            + athlete profile (private)
                          │                    │

@@ -30,6 +30,7 @@ jobs:
       - name: Fresh sync before planning
         env:
           GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
         run: |
           python scripts/sync_garmin.py
           python scripts/compute_metrics.py

@@ -1511,5 +1511,22 @@
   "aerobic_te": 3.0,
   "load": 129.4,
   "sport": "cycling"
+ },
+ {
+  "id": 23745802709,
+  "type": "hiking",
+  "start": "2026-07-27 14:27:13",
+  "duration_s": 2479.555908203125,
+  "distance_m": 3257.77001953125,
+  "elev_gain_m": 163.0,
+  "avg_hr": 104.0,
+  "max_hr": 148.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 247.0,
+  "training_load": 11.378173828125,
+  "aerobic_te": 0.800000011920929,
+  "load": 11.4,
+  "sport": "walk_hike"
  }
 ]

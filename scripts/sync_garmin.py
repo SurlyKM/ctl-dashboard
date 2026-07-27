@@ -18,6 +18,15 @@ from pathlib import Path
 from garminconnect import Garmin
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
+
+
+def _today_sydney() -> dt.date:
+    """Return today's date in Sydney local time, not UTC."""
+    try:
+        import zoneinfo
+        return dt.datetime.now(zoneinfo.ZoneInfo("Australia/Sydney")).date()
+    except Exception:
+        return dt.date.today()
 LOOKBACK_DAYS = 60          # how far back to fetch activities
 DAILY_REFRESH_DAYS = 2      # always re-fetch the last N days of wellness data
 
@@ -75,7 +84,7 @@ def slim_activity(a: dict) -> dict:
 
 
 def fetch_activities(client: Garmin) -> list[dict]:
-    end = dt.date.today()
+    end = _today_sydney()
     start = end - dt.timedelta(days=LOOKBACK_DAYS)
     raw = client.get_activities_by_date(start.isoformat(), end.isoformat())
     acts = [slim_activity(a) for a in raw]
@@ -86,17 +95,8 @@ def fetch_activities(client: Garmin) -> list[dict]:
 
 def fetch_daily(client: Garmin, existing: dict) -> dict:
     """Fetch per-day wellness. Only fetches days we don't already have,
-    plus the most recent days (which keep updating during the day).
-
-    Uses Sydney local time so the correct calendar date is fetched
-    regardless of where GitHub Actions runs (UTC).
-    """
-    import zoneinfo
-    try:
-        sydney = zoneinfo.ZoneInfo("Australia/Sydney")
-        today = dt.datetime.now(sydney).date()
-    except Exception:
-        today = dt.date.today()
+    plus the most recent days (which keep updating during the day)."""
+    today = _today_sydney()
     daily = dict(existing)
     for i in range(LOOKBACK_DAYS + 1):
         day = today - dt.timedelta(days=i)
@@ -141,12 +141,7 @@ def fetch_training_status(client: Garmin) -> dict:
     Privacy: strips userId, deviceId, deviceName, imageURL and raw timestamps.
     Only performance and recovery metrics are stored.
     """
-    import zoneinfo
-    try:
-        sydney = zoneinfo.ZoneInfo("Australia/Sydney")
-        today = dt.datetime.now(sydney).date().isoformat()
-    except Exception:
-        today = dt.date.today().isoformat()
+    today = _today_sydney().isoformat()
     try:
         raw = client.get_training_status(today) or {}
     except Exception as e:

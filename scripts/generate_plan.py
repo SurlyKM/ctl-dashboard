@@ -374,9 +374,11 @@ def build_summary() -> dict:
     last7  = last14[-7:]
 
     # Current week hours by sport
-    now = dt.datetime.now()
+    import zoneinfo as _zi
+    _tz = _zi.ZoneInfo(os.environ.get("TIMEZONE", "Australia/Sydney"))
+    now = dt.datetime.now(_tz)
     monday = now - dt.timedelta(days=now.weekday())
-    monday = monday.replace(hour=0, minute=0, second=0, microsecond=0)
+    monday = monday.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
     week_hours: dict = {}
     for a in activities:
         if not a.get("start"):
@@ -395,13 +397,13 @@ def build_summary() -> dict:
     compliance_data = None
     if last_plan.get("week_start"):
         week_end = dt.date.fromisoformat(last_plan["week_start"]) + dt.timedelta(days=7)
-        if dt.date.today() >= week_end:
+        if _today_local() >= week_end:
             compliance_data = compliance(last_plan, activities)
 
     cur = metrics.get("current") or {}
 
     summary = {
-        "today": dt.date.today().isoformat(),
+        "today": _today_local().isoformat(),
         "athlete_profile": athlete_profile,
         "load": {
             "ctl": cur.get("ctl"),
@@ -448,7 +450,7 @@ def build_summary() -> dict:
         summary["weather_forecast_7day"] = weather
     return summary
 def next_monday() -> dt.date:
-    today = dt.date.today()
+    today = _today_local()
     days_ahead = (7 - today.weekday()) % 7
     return today + dt.timedelta(days=days_ahead or 7)
 

@@ -51,7 +51,7 @@ function renderStats(metrics, activities, daily, ts) {
   const daysFromMonday = (localDay + 6) % 7;
   const mondayLocal = new Date(localNow);
   mondayLocal.setUTCDate(localNow.getUTCDate() - daysFromMonday);
-  const mondayStr = mondayLocal.toISOString().slice(0, 10);
+  const mondayStr = mondayLocal.getUTCFullYear() + '-' + String(mondayLocal.getUTCMonth()+1).padStart(2,'0') + '-' + String(mondayLocal.getUTCDate()).padStart(2,'0');
   const hrs = activities.filter(a => a.start && a.start.slice(0, 10) >= mondayStr)
     .reduce((t, a) => t + (a.duration_s || 0) / 3600, 0);
   $("week-hours").textContent = hrs.toFixed(1) + " h";
@@ -113,7 +113,8 @@ function buildChart() {
   }
   const metrics = _chartMetrics, plan = _chartPlan;
   const series = metrics.series.slice(-84);
-  const todayIdx = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
+  const _localDay = new Date().getDay();
+  const todayIdx = _localDay === 0 ? 6 : _localDay - 1;
   const todayPlan = plan?.days?.[todayIdx];
   const todayLabel = todayPlan
     ? "Today: " + todayPlan.session + (todayPlan.duration_min ? " · " + todayPlan.duration_min + " min" : "")

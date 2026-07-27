@@ -78,7 +78,12 @@ def main():
         a["sport"] = sport_group(a.get("type"))
         daily_load[day] += load
 
-    today = dt.date.today()
+    import zoneinfo as _zi
+    try:
+        _tz = _zi.ZoneInfo(__import__("os").environ.get("TIMEZONE", "Australia/Sydney"))
+        today = dt.datetime.now(_tz).date()
+    except Exception:
+        today = dt.date.today()
     first = min(daily_load.keys(), default=today.isoformat())
     start = dt.date.fromisoformat(first)
     dates = [(start + dt.timedelta(days=i)).isoformat()

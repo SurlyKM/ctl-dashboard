@@ -43,10 +43,16 @@ function renderStats(metrics, activities, daily, ts) {
     $("ctl-delta").style.color = d < 0 ? css("--fatigue") : css("--fitness");
   }
 
-  const now = new Date(), monday = new Date(now);
-  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-  monday.setHours(0,0,0,0);
-  const hrs = activities.filter(a => a.start && new Date(a.start) >= monday)
+  // Use local date string comparison to avoid UTC timezone shift
+  const nowLocal = new Date();
+  const dayOfWeek = nowLocal.getDay(); // 0=Sun,1=Mon...
+  const daysFromMonday = (dayOfWeek + 6) % 7;
+  const mondayLocal = new Date(nowLocal);
+  mondayLocal.setDate(nowLocal.getDate() - daysFromMonday);
+  mondayLocal.setHours(0, 0, 0, 0);
+  // Compare using local date strings from activity start (already local time from Garmin)
+  const mondayStr = mondayLocal.toISOString().slice(0,10);
+  const hrs = activities.filter(a => a.start && a.start.slice(0,10) >= mondayStr)
     .reduce((t, a) => t + (a.duration_s || 0) / 3600, 0);
   $("week-hours").textContent = hrs.toFixed(1) + " h";
 

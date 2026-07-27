@@ -267,10 +267,7 @@ def compliance(plan: dict, activities: list) -> dict:
     """
     if not plan:
         return {}
-    # week_start should be Monday; if it's Sunday shift forward one day
     week_start = dt.date.fromisoformat(plan["week_start"])
-    if week_start.weekday() == 6:  # Sunday
-        week_start += dt.timedelta(days=1)
 
     done_sports_by_day = {}
     for a in activities:

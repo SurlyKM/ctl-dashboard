@@ -43,10 +43,15 @@ function renderStats(metrics, activities, daily, ts) {
     $("ctl-delta").style.color = d < 0 ? css("--fatigue") : css("--fitness");
   }
 
-  const now = new Date(), monday = new Date(now);
-  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-  monday.setHours(0, 0, 0, 0);
-  const mondayStr = monday.toISOString().slice(0, 10);
+  // Get Monday's date using local timezone offset to avoid UTC rollback
+  const now = new Date();
+  const localOffset = now.getTimezoneOffset() * 60000;
+  const localNow = new Date(now.getTime() - localOffset);
+  const localDay = localNow.getUTCDay(); // 0=Sun,1=Mon...
+  const daysFromMonday = (localDay + 6) % 7;
+  const mondayLocal = new Date(localNow);
+  mondayLocal.setUTCDate(localNow.getUTCDate() - daysFromMonday);
+  const mondayStr = mondayLocal.toISOString().slice(0, 10);
   const hrs = activities.filter(a => a.start && a.start.slice(0, 10) >= mondayStr)
     .reduce((t, a) => t + (a.duration_s || 0) / 3600, 0);
   $("week-hours").textContent = hrs.toFixed(1) + " h";

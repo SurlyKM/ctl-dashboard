@@ -113,8 +113,7 @@ function renderPlan(plan, activities) {
     }
   }
 
-  let weekStart = new Date(plan.week_start + "T00:00");
-  if (weekStart.getDay() === 0) weekStart.setDate(weekStart.getDate() + 1);
+  const weekStart = new Date(plan.week_start + "T00:00");
   const todayStr = new Date().toDateString();
   const todayIdx = todayIndex();
   const REST_SUBS = new Set(["walk_hike", "yoga"]);
@@ -176,8 +175,7 @@ function renderCompliance(plan, activities) {
     if (el) el.innerHTML = '<span class="muted">No previous plan data</span>';
     return;
   }
-  let weekStartC = new Date(plan.week_start + "T00:00");
-  if (weekStartC.getDay() === 0) weekStartC.setDate(weekStartC.getDate() + 1);
+  const weekStartC = new Date(plan.week_start + "T00:00");
   const doneByDate = {};
   activities.forEach(a => {
     if (a.start) (doneByDate[a.start.slice(0,10)] ||= new Set()).add(a.sport);

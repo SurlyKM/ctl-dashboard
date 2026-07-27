@@ -1,22 +1,5 @@
 [
  {
-  "id": 23027750184,
-  "type": "lap_swimming",
-  "start": "2026-05-27 16:03:35",
-  "duration_s": 1241.1510009765625,
-  "distance_m": 1000.0,
-  "elev_gain_m": null,
-  "avg_hr": 139.0,
-  "max_hr": 153.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 288.0,
-  "training_load": 61.819610595703125,
-  "aerobic_te": 2.5,
-  "load": 61.8,
-  "sport": "swim"
- },
- {
   "id": 23041403407,
   "type": "cycling",
   "start": "2026-05-28 08:29:52",

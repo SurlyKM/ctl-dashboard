@@ -660,14 +660,14 @@
   "stress_avg": 30
  },
  "2026-07-29": {
-  "body_battery_high": 56,
+  "body_battery_high": 87,
   "body_battery_low": 41,
-  "hrv_last_night": null,
-  "hrv_status": null,
-  "hrv_weekly_avg": null,
+  "hrv_last_night": 43,
+  "hrv_status": "BALANCED",
+  "hrv_weekly_avg": 45,
   "resting_hr": 52,
-  "sleep_s": null,
-  "sleep_score": null,
-  "stress_avg": 16
+  "sleep_s": 25800,
+  "sleep_score": 78,
+  "stress_avg": 14
  }
 }

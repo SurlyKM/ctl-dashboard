@@ -661,13 +661,13 @@
  },
  "2026-07-28": {
   "body_battery_high": 100,
-  "body_battery_low": 65,
+  "body_battery_low": 38,
   "hrv_last_night": 56,
   "hrv_status": "BALANCED",
   "hrv_weekly_avg": 45,
   "resting_hr": 49,
   "sleep_s": 28860,
   "sleep_score": 91,
-  "stress_avg": 24
+  "stress_avg": 32
  }
 }

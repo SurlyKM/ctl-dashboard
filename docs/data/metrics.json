@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-29T16:25:08.275692+00:00",
+ "generated_at": "2026-07-29T20:14:49.924048+00:00",
  "current": {
   "date": "2026-07-30",
   "load": 0.0,
@@ -515,6 +515,6 @@
  ],
  "reference": {
   "max_hr_observed": 204.0,
-  "resting_hr_avg": 50.4
+  "resting_hr_avg": 50.3
  }
 }

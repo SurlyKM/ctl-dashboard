@@ -2,8 +2,8 @@ name: Sync Garmin data
 
 on:
   schedule:
-    - cron: "0 1,5,9,15,20 * * *"
-      timezone: "Australia/Sydney"
+    - cron: "30 5,7,9,13,17,20 * * *"
+  timezone: "Australia/Sydney"
   workflow_dispatch: {}
 
 permissions:

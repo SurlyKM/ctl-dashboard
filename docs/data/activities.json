@@ -1562,5 +1562,22 @@
   "aerobic_te": 0.0,
   "load": 1.2,
   "sport": "cycling"
+ },
+ {
+  "id": 23786499998,
+  "type": "cycling",
+  "start": "2026-07-30 16:45:07",
+  "duration_s": 3775.593994140625,
+  "distance_m": 7406.0400390625,
+  "elev_gain_m": 105.0,
+  "avg_hr": 87.0,
+  "max_hr": 144.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 251.0,
+  "training_load": 4.53643798828125,
+  "aerobic_te": 0.30000001192092896,
+  "load": 4.5,
+  "sport": "cycling"
  }
 ]

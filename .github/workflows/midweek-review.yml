@@ -1,0 +1,58 @@
+name: Mid-week plan review
+
+on:
+  schedule:
+    # Wednesday 8pm AEST — after the day's training is synced
+    - cron: "0 10 * * 3"
+      timezone: "Australia/Sydney"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fresh sync before review
+        env:
+          GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
+        run: |
+          python scripts/sync_garmin.py
+          python scripts/compute_metrics.py
+
+      - name: Run mid-week review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ATHLETE_PROFILE_PRIVATE: ${{ secrets.ATHLETE_PROFILE_PRIVATE }}
+          LOCATION_LAT: ${{ secrets.LOCATION_LAT }}
+          LOCATION_LON: ${{ secrets.LOCATION_LON }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
+        run: python scripts/midweek_review.py
+
+      - name: Commit revised plan
+        run: |
+          git config user.name "fitness-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git stash
+          git pull --rebase
+          git stash pop 2>/dev/null || true
+          git add docs/data/
+          git diff --cached --quiet || git commit -m "midweek review $(date -u +%F)"
+          git push

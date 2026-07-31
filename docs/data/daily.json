@@ -660,7 +660,7 @@
   "stress_avg": 28
  },
  "2026-07-31": {
-  "body_battery_high": 91,
+  "body_battery_high": 92,
   "body_battery_low": 48,
   "hrv_last_night": 42,
   "hrv_status": "BALANCED",

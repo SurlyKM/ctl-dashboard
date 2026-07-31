@@ -4,3 +4,4 @@ __pycache__/
 garmin_token_b64.txt
 *_garmin_token.txt
 .DS_Store
+.vscode

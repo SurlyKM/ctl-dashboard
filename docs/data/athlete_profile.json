@@ -5,17 +5,11 @@
   "gym_access": "Full commercial gym",
   "bike_types": ["Road bike", "MTB", "Indoor trainer / Zwift"],
   "pool_access": true,
-  "gym_days_per_week": "2-3",
-  "ride_days_per_week": "6-7",
-  "session_max_min": "45-50 min",
-  "activities": ["road cycling", "mtb", "indoor cycling", "swimming", "gym", "yoga", "hiking"],
   "preferences": [
     "Prefers MTB after work when weather allows",
     "Longer rides available on Fridays and weekends",
     "Swims at lunch, target ~1km with structured sets",
     "Yoga is a valid recovery or rest-day substitute",
     "Likes variety across the week"
-  ],
-  "swim_target_meters": "1000",
-  "swim_notes": "Structured sets preferred, not continuous laps"
+  ]
 }

@@ -1,63 +1,67 @@
 {
- "week_start": "2026-07-27",
- "coach_says": "Garmin shows UNPRODUCTIVE status with TSB at -54.8 and low readiness (41), so this week is built almost entirely around recovery, with Tuesday's non-negotiable hard AM hills + PM MTB group ride serving as the week's single quality/hard block. Everything else is easy Zone 1-2 endurance, one light recovery-focused gym session, an easy technique swim, and yoga to help restore balance without adding further fatigue. Weather-friendly Thursday and Sunday carry the aerobic volume, while Monday, Wednesday and Saturday are protected as true recovery days.",
+ "week_start": "2026-08-03",
+ "recovery_state": "Fatigued",
+ "training_phase": "Base",
+ "weekly_objective": "Recover and absorb recent training while honoring the committed high-intensity Tuesday sessions.",
+ "quality_sessions": 1,
+ "coach_says": "TSB is deeply negative (-34.5) even though readiness and sleep look good, so this week is built to let you absorb fatigue around the one non-negotiable hard day. Tuesday's double (hills AM, hard MTB PM) is your only quality block \u2014 everything else is easy spinning, aerobic endurance, and light strength work. Watch recovery_time (currently 'moderate') and HRV trend after Tuesday; if either drops, be ready to shorten Friday/Saturday rides further.",
  "days": [
   {
    "day": "Mon",
-   "sport": "rest",
-   "session": "Full Rest Day",
-   "duration_min": 0,
+   "sport": "yoga",
+   "session": "Recovery Yoga",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "Full rest day to prioritise recovery given UNPRODUCTIVE Garmin status, TSB -54.8, and low training readiness (41). Optional light stretching or a short walk only if desired - no structured training."
+   "details": "45 min gentle flow focused on hips, hamstrings, thoracic spine and lower back. Slow, breath-led pace, no strain. Purpose: prime the body for tomorrow's big double session, not to add load. Weather is windy/overcast with rain risk, so keep this indoors."
   },
   {
    "day": "Tue",
    "sport": "cycling",
-   "session": "AM Hills Threshold Ride + PM Committed Hard MTB Group Ride",
-   "duration_min": 135,
+   "session": "AM Hills Ride + PM Hard MTB Group Ride",
+   "duration_min": 165,
    "intensity": "hard",
-   "details": "AM (before work, ~60 min) | Objective: Threshold/hill strength\n10 min Zone 2 warm-up\n5-6 x 3 min Zone 4 hill repeats (3 min easy spin recovery)\n10 min cool-down\n\nPM (after work, ~75 min) | Objective: Committed hard MTB group ride (non-negotiable)\nGroup ride at race-pace intensity over technical terrain. Treat as the week's key hard/anaerobic session - this is Tuesday's designated double hard day per athlete commitment, regardless of recovery status."
+   "details": "AM - Hills Road Ride: 75 min | Zone 4 threshold hill work | 5-6 x 5 min hill climbs at threshold effort (RPE 7-8), easy spin-down recovery between efforts, 15 min easy warm-up/cool-down. Clear skies - ride outdoor.\n\nPM - Hard MTB Group Ride: 90 min | Committed, non-negotiable group pace | Technical trail terrain with repeated high-intensity surges (RPE 7-9), treat as your anaerobic/VO2 stimulus for the week. Fuel and hydrate well between AM and PM sessions given the size of this day."
   },
   {
    "day": "Wed",
-   "sport": "swim",
-   "session": "Easy Recovery Swim",
+   "sport": "cycling",
+   "session": "Easy Recovery Spin",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "Lunch swim (~40 min) | Objective: Active recovery, technique focus, no hard or moderate effort per Wednesday constraint\nWarm-up: 200m easy freestyle\nMain: 4 x 100m easy technique-focused swim, 30 sec rest\nCooldown: 200m easy\nTotal: ~1000m, keep effort low throughout."
+   "details": "40 min | Zone 1-2, flat terrain, fully conversational pace | No intervals, no structure \u2014 the goal is blood flow and leg turnover to flush yesterday's double session. Clear skies, ride outdoor. Mandatory easy day \u2014 do not push pace regardless of how legs feel."
   },
   {
    "day": "Thu",
-   "sport": "cycling",
-   "session": "Easy Endurance Ride + Light Recovery-Week Gym",
-   "duration_min": 95,
-   "intensity": "easy",
-   "details": "AM ride (before work, ~50 min) | Objective: Aerobic endurance, best weather day of the week\n10 min Zone 1 warm-up\n30 min Zone 2 steady\n10 min Zone 1 cool-down\n\nLunch gym (~45 min) - Workout A (light-moderate load, 2+ RIR, recovery week - not heavy):\nWarm-up: 5-10 min easy bike + dynamic mobility\nRomanian Deadlift 3x6\nBulgarian Split Squat 3x8\nChest Supported Row 3x10\nDumbbell Bench Press 3x10\nCopenhagen Plank 3x20 sec\nDead Bug 3x8 each side\nMain lifts: 2 min rest; Accessories: 60-90 sec rest. Separate from AM ride by 3+ hours."
+   "sport": "gym",
+   "session": "Workout A - Strength (light)",
+   "duration_min": 45,
+   "intensity": "moderate",
+   "details": "Workout A:\nWarm-up: 5 min general warm-up, mobility work for hips and shoulders\nGoblet Squat 3 x 10 (light-moderate load)\nBulgarian Split Squat 3 x 8 each leg\nLat Pulldown 3 x 10-12\nPlank 3 x 45sec\nStanding Calf Raise 3 x 12 each side\nRest: 60 sec between sets"
   },
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Indoor Trainer Endurance Ride",
-   "duration_min": 90,
+   "session": "Endurance Ride",
+   "duration_min": 100,
    "intensity": "easy",
-   "details": "90 min | Objective: Aerobic endurance (indoor trainer due to forecast drizzle)\n15 min Zone 2 warm-up\n60 min Zone 2 steady endurance\n15 min Zone 1 cool-down"
+   "details": "100 min | Zone 2 steady aerobic endurance | Rolling terrain, RPE 4-5, no intervals \u2014 just smooth, sustained aerobic riding. Overcast and dry with light winds, good outdoor window. Fuel every 45 min to build aerobic durability without digging into fatigue."
   },
   {
    "day": "Sat",
-   "sport": "yoga",
-   "session": "Recovery Yoga Flow",
-   "duration_min": 45,
+   "sport": "cycling",
+   "session": "Long Endurance Ride",
+   "duration_min": 150,
    "intensity": "easy",
-   "details": "45 min gentle yoga flow focused on hip and thoracic mobility plus recovery breathing. Active recovery day given weather and accumulated weekly fatigue; no cycling scheduled."
+   "details": "150 min | Zone 2 long ride, weekend | Steady, conversational pace throughout (RPE 4-5), no hard efforts. Overcast, dry, lighter winds \u2014 good conditions outdoor. Practice race-day nutrition/hydration pacing. This is aerobic volume, not intensity \u2014 resist the urge to push climbs hard."
   },
   {
    "day": "Sun",
-   "sport": "cycling",
-   "session": "Long Endurance Ride",
-   "duration_min": 120,
-   "intensity": "easy",
-   "details": "120 min | Objective: Long aerobic endurance ride, best weather day, moderate volume given overall fatigue\n20 min Zone 2 warm-up\n80 min Zone 2 steady\n20 min Zone 1 cool-down"
+   "sport": "gym",
+   "session": "Workout B - Strength (light)",
+   "duration_min": 45,
+   "intensity": "moderate",
+   "details": "Workout B:\nWarm-up: 5 min general warm-up, dynamic mobility\nDeadlift 3 x 8 (light-moderate load)\nWalking Lunge 3 x 10 each leg\nSeated Cable Row 3 x 10-12\nSide Plank 3 x 30sec each side\nHip Thrust 3 x 12 (light load)\nRest: 60 sec between sets"
   }
  ],
- "generated_at": "2026-07-26T11:24:31.653483+00:00"
+ "generated_at": "2026-08-02T09:48:02.497601+00:00"
 }

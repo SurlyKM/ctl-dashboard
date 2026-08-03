@@ -1545,5 +1545,39 @@
   "aerobic_te": 2.4000000953674316,
   "load": 75.2,
   "sport": "mtb"
+ },
+ {
+  "id": 23832123761,
+  "type": "hiking",
+  "start": "2026-08-03 16:01:40",
+  "duration_s": 2461.489990234375,
+  "distance_m": 3345.780029296875,
+  "elev_gain_m": 130.0,
+  "avg_hr": 111.0,
+  "max_hr": 162.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 259.0,
+  "training_load": 14.968032836914062,
+  "aerobic_te": 1.100000023841858,
+  "load": 15.0,
+  "sport": "walk_hike"
+ },
+ {
+  "id": 23833401254,
+  "type": "yoga",
+  "start": "2026-08-03 17:53:55",
+  "duration_s": 5228.82177734375,
+  "distance_m": null,
+  "elev_gain_m": null,
+  "avg_hr": 75.0,
+  "max_hr": 127.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 211.0,
+  "training_load": 2.7933197021484375,
+  "aerobic_te": 0.20000000298023224,
+  "load": 2.8,
+  "sport": "yoga"
  }
 ]

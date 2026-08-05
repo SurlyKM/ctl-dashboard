@@ -1,22 +1,5 @@
 [
  {
-  "id": 23145665140,
-  "type": "mountain_biking",
-  "start": "2026-06-06 10:01:06",
-  "duration_s": 4959.27490234375,
-  "distance_m": 20542.4609375,
-  "elev_gain_m": 650.0,
-  "avg_hr": 120.0,
-  "max_hr": 177.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 651.0,
-  "training_load": 96.66818237304688,
-  "aerobic_te": 2.299999952316284,
-  "load": 96.7,
-  "sport": "mtb"
- },
- {
   "id": 23158818690,
   "type": "gravel_cycling",
   "start": "2026-06-07 16:31:55",

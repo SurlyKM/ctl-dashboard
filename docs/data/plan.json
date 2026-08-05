@@ -1,10 +1,11 @@
 {
  "week_start": "2026-08-03",
- "recovery_state": "Fatigued",
- "training_phase": "Base",
- "weekly_objective": "Recover and absorb recent training while honoring the committed high-intensity Tuesday sessions.",
+ "recovery_state": "Managing Fatigue",
+ "training_phase": "Build",
+ "weekly_objective": "Protect recovery through the back half of the week by trimming aerobic volume slightly while avoiding any new intensity, given declining readiness on top of already-deep chronic fatigue.",
  "quality_sessions": 1,
- "coach_says": "TSB is deeply negative (-34.5) even though readiness and sleep look good, so this week is built to let you absorb fatigue around the one non-negotiable hard day. Tuesday's double (hills AM, hard MTB PM) is your only quality block \u2014 everything else is easy spinning, aerobic endurance, and light strength work. Watch recovery_time (currently 'moderate') and HRV trend after Tuesday; if either drops, be ready to shorten Friday/Saturday rides further.",
+ "coach_says": "Your TSB barely moved but readiness dropped 16 points \u2014 that's your body flagging that Tuesday's double session hasn't been fully absorbed yet, even though HRV and sleep still look decent. We're trimming Friday and Saturday's ride durations to take some load off while keeping the weekend long ride intact rather than pulling it entirely, and leaving both gym sessions light as originally planned.",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -41,27 +42,28 @@
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Endurance Ride",
-   "duration_min": 100,
+   "session": "Shortened Endurance Ride",
+   "duration_min": 75,
    "intensity": "easy",
-   "details": "100 min | Zone 2 steady aerobic endurance | Rolling terrain, RPE 4-5, no intervals \u2014 just smooth, sustained aerobic riding. Overcast and dry with light winds, good outdoor window. Fuel every 45 min to build aerobic durability without digging into fatigue."
+   "details": "75 min | Zone 2 steady aerobic endurance | Rolling terrain, RPE 4-5, no intervals \u2014 smooth, sustained aerobic riding only. Duration trimmed from original plan given lower readiness this week; ideal cool, dry conditions with light winds, good outdoor window. Fuel every 45 min."
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Long Endurance Ride",
-   "duration_min": 150,
+   "session": "Shortened Long Endurance Ride",
+   "duration_min": 115,
    "intensity": "easy",
-   "details": "150 min | Zone 2 long ride, weekend | Steady, conversational pace throughout (RPE 4-5), no hard efforts. Overcast, dry, lighter winds \u2014 good conditions outdoor. Practice race-day nutrition/hydration pacing. This is aerobic volume, not intensity \u2014 resist the urge to push climbs hard."
+   "details": "115 min | Zone 2 long ride, weekend | Steady, conversational pace throughout (RPE 4-5), no hard efforts. Trimmed from 150 min to protect recovery while still delivering the weekend aerobic stimulus. Dry, light winds (~10 km/h) \u2014 good outdoor conditions. Practice race-day nutrition/hydration pacing; resist pushing climbs hard."
   },
   {
    "day": "Sun",
    "sport": "gym",
    "session": "Workout B - Strength (light)",
-   "duration_min": 45,
+   "duration_min": 40,
    "intensity": "moderate",
    "details": "Workout B:\nWarm-up: 5 min general warm-up, dynamic mobility\nDeadlift 3 x 8 (light-moderate load)\nWalking Lunge 3 x 10 each leg\nSeated Cable Row 3 x 10-12\nSide Plank 3 x 30sec each side\nHip Thrust 3 x 12 (light load)\nRest: 60 sec between sets"
   }
  ],
- "generated_at": "2026-08-02T09:48:02.497601+00:00"
+ "generated_at": "2026-08-05T01:29:00.670609+00:00",
+ "midweek_revision": true
 }

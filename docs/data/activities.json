@@ -1562,5 +1562,22 @@
   "aerobic_te": 2.700000047683716,
   "load": 86.1,
   "sport": "cycling"
+ },
+ {
+  "id": 23857509693,
+  "type": "lap_swimming",
+  "start": "2026-08-05 15:08:53",
+  "duration_s": 1207.02001953125,
+  "distance_m": 1000.0,
+  "elev_gain_m": null,
+  "avg_hr": 136.0,
+  "max_hr": 150.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 264.0,
+  "training_load": 51.78471374511719,
+  "aerobic_te": 2.200000047683716,
+  "load": 51.8,
+  "sport": "swim"
  }
 ]

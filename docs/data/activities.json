@@ -1562,5 +1562,22 @@
   "aerobic_te": 2.200000047683716,
   "load": 51.8,
   "sport": "swim"
+ },
+ {
+  "id": 23869591612,
+  "type": "strength_training",
+  "start": "2026-08-06 12:24:58",
+  "duration_s": 1987.115966796875,
+  "distance_m": 0.0,
+  "elev_gain_m": null,
+  "avg_hr": 106.0,
+  "max_hr": 140.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 197.0,
+  "training_load": 6.3428497314453125,
+  "aerobic_te": 0.4000000059604645,
+  "load": 6.3,
+  "sport": "gym"
  }
 ]

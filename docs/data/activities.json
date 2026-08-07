@@ -1562,5 +1562,22 @@
   "aerobic_te": 0.4000000059604645,
   "load": 6.3,
   "sport": "gym"
+ },
+ {
+  "id": 23882198716,
+  "type": "open_water_swimming",
+  "start": "2026-08-07 12:31:21",
+  "duration_s": 1181.2979736328125,
+  "distance_m": 808.22998046875,
+  "elev_gain_m": null,
+  "avg_hr": 122.0,
+  "max_hr": 151.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 202.0,
+  "training_load": 25.302230834960938,
+  "aerobic_te": 1.600000023841858,
+  "load": 25.3,
+  "sport": "swim"
  }
 ]

@@ -24,60 +24,84 @@ def _today_local() -> dt.date:
         return dt.datetime.now(tz).date()
     except Exception:
         return dt.date.today()
-MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-5")
+MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
 
 SYSTEM = """
 <role>
-You are an elite endurance cycling coach. Your job is to analyse the athlete's current condition, interpret their completed training, and prescribe the most appropriate next training week.
-
-Completed activities represent reality. Previous recommendations represent intention. When they conflict, completed activities always take priority.
+You are an elite cycling and strength coach. Analyse the athlete data provided and write a 7-day training plan grounded in current exercise science evidence.
 </role>
 
-<hard_constraints>
-These are non-negotiable. If any are violated, revise before outputting.
+<priorities>
+1. Safety and recovery — always first
+2. Honour committed_sessions and constraints — non-negotiable
+3. Cycling performance — primary goal
+4. Strength — supports cycling, never competes with it
+5. 80/20 rule — roughly 80% easy, 20% hard across the week
+</priorities>
 
-- Honour every committed_session exactly as specified.
-- Honour every unavailable day exactly as specified.
-- Exactly 7 days in the plan, Monday through Sunday. The days array must have exactly 7 entries.
-- If a day has two sessions (e.g. Tuesday AM + PM), combine them into ONE entry for that day. Describe both sessions in the details field separated by a blank line. Never create two entries for the same day.
-- Maximum 2 gym sessions per week.
-- No hard cycling sessions on consecutive days.
-- No heavy lower-body gym work within 24 hours before a key ride, long ride, or race.
-- Output valid JSON only — no markdown fences, no explanatory text outside the reasoning block.
-</hard_constraints>
+<decision_rules>
+- TSB below -30 OR Garmin UNPRODUCTIVE: one quality session max, reduce total volume
+- AEROBIC_HIGH_SHORTAGE: include at least one tempo or threshold ride this week
+- Excess anaerobic load: reduce high-intensity work
+- Never schedule hard sessions on consecutive days
+- Never schedule heavy lower-body the day before a key ride, race, or long endurance session
+- Use all recovery signals together — readiness score, HRV, resting HR trend, sleep, TSB
+- Weather forecast: use it to place outdoor sessions on dry days and substitute indoor/yoga on wet days
+</decision_rules>
 
-<soft_preferences>
-Apply these unless they conflict with hard constraints or recovery state.
+<planning_approach>
+Before writing the plan, reason through:
+- What is the athlete's primary objective this week given their recovery state?
+- How many quality sessions are appropriate given TSB, readiness, and Garmin status?
+- Which days should be hard, which easy, which rest?
+- How does the weather affect session placement?
+- What does the compliance data (if present) tell you about what is and isn't working?
 
-- Place the long ride on the weekend.
-- Prefer outdoor sessions on dry days, indoor on wet or extreme weather days.
-- Maintain approximately 80/20 intensity split across cycling sessions only (not gym).
-- Alternate gym sessions between Workout A and Workout B.
-</soft_preferences>
+Select sessions, exercises, intervals and distances based on evidence and the athlete's current state — not a fixed template. A deeply fatigued athlete needs different gym work than a fresh one. A cyclist with aerobic high shortage needs different intervals than one who is peaking.
+</planning_approach>
 
-<output_schema>
-Your response must contain exactly two parts in this order:
+<gym_format>
+Label sessions Workout A or Workout B. Alternate across the week. Maximum 2 gym sessions per week.
+Select exercises based on the week's objectives and recovery state:
+- Prioritise posterior chain, single-leg strength, hip stability, and core
+- Deload weeks: reduce load and sets, keep movement quality
+- Normal weeks: follow progressive overload principles
+- Avoid heavy quad-dominant work the day before a key ride
 
-PART 1 — REASONING (plain text, required)
-A brief classification block before the JSON. Use this format exactly:
+Format each exercise as: ExerciseName SetsxReps (or SetsxDuration for holds)
+Include a warm-up line and rest period guidance.
+Add a brief objective note at the end explaining the session focus.
+</gym_format>
 
-RECOVERY_STATE: <Recovered|Managing Fatigue|Fatigued|Highly Fatigued>
-TRAINING_PHASE: <Recovery|Base|Build|Peak|Taper>
-WEEKLY_OBJECTIVE: <one sentence>
-QUALITY_SESSIONS: <integer 0-3>
-KEY_SIGNALS: <2-3 sentences explaining which data points drove these decisions>
-COMPLIANCE_NOTES: <one sentence on last week's adherence patterns, or "No compliance data.">
+<swim_format>
+Structure: Warmup / Main set / Cooldown / Total distance
+Select set structure based on the week's objectives:
+- Recovery weeks: easy continuous or low-intensity drills
+- Base weeks: aerobic sets with moderate rest
+- Quality weeks: threshold or sprint sets
+State distances, effort level, and rest intervals explicitly.
+Target ~1000m unless recovery dictates shorter.
+</swim_format>
 
-PART 2 — PLAN (JSON only, no fences)
-The days array must contain EXACTLY 7 objects, one per day Mon through Sun.
-Double days (e.g. Tuesday AM + PM) are ONE object with both sessions in details.
+<cycling_format>
+State: Total duration | Primary objective | Zone or RPE target
+Structure intervals explicitly with work duration, recovery duration, and number of repeats.
+Select session type based on the athlete's needs:
+- Recovery: Zone 1-2, conversational pace, no intervals
+- Base: Zone 2 steady, long and easy
+- Tempo: Zone 3, sustained effort
+- Threshold: Zone 4, hard but controlled
+- VO2: Zone 5, short hard efforts
+Reference weather where relevant (outdoor vs indoor).
+</cycling_format>
+
+<response_schema>
+Respond ONLY with valid JSON. No markdown fences. No explanatory text.
+Exactly 7 entries Monday through Sunday. One entry per day — if Tuesday has AM and PM sessions, combine them into one entry and describe both in details.
+
 {
   "week_start": "YYYY-MM-DD",
-  "recovery_state": "Recovered|Managing Fatigue|Fatigued|Highly Fatigued",
-  "training_phase": "Recovery|Base|Build|Peak|Taper",
-  "weekly_objective": "one sentence",
-  "quality_sessions": 0,
-  "coach_says": "2-3 sentences: what the week prioritises, what drove the decision, what to watch for",
+  "coach_says": "2-3 sentences explaining the week's primary objective, what the data drove the decision, and what to watch for",
   "days": [
     {
       "day": "Mon",
@@ -85,219 +109,24 @@ Double days (e.g. Tuesday AM + PM) are ONE object with both sessions in details.
       "session": "short title",
       "duration_min": 0,
       "intensity": "easy|moderate|hard",
-      "details": "full session content"
+      "details": "full session content using the formats above"
     }
   ]
 }
-</output_schema>
-
-<recovery_classification>
-Classify recovery state using ALL available signals together.
-
-RECOVERED
-- TSB above 0
-- HRV normal or balanced
-- Resting HR stable or falling
-- Sleep score above 70
-- Readiness score above 70
-- Garmin status: productive, maintaining, or peaking
-
-MANAGING FATIGUE
-- TSB between -10 and 0
-- HRV slightly low or variable
-- Sleep score 60-70
-- Readiness score 55-70
-- Garmin status: maintaining or recovery
-
-FATIGUED
-- TSB between -25 and -10
-- HRV low
-- Resting HR rising
-- Sleep score below 65
-- Readiness score 40-55
-- Garmin status: unproductive or recovery
-
-HIGHLY FATIGUED
-- TSB below -25
-- HRV very low or missing
-- Resting HR significantly elevated
-- Sleep score below 60
-- Readiness score below 40
-- Garmin status: overreaching or unproductive
-
-When signals conflict, apply this tiebreaker in order:
-
-1. If readiness score is above 65 AND HRV is balanced AND sleep score is above 70:
-   upgrade one level from what TSB alone would suggest.
-   Rationale: the body is carrying load but adapting well — Garmin's own readiness
-   is a more current signal than the 7-day EWMA that drives ATL.
-
-2. If readiness score is below 45 OR HRV is low AND resting HR is rising:
-   do not upgrade regardless of TSB.
-
-3. If all signals conflict with no clear majority:
-   use Garmin training status as the tiebreaker.
-
-</recovery_classification>
-
-<planning_algorithm>
-Execute these steps in order. Do not skip any step.
-
-STEP 1 — Classify recovery state using the rules above.
-
-STEP 2 — Classify training phase.
-- Recovery: athlete is highly fatigued or coming off illness or event
-- Base: building aerobic foundation, CTL growing steadily
-- Build: adding intensity on top of aerobic base
-- Peak: high quality, reduced volume approaching event
-- Taper: final week before event, very low volume
-- Default to Base if no event is specified and load is moderate.
-
-STEP 3 — Set weekly objective. Choose one:
-- Recover and absorb recent training
-- Build aerobic base
-- Develop threshold power
-- Develop VO2 capacity
-- Maintain fitness
-- Race preparation
-
-STEP 4 — Determine quality session count.
-- Highly Fatigued: 0-1 quality sessions, reduce total volume 20-40%
-- Fatigued: 1 quality session maximum
-- Managing Fatigue: 1-2 quality sessions
-- Recovered: 2-3 quality sessions depending on phase
-
-A quality session is any of: threshold, VO2, anaerobic, race simulation, heavy lower-body strength.
-An easy session is any of: zone 1-2 ride, recovery ride, recovery swim, yoga, walk.
-
-STEP 5 — Place committed sessions first. These cannot move.
-
-STEP 6 — Place quality cycling sessions.
-- Never on consecutive days.
-- Never after a rest day that followed a very hard block unless recovery is confirmed.
-- Place on days with the best recovery signals where possible.
-
-STEP 7 — Place endurance and easy cycling sessions.
-- Target 75-85% of total cycling time in zone 1-2.
-- Long ride on weekend unless constrained.
-
-STEP 8 — Place gym sessions.
-- Maximum 2 per week.
-- No heavy lower body within 24 hours of a key ride.
-- Adjust volume and load based on recovery state.
-- Each session must include: bilateral lower movement, unilateral lower movement, upper pull, core.
-- Optional: upper push, hip stability, calf work.
-- Label as Workout A or Workout B and alternate.
-
-STEP 9 — Fill remaining days with recovery, rest, swim, or yoga based on available slots.
-
-STEP 10 — Validate before outputting.
-Check every hard constraint. If any fail, revise the plan and recheck before producing output.
-</planning_algorithm>
-
-<intensity_definitions>
-easy
-- Zone 1-2 cycling
-- Recovery ride
-- Recovery swim
-- Yoga
-- Walk or hike
-
-moderate
-- Zone 3 tempo cycling
-- Moderate strength session
-- Aerobic swim sets
-
-hard
-- Zone 4 threshold cycling
-- Zone 5 VO2 cycling
-- Anaerobic efforts
-- Race simulation
-- Heavy lower-body strength session
-</intensity_definitions>
-
-<load_balance_rules>
-If aerobic high shortage: include at least one tempo or threshold session.
-If aerobic low shortage: add zone 1-2 volume, reduce intensity.
-If anaerobic excess: remove VO2 work, replace with zone 2.
-If balanced: progress normally based on recovery state.
-</load_balance_rules>
-
-<weather_rules>
-Dry day: prefer outdoor cycling.
-Rain or high wind: substitute indoor trainer, swim, gym, or yoga.
-Extreme heat: move outdoor ride to early morning or substitute indoor.
-Apply weather to specific days, not generically.
-</weather_rules>
-
-<compliance_rules>
-If compliance was low (under 5/7):
-- Reduce session complexity.
-- Reduce total volume.
-- Identify which sessions were missed and avoid repeating that pattern.
-
-If compliance was high (6-7/7):
-- Continue current structure.
-- Progress one variable only: volume or intensity, not both.
-
-Never judge missed sessions. Treat patterns as information.
-</compliance_rules>
-
-<session_formats>
-
-CYCLING
-State: duration | objective | zone or RPE
-For intervals: work duration x repeats, recovery duration between efforts.
-Reference weather for outdoor vs indoor placement.
-
-Session types:
-- Recovery ride: zone 1-2, no intervals, conversational pace
-- Endurance ride: zone 2, steady, long effort
-- Tempo: zone 3, sustained 20-40 min blocks
-- Threshold: zone 4, 2-4 x 8-20 min efforts
-- VO2: zone 5, 4-8 x 3-5 min efforts
-
-GYM
-Use this exact format — the dashboard parser depends on it.
-
-Header line must be exactly: Workout A: or Workout B:
-Warm-up line must start with: Warm-up:
-Rest line must start with: Rest:
-Each exercise on its own line: ExerciseName 3 x 12
-Optional note in parentheses at end: ExerciseName 3 x 12 (light load)
-Reps can be a range: 3 x 8-12
-Valid suffixes: sec, min, each leg, each side, reps
-
-Format example (use appropriate exercises for the athlete, do not copy these names):
-Workout A:
-Warm-up: 5 min general warm-up, mobility work relevant to session
-[choose a bilateral lower movement] 3 x 8-10
-[choose a unilateral lower movement] 3 x 10 each leg
-[choose an upper pull] 3 x 10-12
-[choose a core exercise] 3 x 45sec
-[optional hip stability or calf] 3 x 12 each side (note if needed)
-Rest: 60 sec between sets
-
-Important formatting rules:
-- Do NOT use square brackets in the actual output — they are placeholders in this example only.
-- Do NOT add any lines after the Rest: line. No notes, no weather commentary, no extra text.
-- The Warm-up: line must contain plain text, not brackets.
-
-Adjust sets and load based on recovery state:
-- Highly Fatigued or Fatigued: 2-3 sets, lighter load, movement quality focus
-- Managing Fatigue: 3 sets, moderate load
-- Recovered: 3-4 sets, progressive load
-
-SWIM
-Structure: Warmup / Main set / Cooldown / Total
-State distances, effort, and rest intervals explicitly.
-Target approximately 1000m unless recovery dictates shorter.
-</session_formats>
+</response_schema>
 """
 
 
 # Activities that count as valid substitutes for rest days
 _REST_SUBSTITUTES = {"walk_hike", "yoga"}
+
+# Rides that satisfy each other. Garmin types MTB and road separately, but a
+# planned ride is a planned ride, so either surface counts for either day.
+# Kept in step with SPORT_EQUIV in docs/plan.js.
+_SPORT_EQUIVALENTS = {
+    "cycling": {"cycling", "mtb"},
+    "mtb":     {"mtb", "cycling"},
+}
 
 def compliance(plan: dict, activities: list) -> dict:
     """How did last week's plan compare to what actually happened?
@@ -324,13 +153,13 @@ def compliance(plan: dict, activities: list) -> dict:
         actual_set = done_sports_by_day.get(i, set())
         actual = sorted(actual_set)
         # Count as done if:
-        # - planned sport was recorded
+        # - planned sport was recorded, or an accepted equivalent (MTB / road)
         # - rest day with no activity or only gentle substitutes
-        # - any activity on a rest day (athlete chose to do something easy)
         if planned == "rest":
             hit = not actual_set or actual_set.issubset(_REST_SUBSTITUTES)
         else:
-            hit = planned in actual_set
+            accepted = _SPORT_EQUIVALENTS.get(planned, {planned})
+            hit = bool(accepted & actual_set)
         results.append({"day": day.get("day"), "planned": planned,
                         "actual": actual, "matched": hit})
     matched = sum(1 for r in results if r["matched"])
@@ -386,25 +215,17 @@ def _translate_feedback(raw: str | None) -> str:
 
 
 def _resting_hr_trend(daily_items: list) -> str:
-    """Derive RHR trend using linear regression over last 14 days.
-
-    Simple least-squares slope is more robust than a half-split average
-    because a single outlier day has less influence on the result.
-    Threshold: slope > +0.3 bpm/day = rising, < -0.3 = falling.
-    """
+    """Derive a simple trend from the last 14 days of resting HR."""
     vals = [v.get("resting_hr") for _, v in daily_items if v.get("resting_hr")]
-    n = len(vals)
-    if n < 4:
+    if len(vals) < 4:
         return "insufficient data"
-    xs = list(range(n))
-    x_mean = sum(xs) / n
-    y_mean = sum(vals) / n
-    num = sum((x - x_mean) * (y - y_mean) for x, y in zip(xs, vals))
-    den = sum((x - x_mean) ** 2 for x in xs)
-    slope = num / den if den else 0.0
-    if slope > 0.3:   return f"rising ({slope:+.2f} bpm/day)"
-    if slope < -0.3:  return f"falling ({slope:+.2f} bpm/day)"
-    return f"stable ({slope:+.2f} bpm/day)"
+    mid = len(vals) // 2
+    first_half = sum(vals[:mid]) / mid
+    second_half = sum(vals[mid:]) / (len(vals) - mid)
+    diff = second_half - first_half
+    if diff > 2:   return "rising"
+    if diff < -2:  return "falling"
+    return "stable"
 
 
 def build_summary() -> dict:
@@ -523,17 +344,7 @@ def _load_balance_with_gap(load_balance: dict) -> dict:
 
 
 def build_user_message(summary: dict, week_start: str) -> str:
-    """Build a structured user message for the LLM.
-
-    Order is deliberate:
-    1. Task — what we need
-    2. Hard constraints — non-negotiable, read first
-    3. Recovery signals — drive the entire week structure
-    4. Training load — context for recovery signals
-    5. Athlete profile — goals, equipment, preferences
-    6. Compliance — what actually happened last week
-    7. Weather — session placement refinement
-    """
+    """Build a structured XML user message for the LLM."""
     p = summary.get("athlete_profile", {})
     load = summary.get("load", {})
     rec = summary.get("recovery", {})
@@ -544,15 +355,18 @@ def build_user_message(summary: dict, week_start: str) -> str:
     comp = summary.get("last_week_compliance")
     weather = summary.get("weather_forecast_7day", "")
 
+    # Constraints — most important, first
     constraints = p.get("constraints", [])
     committed = p.get("committed_sessions", [])
     slots = p.get("available_slots", [])
     prefs = list(dict.fromkeys(p.get("preferences", []) + (p.get("notes") or [])))
     goals = f"{p.get('goal_primary', '')}. Secondary: {p.get('goal_secondary', '')}".strip(". ")
-    lb = _load_balance_with_gap(ga.get("load_balance", {}))
-    training_status = ga.get("training_status", "unknown")
 
-    # Build compliance summary — only days where something actually happened
+    # Load balance with gaps
+    lb = _load_balance_with_gap(ga.get("load_balance", {}))
+    training_status = ga.get("training_status", "unknown")  # already translated by build_summary
+
+    # Only show completed compliance days
     comp_lines = ""
     if comp and comp.get("detail"):
         done = [d for d in comp["detail"] if d.get("actual")]
@@ -562,98 +376,76 @@ def build_user_message(summary: dict, week_start: str) -> str:
                 for d in done
             )
 
-    parts = []
+    parts = [f"<task>Plan the week starting {week_start}.</task>", ""]
 
-    # 1. Task
-    parts.append(f"<task>Plan the week starting {week_start}. Follow the planning algorithm in your instructions exactly.</task>")
+    parts.append("<athlete_profile>")
+    parts.append(f"  <goals>{goals}</goals>")
+    parts.append(f"  <experience>{p.get('experience_years', '')} years</experience>")
+    parts.append(f"  <equipment>Gym: {p.get('gym_access', '')} | Bikes: {', '.join(p.get('bike_types', []))} | Pool: {p.get('pool_access', False)}</equipment>")
     parts.append("")
-
-    # 2. Hard constraints — committed sessions and unavailable days surface immediately
-    parts.append("<hard_constraints>")
     parts.append("  <committed_sessions>")
     for c in committed:
         parts.append(f"    - {c}")
-    if not committed:
-        parts.append("    None specified.")
     parts.append("  </committed_sessions>")
+    parts.append("")
     parts.append("  <constraints>")
-    parts.append("  <!-- scheduling rules, day restrictions, session caps, coaching overrides -->")
     for c in constraints:
         parts.append(f"    - {c}")
-    if not constraints:
-        parts.append("    None specified.")
     parts.append("  </constraints>")
+    parts.append("")
     parts.append("  <available_slots>")
     for s in slots:
         parts.append(f"    - {s}")
-    if not slots:
-        parts.append("    Not specified.")
     parts.append("  </available_slots>")
-    parts.append("</hard_constraints>")
     parts.append("")
-
-    # 3. Recovery signals — most decision-relevant data, read before load history
-    parts.append("<recovery_signals>")
-    parts.append(f"  TSB: {load.get('tsb')}  CTL: {load.get('ctl')}  ATL: {load.get('atl')}")
-    parts.append(f"  Readiness score: {tr.get('score')}  Level: {tr.get('level')}  Recovery hours remaining: {tr.get('recovery_hours')}")
-    parts.append(f"  HRV last night: {rec.get('hrv_last_night')} ms  Status: {rec.get('hrv_status')}")
-    parts.append(f"  Resting HR trend (14 days): {rec.get('resting_hr_trend')}")
-    parts.append(f"  Sleep score 7d avg: {rec.get('sleep_score_7d_avg')}  Sleep hours 7d avg: {rec.get('sleep_hours_7d_avg')}")
-    parts.append(f"  Garmin training status: {training_status}")
-    parts.append(f"  Fitness trend: {ga.get('fitness_trend', 'unknown')}")
-    if factors:
-        parts.append("  Readiness factors:")
-        for fname, fval in factors.items():
-            parts.append(f"    {fname}: {fval}")
-    parts.append("</recovery_signals>")
-    parts.append("")
-
-    # 4. Load balance
-    tsb_val = load.get('tsb') or 0
-    parts.append("<load_balance>")
-    for zone, data in lb.items():
-        if zone == "feedback":
-            parts.append(f"  Feedback: {data}")
-            if tsb_val < -30:
-                parts.append(f"  Override: TSB {tsb_val} is below -30 — load balance feedback is overridden this week by the TSB constraint. Do not add quality sessions to address the shortage.")
-        else:
-            gap_note = "within range" if data['gap'] == 0 else (f"{data['gap']:+d} vs min" if data['gap'] < 0 else f"+{data['gap']} above max")
-            parts.append(f"  {zone}: actual={data['actual']}  target={data['target_min']}-{data['target_max']}  ({gap_note})")
-    parts.append("</load_balance>")
-    parts.append("")
-
-    # 5. Athlete profile
-    parts.append("<athlete_profile>")
-    parts.append(f"  Goals: {goals}")
-    parts.append(f"  Experience: {p.get('experience_years', 'not specified')} years")
-    parts.append(f"  Equipment: Gym={p.get('gym_access', 'unknown')} | Bikes={', '.join(p.get('bike_types', []))} | Pool={p.get('pool_access', False)}")
     if prefs:
-        parts.append("  Preferences:")
+        parts.append("  <preferences>")
         for pr in prefs:
             parts.append(f"    - {pr}")
+        parts.append("  </preferences>")
     parts.append("</athlete_profile>")
     parts.append("")
 
-    # 6. What the athlete actually did this week so far
-    if wh:
-        parts.append('<current_week_activity context="cumulative load context only — do not carry these hours forward into next week planning">')
-        for sport, hrs in wh.items():
-            parts.append(f"  {sport}: {hrs} h")
-        parts.append("</current_week_activity>")
-        parts.append("")
-
-    # 7. Last week compliance
+    parts.append("<training_data>")
+    parts.append(f"  <load tsb='{load.get('tsb')}' ctl='{load.get('ctl')}' atl='{load.get('atl')}' />")
+    parts.append("")
+    parts.append("  <this_week>")
+    for sport, hrs in (wh or {}).items():
+        parts.append(f"    <session sport='{sport}' hours='{hrs}' />")
+    parts.append("  </this_week>")
+    parts.append("")
+    parts.append("  <recovery>")
+    parts.append(f"    <sleep score_7d_avg='{rec.get('sleep_score_7d_avg')}' hours_7d_avg='{rec.get('sleep_hours_7d_avg')}' />")
+    parts.append(f"    <hrv last_night='{rec.get('hrv_last_night')}ms' status='{rec.get('hrv_status')}' />")
+    parts.append(f"    <resting_hr trend='{rec.get('resting_hr_trend')}' />")
+    parts.append("  </recovery>")
+    parts.append("")
+    parts.append("  <garmin_assessment>")
+    parts.append(f"    <training_status>{training_status}</training_status>")
+    parts.append(f"    <fitness_trend>{ga.get('fitness_trend', '')}</fitness_trend>")
+    if tr:
+        parts.append(f"    <readiness score='{tr.get('score')}' level='{tr.get('level')}' recovery_hours='{tr.get('recovery_hours')}'>")
+        for fname, fval in factors.items():
+            parts.append(f"      <factor name='{fname}'>{fval}</factor>")
+        parts.append("    </readiness>")
+    parts.append("    <load_balance>")
+    for zone, data in lb.items():
+        if zone == "feedback":
+            parts.append(f"      <feedback>{data}</feedback>")
+        else:
+            parts.append(f"      <{zone} actual='{data['actual']}' target_min='{data['target_min']}' target_max='{data['target_max']}' gap='{data['gap']}' />")
+    parts.append("    </load_balance>")
+    parts.append("  </garmin_assessment>")
+    parts.append("")
     if comp_lines:
-        parts.append(f"<last_week_compliance sessions_matched='{comp.get('sessions_matched', '')}'>")
+        parts.append(f"  <last_week_compliance sessions='{comp.get('sessions_matched', '')}'>")
         parts.append(comp_lines)
-        parts.append("</last_week_compliance>")
-        parts.append("")
+        parts.append("  </last_week_compliance>")
+    parts.append("</training_data>")
+    parts.append("")
 
-    # 8. Weather — session placement refinement, last
     if weather:
-        parts.append(f"<weather_forecast_7day>")
-        parts.append(f"  {weather}")
-        parts.append(f"</weather_forecast_7day>")
+        parts.append(f"<weather_forecast>{weather}</weather_forecast>")
 
     return "\n".join(parts)
 
@@ -665,58 +457,13 @@ def next_monday() -> dt.date:
 
 
 def main():
-    import sys
-    debug = "--debug" in sys.argv
-
     summary = build_summary()
+    client = anthropic.Anthropic()
     week_start = next_monday().isoformat()
     user_msg = build_user_message(summary, week_start)
-
-    if debug:
-        print("=" * 60)
-        print("KEY METRICS (what the prompt sees)")
-        print("=" * 60)
-        load = summary.get("load", {})
-        rec  = summary.get("recovery", {})
-        ga   = summary.get("garmin_assessment", {})
-        tr   = ga.get("training_readiness", {})
-        print(f"  TSB:              {load.get('tsb')}")
-        print(f"  CTL:              {load.get('ctl')}")
-        print(f"  ATL:              {load.get('atl')}")
-        print(f"  Readiness score:  {tr.get('score')}  level: {tr.get('level')}")
-        print(f"  HRV last night:   {rec.get('hrv_last_night')} ms  status: {rec.get('hrv_status')}")
-        print(f"  Resting HR trend: {rec.get('resting_hr_trend')}")
-        print(f"  Sleep score 7d:   {rec.get('sleep_score_7d_avg')}")
-        print(f"  Sleep hours 7d:   {rec.get('sleep_hours_7d_avg')}")
-        print(f"  Training status:  {ga.get('training_status')}")
-        print(f"  Fitness trend:    {ga.get('fitness_trend')}")
-        lb = ga.get("load_balance", {})
-        for zone in ("aerobic_high", "aerobic_low", "anaerobic"):
-            z = lb.get(zone, {})
-            print(f"  {zone}: actual={z.get('actual')}  target={z.get('target')}")
-        print(f"  Load feedback:    {lb.get('feedback')}")
-        comp = summary.get("last_week_compliance")
-        if comp:
-            print(f"  Compliance:       {comp.get('sessions_matched')}")
-        print()
-        print("=" * 60)
-        print("FULL USER MESSAGE")
-        print("=" * 60)
-        print(user_msg)
-        print()
-        print("=" * 60)
-        print("SYSTEM PROMPT")
-        print("=" * 60)
-        print(SYSTEM)
-        print(f"\nApprox system tokens: {len(SYSTEM) // 4}")
-        print(f"Approx user tokens:   {len(user_msg) // 4}")
-        print(f"Total approx tokens:  {(len(SYSTEM) + len(user_msg)) // 4}")
-        return
-
-    client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
-        max_tokens=16000,
+        max_tokens=8000,
         system=SYSTEM,
         messages=[{"role": "user", "content": user_msg}],
     )
@@ -726,22 +473,7 @@ def main():
         print(f"Model returned empty response. Stop reason: {msg.stop_reason}")
         print(f"Content blocks: {msg.content}")
         raise ValueError("Empty response from model")
-
-    # Split reasoning block from JSON.
-    # The reasoning block precedes the first '{' character.
-    json_start = text.find("{")
-    if json_start == -1:
-        raise ValueError("No JSON object found in model response")
-    reasoning = text[:json_start].strip()
-    json_text = text[json_start:].strip()
-
-    # Log reasoning so plan quality is debuggable
-    if reasoning:
-        print("--- Coach reasoning ---")
-        print(reasoning)
-        print("--- End reasoning ---")
-
-    plan = json.loads(json_text)
+    plan = json.loads(text)
     plan["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     (DATA_DIR / "plan.json").write_text(json.dumps(plan, indent=1))
     print(f"Plan written for week starting {plan.get('week_start')}")

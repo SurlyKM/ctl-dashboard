@@ -78,9 +78,32 @@ function parseDetails(details, sport) {
   return '<p class="detail-prose">' + details.replace(/\n\n/g, '</p><p class="detail-prose">').replace(/\n/g, "<br>") + '</p>';
 }
 
-function todayIndex() {
-  const d = new Date().getDay();
-  return d === 0 ? 6 : d - 1;
+// Activities that count as a legitimate rest day
+const REST_SUBS = new Set(["walk_hike", "yoga"]);
+
+// Rides that satisfy each other. Garmin types MTB and road separately, but a
+// planned ride is a planned ride, so either surface counts for either day.
+const SPORT_EQUIV = {
+  cycling: ["cycling", "mtb"],
+  mtb:     ["mtb", "cycling"],
+};
+
+function sessionDone(planned, actualSet, isPast) {
+  if (planned === "rest") {
+    return isPast && (actualSet.size === 0 || [...actualSet].every(s => REST_SUBS.has(s)));
+  }
+  return (SPORT_EQUIV[planned] || [planned]).some(s => actualSet.has(s));
+}
+
+function startOfToday() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function dateKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') +
+    '-' + String(d.getDate()).padStart(2, '0');
 }
 
 function renderPlan(plan, activities) {
@@ -115,8 +138,6 @@ function renderPlan(plan, activities) {
 
   const weekStart = new Date(plan.week_start + "T00:00");
   const todayStr = new Date().toDateString();
-  const todayIdx = todayIndex();
-  const REST_SUBS = new Set(["walk_hike", "yoga"]);
 
   const doneByDate = {};
   activities.forEach(a => {
@@ -129,13 +150,11 @@ function renderPlan(plan, activities) {
   container.innerHTML = plan.days.map((d, i) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + i);
-    const dateStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
+    const dateStr = dateKey(date);
     const isToday = date.toDateString() === todayStr;
     const isPast = date < new Date() && !isToday;
     const actual_set = doneByDate[dateStr] || new Set();
-    const done = d.sport === "rest"
-      ? isPast && (actual_set.size === 0 || [...actual_set].every(s => REST_SUBS.has(s)))
-      : actual_set.has(d.sport);
+    const done = sessionDone(d.sport, actual_set, isPast);
 
     const [intLabel, intBg, intFg] = INTENSITY_PILL[d.intensity] || INTENSITY_PILL.easy;
     const statusHtml = done
@@ -172,7 +191,7 @@ function toggleDay(header) {
 function renderCompliance(plan, activities) {
   const el = $("compliance");
   if (!el || !plan?.days) {
-    if (el) el.innerHTML = '<span class="muted">No previous plan data</span>';
+    if (el) el.innerHTML = '<span class="muted">No plan data</span>';
     return;
   }
   const weekStartC = new Date(plan.week_start + "T00:00");
@@ -180,35 +199,51 @@ function renderCompliance(plan, activities) {
   activities.forEach(a => {
     if (a.start) (doneByDate[a.start.slice(0,10)] ||= new Set()).add(a.sport);
   });
-  const REST_SUBS_C = new Set(["walk_hike", "yoga"]);
-  let matched = 0;
+
+  const today0 = startOfToday();
+  let matched = 0;      // sessions banked across the whole week
+  let elapsed = 0;      // days that have had a fair chance to happen
+  let matchedElapsed = 0;
+
   const rows = plan.days.map((d, i) => {
     const date = new Date(weekStartC);
     date.setDate(weekStartC.getDate() + i);
-    const dateStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
+    const dateStr = dateKey(date);
+    const isToday = date.getTime() === today0.getTime();
+    const isPast = date < today0;
+    const future = date > today0;
     const actual_set = doneByDate[dateStr] || new Set();
-    const done = d.sport === "rest"
-      ? date < new Date() && (actual_set.size === 0 || [...actual_set].every(s => REST_SUBS_C.has(s)))
-      : actual_set.has(d.sport);
+    const done = sessionDone(d.sport, actual_set, isPast);
+
     if (done) matched++;
+    // Today only counts against you once it is done, not while it is pending
+    if (isPast || (isToday && done)) {
+      elapsed++;
+      if (done) matchedElapsed++;
+    }
+
     const actual = actual_set.size
       ? Array.from(actual_set).map(s => SPORT_LABELS[s]||s).join(", ")
       : "—";
-    const nowDate = new Date(); nowDate.setHours(0,0,0,0);
-    const future = date > nowDate;
-    const color = done ? "var(--fitness)" : future ? "var(--muted)" : "var(--fatigue)";
-    const status = done ? "done" : future ? "upcoming" : "missed";
+    const color = done ? "var(--fitness)" : future || isToday ? "var(--muted)" : "var(--fatigue)";
+    const status = done ? "done" : future ? "upcoming" : isToday ? "today" : "missed";
     return "<tr><td class='day'>" + d.day + "</td>" +
       "<td style='font-size:12px;color:var(--ink2)'>" + (SPORT_LABELS[d.sport]||d.sport) + "</td>" +
       "<td style='font-size:11px;color:var(--muted)'>" + actual + "</td>" +
       "<td class='status' style='color:" + color + "'>" + status + "</td></tr>";
   });
-  const pct = Math.round((matched / plan.days.length) * 100);
+
+  // Colour the tally against days that have actually passed, not the full week
+  const rate = elapsed ? matchedElapsed / elapsed : null;
+  const tallyColor = rate === null ? "var(--muted)"
+    : rate >= 0.7 ? "var(--fitness)" : "var(--fatigue)";
+
   el.innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">' +
       '<span style="font-size:11px;color:var(--muted)">Week of ' + plan.week_start + '</span>' +
-      '<span style="font-size:11px;font-weight:600;color:' +
-        (pct >= 70 ? "var(--fitness)" : "var(--fatigue)") + '">' + matched + '/7 sessions</span>' +
+      '<span style="font-size:11px;font-weight:600;color:' + tallyColor + '" ' +
+        'title="' + matchedElapsed + ' of ' + elapsed + ' days elapsed">' +
+        matched + '/7 sessions</span>' +
     '</div>' +
     '<table class="kv">' + rows.join("") + '</table>';
 }

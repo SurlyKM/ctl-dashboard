@@ -213,6 +213,29 @@ def fetch_training_status(client: Garmin) -> dict:
     return out
 
 
+VO2_HISTORY_DAYS = 400      # how long to keep VO2 max history
+
+
+def update_vo2_history(status: dict) -> None:
+    """Append today's VO2 max to a rolling history file.
+
+    Garmin only exposes the current value, so history has to be
+    accumulated one sync at a time. Cycling VO2 is preferred, falling
+    back to the generic value, matching what the dashboard displays.
+    """
+    value = status.get("vo2max_cycling") or status.get("vo2max_generic")
+    if not value:
+        return
+    path = DATA_DIR / "vo2_history.json"
+    history = json.loads(path.read_text()) if path.exists() else {}
+    today = _today_local()
+    history[today.isoformat()] = round(float(value), 1)
+    cutoff = (today - dt.timedelta(days=VO2_HISTORY_DAYS)).isoformat()
+    history = {k: v for k, v in history.items() if k >= cutoff}
+    path.write_text(json.dumps(history, indent=1, sort_keys=True))
+    print(f"VO2 history: {len(history)} days stored, today {history[today.isoformat()]}")
+
+
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     client = login()
@@ -227,6 +250,7 @@ def main():
 
     training_status = fetch_training_status(client)
     (DATA_DIR / "training_status.json").write_text(json.dumps(training_status, indent=1))
+    update_vo2_history(training_status)
 
     meta = {"synced_at": dt.datetime.now(dt.timezone.utc).isoformat()}
     (DATA_DIR / "meta.json").write_text(json.dumps(meta))

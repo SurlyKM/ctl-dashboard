@@ -42,6 +42,7 @@ jobs:
           ATHLETE_PROFILE_PRIVATE: ${{ secrets.ATHLETE_PROFILE_PRIVATE }}
           LOCATION_LAT: ${{ secrets.LOCATION_LAT }}
           LOCATION_LON: ${{ secrets.LOCATION_LON }}
+          PLAN_OVERRIDE: ${{ vars.PLAN_OVERRIDE }}
         run: python scripts/generate_plan.py
 
       - name: Commit plan

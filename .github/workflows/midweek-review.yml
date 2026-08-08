@@ -44,6 +44,7 @@ jobs:
           LOCATION_LAT: ${{ secrets.LOCATION_LAT }}
           LOCATION_LON: ${{ secrets.LOCATION_LON }}
           TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
+          PLAN_OVERRIDE: ${{ vars.PLAN_OVERRIDE }}
         run: python scripts/midweek_review.py
 
       - name: Commit revised plan

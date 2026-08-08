@@ -5,6 +5,7 @@ snapshot saved when the plan was generated. If meaningful change has
 occurred, rewrites Thursday-Sunday only. Otherwise exits quietly.
 
 Thresholds for triggering a revision:
+  - A one-off week override was added or changed since Sunday
   - TSB moved more than 15 points in either direction
   - Training readiness score changed more than 15 points
   - Force flag set (FORCE_REVIEW=1 env var, for manual testing)
@@ -46,11 +47,18 @@ def load_sunday_snapshot(plan: dict) -> dict:
     return {}
 
 
-def should_revise(current: dict, snapshot: dict) -> tuple[bool, str]:
+def should_revise(current: dict, snapshot: dict,
+                  overrides: list[str] | None = None) -> tuple[bool, str]:
     """Return (should_revise, reason)."""
     force = os.environ.get("FORCE_REVIEW", "0") == "1"
     if force:
         return True, "forced review"
+
+    # A one-off override set after Sunday is a trigger in its own right.
+    # Comparing against the snapshot means it fires once, not every run.
+    overrides = overrides or []
+    if overrides != (snapshot.get("override") or []):
+        return True, "one-off week override added or changed since the plan was generated"
 
     if not snapshot:
         return False, "no Sunday snapshot to compare against"
@@ -97,6 +105,8 @@ These apply to the revised plan exactly as they do to the original.
 - No hard cycling sessions on consecutive days.
 - No heavy lower-body gym work within 24 hours before a key ride or long ride.
 - Honour all committed_sessions and constraints from the athlete profile.
+- week_override, if present, applies to this week only and outranks committed_sessions
+  and constraints wherever they conflict. Never schedule a session it rules out.
 - Output valid JSON only — no markdown fences, no explanatory text outside the reasoning block.
 </hard_constraints>
 
@@ -141,7 +151,9 @@ If STABLE:
 - Only change session placement if weather has changed significantly.
 
 Always:
-- Respect committed_sessions — these cannot be moved or downgraded.
+- Respect committed_sessions — these cannot be moved or downgraded, unless week_override
+  rules that day or session out, in which case the override wins.
+- If week_override is the reason for this revision, say so in coach_says.
 - Apply the same gym formatting rules as the original plan.
 - Apply weather to specific days.
 </revision_rules>
@@ -163,7 +175,8 @@ Do NOT add any lines after the Rest: line.
 """
 
 
-def build_review_message(current: dict, plan: dict, snapshot: dict, reason: str) -> str:
+def build_review_message(current: dict, plan: dict, snapshot: dict, reason: str,
+                         overrides: list[str] | None = None) -> str:
     """Build a structured user message for the mid-week review.
 
     Uses the same XML structure as generate_plan.py for consistency.
@@ -258,6 +271,13 @@ def build_review_message(current: dict, plan: dict, snapshot: dict, reason: str)
     if not committed:
         parts.append("    None.")
     parts.append("  </committed_sessions>")
+    if overrides:
+        parts.append("  <week_override>")
+        parts.append("    THIS WEEK ONLY. Non-negotiable. Takes precedence over")
+        parts.append("    committed_sessions and constraints where they conflict.")
+        for o in overrides:
+            parts.append(f"    - {o}")
+        parts.append("  </week_override>")
     parts.append("  <constraints>")
     for c in constraints:
         parts.append(f"    - {c}")
@@ -285,7 +305,7 @@ def main():
     import sys
     debug = "--debug" in sys.argv
 
-    from generate_plan import build_summary
+    from generate_plan import build_summary, load_week_override
     current = build_summary()
 
     plan_path = DATA_DIR / "plan.json"
@@ -295,8 +315,9 @@ def main():
 
     plan = json.loads(plan_path.read_text())
     snapshot = load_sunday_snapshot(plan)
+    overrides = load_week_override(plan["week_start"])
 
-    should, reason = should_revise(current, snapshot)
+    should, reason = should_revise(current, snapshot, overrides)
     print(f"Mid-week review: {reason}")
 
     if debug:
@@ -307,12 +328,14 @@ def main():
         load = current.get("load", {})
         tr = current.get("garmin_assessment", {}).get("training_readiness", {})
         print(f"  Current  TSB:      {load.get('tsb')}  readiness: {tr.get('score')}")
+        print(f"  Snapshot override: {snapshot.get('override') or []}")
+        print(f"  Current  override: {overrides}")
         print(f"  Would revise:      {should}")
         print(f"  Reason:            {reason}")
         print("\n" + "=" * 60)
         print("FULL USER MESSAGE")
         print("=" * 60)
-        msg = build_review_message(current, plan, snapshot, reason)
+        msg = build_review_message(current, plan, snapshot, reason, overrides)
         print(msg)
         print("\n" + "=" * 60)
         print("SYSTEM PROMPT")
@@ -328,7 +351,7 @@ def main():
 
     print(f"Revising plan: {reason}")
 
-    msg = build_review_message(current, plan, snapshot, reason)
+    msg = build_review_message(current, plan, snapshot, reason, overrides)
     client = anthropic.Anthropic()
     response = client.messages.create(
         model=MODEL,
@@ -363,6 +386,14 @@ def main():
     revised["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     revised["midweek_revision"] = True
     plan_path.write_text(json.dumps(revised, indent=1))
+
+    # Fold the override into the snapshot so a re-run in the same week does
+    # not revise again for the same reason.
+    snapshot_path = DATA_DIR / "plan_snapshot.json"
+    if snapshot_path.exists():
+        snapshot["override"] = overrides
+        snapshot_path.write_text(json.dumps(snapshot, indent=1))
+
     print(f"Plan revised: {revised.get('coach_says', '')[:120]}")
 
     if os.environ.get("DISCORD_WEBHOOK_URL"):

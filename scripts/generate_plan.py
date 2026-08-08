@@ -33,10 +33,12 @@ You are an elite cycling and strength coach. Analyse the athlete data provided a
 
 <priorities>
 1. Safety and recovery — always first
-2. Honour committed_sessions and constraints — non-negotiable
+2. Honour week_override, committed_sessions and constraints — non-negotiable
 3. Cycling performance — primary goal
 4. Strength — supports cycling, never competes with it
 5. 80/20 rule — roughly 80% easy, 20% hard across the week
+
+week_override, when present, applies to this week only. It describes a temporary change in circumstances such as travel, illness or restricted equipment, and it takes precedence over the athlete's usual pattern wherever the two conflict. Do not schedule a session the override rules out, even if it appears in committed_sessions. Say in coach_says how the override shaped the week.
 </priorities>
 
 <decision_rules>
@@ -115,6 +117,44 @@ Exactly 7 entries Monday through Sunday. One entry per day — if Tuesday has AM
 }
 </response_schema>
 """
+
+
+def load_week_override(week_start: str) -> list[str]:
+    """One-off constraints for a single week, from the PLAN_OVERRIDE variable.
+
+    Value is JSON: {"week": "YYYY-MM-DD", "notes": ["...", "..."]}
+    The week field is the Monday the override applies to. If it does not
+    match the week being planned the override is ignored, so a stale value
+    expires by itself and never has to be deleted.
+    """
+    raw = (os.environ.get("PLAN_OVERRIDE") or "").strip()
+    if not raw:
+        return []
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as e:
+        print(f"Warning: PLAN_OVERRIDE is not valid JSON, ignoring: {e}")
+        return []
+    if not isinstance(data, dict):
+        print("Warning: PLAN_OVERRIDE must be a JSON object, ignoring")
+        return []
+
+    week = str(data.get("week", "")).strip()
+    if week != week_start:
+        print(f"PLAN_OVERRIDE tagged '{week}', planning {week_start}, ignored")
+        return []
+
+    notes = data.get("notes") or []
+    if isinstance(notes, str):
+        notes = [notes]
+    notes = [str(n).strip() for n in notes if str(n).strip()]
+    if notes:
+        print(f"PLAN_OVERRIDE active for {week}: {len(notes)} note(s)")
+        for n in notes:
+            print(f"  - {n}")
+    else:
+        print(f"PLAN_OVERRIDE tagged {week} but has no notes, ignored")
+    return notes
 
 
 # Activities that count as valid substitutes for rest days
@@ -343,7 +383,8 @@ def _load_balance_with_gap(load_balance: dict) -> dict:
     return out
 
 
-def build_user_message(summary: dict, week_start: str) -> str:
+def build_user_message(summary: dict, week_start: str,
+                       overrides: list[str] | None = None) -> str:
     """Build a structured XML user message for the LLM."""
     p = summary.get("athlete_profile", {})
     load = summary.get("load", {})
@@ -388,6 +429,14 @@ def build_user_message(summary: dict, week_start: str) -> str:
         parts.append(f"    - {c}")
     parts.append("  </committed_sessions>")
     parts.append("")
+    if overrides:
+        parts.append("  <week_override>")
+        parts.append("    THIS WEEK ONLY. Non-negotiable. Takes precedence over")
+        parts.append("    committed_sessions and constraints where they conflict.")
+        for o in overrides:
+            parts.append(f"    - {o}")
+        parts.append("  </week_override>")
+        parts.append("")
     parts.append("  <constraints>")
     for c in constraints:
         parts.append(f"    - {c}")
@@ -460,7 +509,8 @@ def main():
     summary = build_summary()
     client = anthropic.Anthropic()
     week_start = next_monday().isoformat()
-    user_msg = build_user_message(summary, week_start)
+    overrides = load_week_override(week_start)
+    user_msg = build_user_message(summary, week_start, overrides)
     msg = client.messages.create(
         model=MODEL,
         max_tokens=8000,
@@ -487,6 +537,7 @@ def main():
         "atl": cur.get("atl"),
         "readiness_score": readiness.get("score"),
         "readiness_level": readiness.get("level"),
+        "override": overrides,
         "generated_at": plan["generated_at"],
     }
     (DATA_DIR / "plan_snapshot.json").write_text(json.dumps(snapshot, indent=1))

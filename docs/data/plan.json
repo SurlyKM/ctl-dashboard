@@ -1,69 +1,63 @@
 {
- "week_start": "2026-08-03",
- "recovery_state": "Managing Fatigue",
- "training_phase": "Build",
- "weekly_objective": "Protect recovery through the back half of the week by trimming aerobic volume slightly while avoiding any new intensity, given declining readiness on top of already-deep chronic fatigue.",
- "quality_sessions": 1,
- "coach_says": "Your TSB barely moved but readiness dropped 16 points \u2014 that's your body flagging that Tuesday's double session hasn't been fully absorbed yet, even though HRV and sleep still look decent. We're trimming Friday and Saturday's ride durations to take some load off while keeping the weekend long ride intact rather than pulling it entirely, and leaving both gym sessions light as originally planned.",
- "revised": true,
+ "week_start": "2026-08-10",
+ "coach_says": "Your TSB of -41.5 is deep in the red, so despite a strong readiness score this week is about absorbing fitness, not adding load. Tuesday's committed double (hills AM + MTB group ride PM) is your one and only quality day \u2014 the hill tempo work also covers your aerobic-high shortage \u2014 and everything else is easy or rest, with total volume cut roughly in half. Watch morning HRV and legs on Thursday/Friday; if HRV drops or the Friday ride feels laboured, shorten it and take Saturday fully off.",
  "days": [
   {
    "day": "Mon",
    "sport": "yoga",
-   "session": "Recovery Yoga",
+   "session": "Restorative yoga + mobility",
    "duration_min": 45,
    "intensity": "easy",
-   "details": "45 min gentle flow focused on hips, hamstrings, thoracic spine and lower back. Slow, breath-led pace, no strain. Purpose: prime the body for tomorrow's big double session, not to add load. Weather is windy/overcast with rain risk, so keep this indoors."
+   "details": "45 min restorative/yin yoga indoors \u2014 rain and 44 km/h winds rule out riding anyway. Focus: hips, hamstrings, thoracic spine, deep breathing. Goal is parasympathetic recovery and fresh legs for tomorrow's double day. No strength holds, no flow that raises heart rate."
   },
   {
    "day": "Tue",
    "sport": "cycling",
-   "session": "AM Hills Ride + PM Hard MTB Group Ride",
-   "duration_min": 165,
+   "session": "AM hills tempo + PM hard MTB group ride (double day)",
+   "duration_min": 150,
    "intensity": "hard",
-   "details": "AM - Hills Road Ride: 75 min | Zone 4 threshold hill work | 5-6 x 5 min hill climbs at threshold effort (RPE 7-8), easy spin-down recovery between efforts, 15 min easy warm-up/cool-down. Clear skies - ride outdoor.\n\nPM - Hard MTB Group Ride: 90 min | Committed, non-negotiable group pace | Technical trail terrain with repeated high-intensity surges (RPE 7-9), treat as your anaerobic/VO2 stimulus for the week. Fuel and hydrate well between AM and PM sessions given the size of this day."
+   "details": "AM (road, ~60 min) | Primary objective: tempo/threshold hills to address aerobic-high shortage | Zone 3 to low Zone 4. Warm-up 15 min Z2 building. Main set: 3 x 8 min climbing at Z3-low Z4 (RPE 7), seated, controlled breathing, recover fully on descents (~5 min easy). Cool-down 10 min Z1. PM (~90 min): committed hard MTB group ride \u2014 go with the group, but given TSB -41.5 avoid contesting every sprint; ride strong on the sustained sections and sit in where you can. Fuel well between sessions (carbs at lunch, 60g/hr carbs on the evening ride)."
   },
   {
    "day": "Wed",
-   "sport": "cycling",
-   "session": "Easy Recovery Spin",
+   "sport": "swim",
+   "session": "Easy recovery swim",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "40 min | Zone 1-2, flat terrain, fully conversational pace | No intervals, no structure \u2014 the goal is blood flow and leg turnover to flush yesterday's double session. Clear skies, ride outdoor. Mandatory easy day \u2014 do not push pace regardless of how legs feel."
+   "details": "Lunch swim, strictly recovery pace. Warmup: 200m easy freestyle, focus on long exhale. Main set: 4 x 100m easy (odd lengths drill \u2014 catch-up or fingertip drag \u2014 even lengths smooth swim), 20s rest; then 200m pull with buoy, relaxed. Cooldown: 200m very easy mixed strokes. Total: 1000m. Effort RPE 3 throughout \u2014 this flushes Tuesday's legs, nothing more."
   },
   {
    "day": "Thu",
    "sport": "gym",
-   "session": "Workout A - Strength (light)",
+   "session": "Workout A \u2014 posterior chain & stability (reduced load)",
    "duration_min": 45,
    "intensity": "moderate",
-   "details": "Workout A:\nWarm-up: 5 min general warm-up, mobility work for hips and shoulders\nGoblet Squat 3 x 10 (light-moderate load)\nBulgarian Split Squat 3 x 8 each leg\nLat Pulldown 3 x 10-12\nPlank 3 x 45sec\nStanding Calf Raise 3 x 12 each side\nRest: 60 sec between sets"
+   "details": "Lunch gym, 45 min. Warm-up: 8 min \u2014 bike erg easy, glute bridges 2x10, band walks 2x10/side. Main: Romanian Deadlift 3x8 (moderate load, ~65-70% of usual, crisp form), Bulgarian Split Squat 3x8/leg (bodyweight or light DBs), Single-Leg Glute Bridge 3x10/leg, Pallof Press 3x10/side, Side Plank 3x30s/side. Rest 90s between sets. Objective: maintain posterior chain and hip stability without adding fatigue \u2014 loads deliberately reduced given TSB -41.5 and tomorrow's endurance ride. No heavy quad-dominant work."
   },
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Shortened Endurance Ride",
-   "duration_min": 75,
+   "session": "Z2 endurance road ride",
+   "duration_min": 120,
    "intensity": "easy",
-   "details": "75 min | Zone 2 steady aerobic endurance | Rolling terrain, RPE 4-5, no intervals \u2014 smooth, sustained aerobic riding only. Duration trimmed from original plan given lower readiness this week; ideal cool, dry conditions with light winds, good outdoor window. Fuel every 45 min."
+   "details": "Total 2 hrs | Primary objective: steady aerobic endurance | Zone 2 (RPE 4-5, conversational). Last good weather day before the weekend turns wet \u2014 get outdoors. Flat to rolling route, high cadence 90+ rpm, stay strictly in Z2 even on rises (shift down, don't push). No intervals. Fuel with 40-60g carbs/hr. If legs feel heavy or HRV dipped this morning, cap it at 90 min \u2014 this week is recovery-first."
   },
   {
    "day": "Sat",
-   "sport": "cycling",
-   "session": "Shortened Long Endurance Ride",
-   "duration_min": 115,
+   "sport": "walk_hike",
+   "session": "Easy walk or yoga (weather call)",
+   "duration_min": 60,
    "intensity": "easy",
-   "details": "115 min | Zone 2 long ride, weekend | Steady, conversational pace throughout (RPE 4-5), no hard efforts. Trimmed from 150 min to protect recovery while still delivering the weekend aerobic stimulus. Dry, light winds (~10 km/h) \u2014 good outdoor conditions. Practice race-day nutrition/hydration pacing; resist pushing climbs hard."
+   "details": "Active recovery only. Option A: 60 min easy walk/hike if the drizzle holds off. Option B: 45-60 min recovery yoga flow indoors if it's properly wet. Keep heart rate low, no structured effort. Purpose is circulation and movement quality while the deep fatigue clears."
   },
   {
    "day": "Sun",
-   "sport": "gym",
-   "session": "Workout B - Strength (light)",
-   "duration_min": 40,
-   "intensity": "moderate",
-   "details": "Workout B:\nWarm-up: 5 min general warm-up, dynamic mobility\nDeadlift 3 x 8 (light-moderate load)\nWalking Lunge 3 x 10 each leg\nSeated Cable Row 3 x 10-12\nSide Plank 3 x 30sec each side\nHip Thrust 3 x 12 (light load)\nRest: 60 sec between sets"
+   "sport": "rest",
+   "session": "Full rest day",
+   "duration_min": 0,
+   "intensity": "easy",
+   "details": "Complete rest \u2014 rain forecast makes this an easy call and your TSB demands it. Prioritise 8+ hrs sleep, good food, hydration. Optional 15 min gentle stretching in the evening. Arriving at next week fresher will let us rebuild quality work on a stronger base."
   }
  ],
- "generated_at": "2026-08-05T01:29:00.670609+00:00",
- "midweek_revision": true
+ "generated_at": "2026-08-09T08:26:58.250100+00:00"
 }

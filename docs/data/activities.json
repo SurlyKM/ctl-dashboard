@@ -1630,5 +1630,22 @@
   "aerobic_te": 1.2999999523162842,
   "load": 17.3,
   "sport": "cycling"
+ },
+ {
+  "id": 23920647149,
+  "type": "yoga",
+  "start": "2026-08-10 17:53:01",
+  "duration_s": 5127.91015625,
+  "distance_m": null,
+  "elev_gain_m": null,
+  "avg_hr": 77.0,
+  "max_hr": 148.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 241.0,
+  "training_load": 7.3102569580078125,
+  "aerobic_te": 0.4000000059604645,
+  "load": 7.3,
+  "sport": "yoga"
  }
 ]

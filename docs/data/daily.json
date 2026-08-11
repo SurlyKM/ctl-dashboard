@@ -661,7 +661,7 @@
  },
  "2026-08-11": {
   "body_battery_high": 100,
-  "body_battery_low": 47,
+  "body_battery_low": 37,
   "hrv_last_night": 54,
   "hrv_status": "BALANCED",
   "hrv_weekly_avg": 47,

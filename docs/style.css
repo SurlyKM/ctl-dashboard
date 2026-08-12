@@ -337,6 +337,33 @@ nav { display: flex; border: 1px solid var(--line2); border-radius: 8px; overflo
 .nav-link.active { background: var(--fitness); color: #fff; }
 .nav-link:not(.active):hover { background: var(--line); }
 
+/* Chart range toggle */
+.range-toggle {
+  display: flex;
+  border: 1px solid var(--line2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.range-btn {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  color: var(--muted);
+  background: var(--card);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.range-btn.active {
+  background: var(--fitness);
+  color: #fff;
+}
+.range-btn:not(.active):hover {
+  background: var(--line);
+}
+
 /* Today card */
 #today-card {
   background: var(--card); border: 1px solid var(--line);

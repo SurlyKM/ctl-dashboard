@@ -374,6 +374,7 @@ function wireStatCards() {
 let _chartInstance = null;
 let _chartMetrics = null;
 let _chartPlan = null;
+let _chartDays = 84;
 
 // Chart colour palettes keyed by theme + mode — no CSS variable lookups at render time
 function chartColors() {
@@ -400,7 +401,7 @@ function buildChart() {
     wrap.appendChild(fresh);
   }
   const metrics = _chartMetrics, plan = _chartPlan;
-  const series = metrics.series.slice(-84);
+  const series = metrics.series.slice(-_chartDays);
   const _localDay = new Date().getDay();
   const todayIdx = _localDay === 0 ? 6 : _localDay - 1;
   const todayPlan = plan?.days?.[todayIdx];
@@ -511,6 +512,17 @@ async function main() {
     _chartPlan = plan;
     buildChart();
     document.addEventListener("themechange", buildChart);
+    document.querySelectorAll(".range-btn").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        _chartDays = parseInt(btn.dataset.days);
+        document.querySelectorAll(".range-btn").forEach(function(b) {
+          b.classList.toggle("active", b === btn);
+        });
+        var title = $("chart-title");
+        if (title) title.textContent = "Training load, " + (_chartDays === 84 ? "12 weeks" : "6 months");
+        buildChart();
+      });
+    });
     renderMix(activities);
     renderVO2(ts, activities);
     renderGarminStatus(ts);

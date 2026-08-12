@@ -38,7 +38,13 @@
 
 <section>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <h2 style="margin:0">Training load, 12 weeks</h2>
+    <div style="display:flex;align-items:center;gap:10px">
+      <h2 style="margin:0" id="chart-title">Training load, 12 weeks</h2>
+      <div class="range-toggle">
+        <button class="range-btn active" data-days="84">12w</button>
+        <button class="range-btn" data-days="182">6m</button>
+      </div>
+    </div>
     <span id="chart-today-label" class="muted" style="font-size:11px"></span>
   </div>
   <div class="chart-wrap"><canvas id="loadChart"></canvas></div>

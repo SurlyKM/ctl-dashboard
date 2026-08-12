@@ -33,7 +33,8 @@ def _today_local() -> dt.date:
         return dt.datetime.now(zoneinfo.ZoneInfo(tz_name)).date()
     except Exception:
         return dt.date.today()
-LOOKBACK_DAYS = 200          # how far back to fetch activities
+LOOKBACK_DAYS = 200         # how much history to retain in activities.json
+SYNC_DAYS = 7               # how far back each sync fetches from Garmin
 DAILY_REFRESH_DAYS = 2      # always re-fetch the last N days of wellness data
 
 
@@ -89,14 +90,37 @@ def slim_activity(a: dict) -> dict:
     }
 
 
-def fetch_activities(client: Garmin) -> list[dict]:
-    end = _today_local()
-    start = end - dt.timedelta(days=LOOKBACK_DAYS)
-    raw = client.get_activities_by_date(start.isoformat(), end.isoformat())
-    acts = [slim_activity(a) for a in raw]
-    acts.sort(key=lambda x: x["start"] or "")
-    print(f"Fetched {len(acts)} activities")
-    return acts
+def fetch_activities(client: Garmin, existing: list[dict]) -> list[dict]:
+    """Fetch recent activities and merge into existing history.
+
+    On first run (no existing data), pulls the full LOOKBACK_DAYS window.
+    On subsequent runs, only fetches the last SYNC_DAYS to pick up new
+    activities and any retroactive Garmin adjustments (e.g. training load
+    recalculations). Deduplicates by activity ID, preferring the freshly
+    fetched version. Trims entries older than LOOKBACK_DAYS.
+    """
+    today = _today_local()
+
+    # Full backfill if no existing data, otherwise just the sync window
+    fetch_days = LOOKBACK_DAYS if not existing else SYNC_DAYS
+    start = today - dt.timedelta(days=fetch_days)
+
+    raw = client.get_activities_by_date(start.isoformat(), today.isoformat())
+    fresh = [slim_activity(a) for a in raw]
+    print(f"Fetched {len(fresh)} activities ({fetch_days}d window)")
+
+    # Merge: index existing by ID, then overlay fresh (fresh wins on duplicates)
+    by_id = {a["id"]: a for a in existing}
+    for a in fresh:
+        by_id[a["id"]] = a
+
+    # Trim anything older than the retention window
+    cutoff = (today - dt.timedelta(days=LOOKBACK_DAYS)).isoformat()
+    merged = [a for a in by_id.values() if (a.get("start") or "") >= cutoff]
+    merged.sort(key=lambda x: x["start"] or "")
+
+    print(f"Activities after merge: {len(merged)} (was {len(existing)})")
+    return merged
 
 
 def fetch_daily(client: Garmin, existing: dict) -> dict:
@@ -156,7 +180,7 @@ def fetch_training_status(client: Garmin) -> dict:
 
     out = {}
 
-    # VO2 max — use precise value, no user/device identifiers
+    # VO2 max -- use precise value, no user/device identifiers
     vo2 = raw.get("mostRecentVO2Max") or {}
     generic = vo2.get("generic") or {}
     cycling = vo2.get("cycling") or {}
@@ -164,7 +188,7 @@ def fetch_training_status(client: Garmin) -> dict:
     out["vo2max_cycling"] = cycling.get("vo2MaxPreciseValue")
     out["fitness_age"] = generic.get("fitnessAge")
 
-    # Training status — whitelist only, no userId, deviceId, deviceName, imageURL, timestamp
+    # Training status -- whitelist only, no userId, deviceId, deviceName, imageURL, timestamp
     # Only store fields that are actually used by generate_plan.py or the dashboard
     status_map = (raw.get("mostRecentTrainingStatus") or {}).get("latestTrainingStatusData") or {}
     if status_map:
@@ -172,7 +196,7 @@ def fetch_training_status(client: Garmin) -> dict:
         out["training_status"] = s.get("trainingStatusFeedbackPhrase")
         out["fitness_trend"] = s.get("fitnessTrend")
 
-    # Load balance — no deviceId, deviceName, imageURL
+    # Load balance -- no deviceId, deviceName, imageURL
     balance_map = (raw.get("mostRecentTrainingLoadBalance") or {}).get("metricsTrainingLoadBalanceDTOMap") or {}
     if balance_map:
         b = next(iter(balance_map.values()))
@@ -184,7 +208,7 @@ def fetch_training_status(client: Garmin) -> dict:
         out["load_anaerobic_target"] = [b.get("monthlyLoadAnaerobicTargetMin"), b.get("monthlyLoadAnaerobicTargetMax")]
         out["load_balance_feedback"] = b.get("trainingBalanceFeedbackPhrase")
 
-    # Training readiness — the most interpretable single recovery signal
+    # Training readiness -- the most interpretable single recovery signal
     try:
         tr_list = client.get_training_readiness(today) or []
         # Use the most recent entry (first in list)
@@ -240,8 +264,11 @@ def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     client = login()
 
-    activities = fetch_activities(client)
-    (DATA_DIR / "activities.json").write_text(json.dumps(activities, indent=1))
+    # Load existing activities for incremental merge
+    acts_path = DATA_DIR / "activities.json"
+    existing_acts = json.loads(acts_path.read_text()) if acts_path.exists() else []
+    activities = fetch_activities(client, existing_acts)
+    acts_path.write_text(json.dumps(activities, indent=1))
 
     daily_path = DATA_DIR / "daily.json"
     existing = json.loads(daily_path.read_text()) if daily_path.exists() else {}

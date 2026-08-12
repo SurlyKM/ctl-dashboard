@@ -33,7 +33,7 @@ def _today_local() -> dt.date:
         return dt.datetime.now(zoneinfo.ZoneInfo(tz_name)).date()
     except Exception:
         return dt.date.today()
-LOOKBACK_DAYS = 60          # how far back to fetch activities
+LOOKBACK_DAYS = 200          # how far back to fetch activities
 DAILY_REFRESH_DAYS = 2      # always re-fetch the last N days of wellness data
 
 

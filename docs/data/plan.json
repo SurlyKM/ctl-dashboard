@@ -1,6 +1,11 @@
 {
  "week_start": "2026-08-10",
- "coach_says": "Your TSB of -41.5 is deep in the red, so despite a strong readiness score this week is about absorbing fitness, not adding load. Tuesday's committed double (hills AM + MTB group ride PM) is your one and only quality day \u2014 the hill tempo work also covers your aerobic-high shortage \u2014 and everything else is easy or rest, with total volume cut roughly in half. Watch morning HRV and legs on Thursday/Friday; if HRV drops or the Friday ride feels laboured, shorten it and take Saturday fully off.",
+ "recovery_state": "Managing Fatigue",
+ "training_phase": "Base",
+ "weekly_objective": "Capitalize on Thursday's clear weather for aerobic endurance while respecting that TSB, though improving, hasn't yet cleared the threshold for added intensity.",
+ "quality_sessions": 1,
+ "coach_says": "Great news \u2014 TSB jumped 22.6 points and readiness is at 85 with balanced HRV, so the double day didn't dig the hole deeper. But TSB is still under -15 and your anaerobic load is well over target, so we're holding the line on intensity rather than adding a quality session. Instead we've reshuffled Thu/Fri around the weather: Thursday is the best riding day of the week, so the Z2 endurance ride moves there, and gym shifts to Friday. Weekend stays recovery-focused with rain confirmed.",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -28,27 +33,27 @@
   },
   {
    "day": "Thu",
-   "sport": "gym",
-   "session": "Workout A \u2014 posterior chain & stability (reduced load)",
-   "duration_min": 45,
-   "intensity": "moderate",
-   "details": "Lunch gym, 45 min. Warm-up: 8 min \u2014 bike erg easy, glute bridges 2x10, band walks 2x10/side. Main: Romanian Deadlift 3x8 (moderate load, ~65-70% of usual, crisp form), Bulgarian Split Squat 3x8/leg (bodyweight or light DBs), Single-Leg Glute Bridge 3x10/leg, Pallof Press 3x10/side, Side Plank 3x30s/side. Rest 90s between sets. Objective: maintain posterior chain and hip stability without adding fatigue \u2014 loads deliberately reduced given TSB -41.5 and tomorrow's endurance ride. No heavy quad-dominant work."
-  },
-  {
-   "day": "Fri",
    "sport": "cycling",
    "session": "Z2 endurance road ride",
    "duration_min": 120,
    "intensity": "easy",
-   "details": "Total 2 hrs | Primary objective: steady aerobic endurance | Zone 2 (RPE 4-5, conversational). Last good weather day before the weekend turns wet \u2014 get outdoors. Flat to rolling route, high cadence 90+ rpm, stay strictly in Z2 even on rises (shift down, don't push). No intervals. Fuel with 40-60g carbs/hr. If legs feel heavy or HRV dipped this morning, cap it at 90 min \u2014 this week is recovery-first."
+   "details": "Total 2 hrs | Primary objective: steady aerobic endurance | Zone 2 (RPE 4-5, conversational). Today is the clear-sky, moderate-wind day \u2014 best conditions of the week, so get this ride done now. Flat to rolling route, high cadence 90+ rpm, stay strictly in Z2 even on rises (shift down, don't push). No intervals. Fuel with 40-60g carbs/hr. TSB has improved but is still recovering, so keep this genuinely easy \u2014 if legs feel heavy, cap at 90 min."
+  },
+  {
+   "day": "Fri",
+   "sport": "gym",
+   "session": "Workout A \u2014 posterior chain & stability (reduced load)",
+   "duration_min": 45,
+   "intensity": "moderate",
+   "details": "Warm-up: 8 min \u2014 bike erg easy, glute bridges 2x10, band walks 2x10/side. Main: Romanian Deadlift 3x8 (moderate load, ~65-70% of usual, crisp form), Bulgarian Split Squat 3x8/leg (bodyweight or light DBs), Single-Leg Glute Bridge 3x10/leg, Pallof Press 3x10/side, Side Plank 3x30s/side. Rest 90s between sets. Objective: maintain posterior chain and hip stability without adding fatigue \u2014 loads deliberately reduced since anaerobic load is already over target this week. No heavy quad-dominant work, weekend is easy movement only so no timing conflict."
   },
   {
    "day": "Sat",
-   "sport": "walk_hike",
-   "session": "Easy walk or yoga (weather call)",
-   "duration_min": 60,
+   "sport": "yoga",
+   "session": "Recovery yoga flow (indoor, rain confirmed)",
+   "duration_min": 50,
    "intensity": "easy",
-   "details": "Active recovery only. Option A: 60 min easy walk/hike if the drizzle holds off. Option B: 45-60 min recovery yoga flow indoors if it's properly wet. Keep heart rate low, no structured effort. Purpose is circulation and movement quality while the deep fatigue clears."
+   "details": "Forecast confirms rain through the weekend, so this is indoor recovery yoga rather than a walk. Gentle flow \u2014 hips, hamstrings, spine \u2014 heart rate stays low throughout, no structured effort. Purpose is circulation and movement quality while continuing to bank the TSB gains from earlier in the week."
   },
   {
    "day": "Sun",
@@ -56,8 +61,9 @@
    "session": "Full rest day",
    "duration_min": 0,
    "intensity": "easy",
-   "details": "Complete rest \u2014 rain forecast makes this an easy call and your TSB demands it. Prioritise 8+ hrs sleep, good food, hydration. Optional 15 min gentle stretching in the evening. Arriving at next week fresher will let us rebuild quality work on a stronger base."
+   "details": "Complete rest \u2014 rain forecast makes this an easy call and it lets the strong TSB recovery consolidate rather than get eroded. Prioritise 8+ hrs sleep, good food, hydration. Optional 15 min gentle stretching in the evening. Arriving at next week fresher and with anaerobic load settled will let us safely reintroduce quality work."
   }
  ],
- "generated_at": "2026-08-09T08:26:58.250100+00:00"
+ "generated_at": "2026-08-12T08:16:28.700497+00:00",
+ "midweek_revision": true
 }

@@ -9,26 +9,26 @@
   698,
   1535
  ],
- "load_aerobic_high": 743,
+ "load_aerobic_high": 902,
  "load_aerobic_high_target": [
   837,
   1675
  ],
- "load_anaerobic": 1211,
+ "load_anaerobic": 1257,
  "load_anaerobic_target": [
   279,
   837
  ],
- "load_balance_feedback": "AEROBIC_HIGH_SHORTAGE",
- "readiness_score": 86,
- "readiness_level": "high",
- "readiness_feedback": "well recovered",
- "readiness_recovery_hours": 0,
+ "load_balance_feedback": "ANAEROBIC_FOCUS",
+ "readiness_score": 67,
+ "readiness_level": "moderate",
+ "readiness_feedback": "recovery in progress",
+ "readiness_recovery_hours": 26,
  "readiness_hrv_factor": "good",
  "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "good",
  "readiness_sleep_history": "good",
  "readiness_stress_history": "good",
- "readiness_recovery_factor": "good",
+ "readiness_recovery_factor": "moderate",
  "readiness_hrv_weekly_avg": 49
 }

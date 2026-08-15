@@ -2205,9 +2205,9 @@
   "hrv_last_night": 40,
   "hrv_status": "BALANCED",
   "hrv_weekly_avg": 48,
-  "resting_hr": 54,
+  "resting_hr": 52,
   "sleep_s": 26100,
   "sleep_score": 73,
-  "stress_avg": 17
+  "stress_avg": 19
  }
 }

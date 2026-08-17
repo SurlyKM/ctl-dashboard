@@ -4,7 +4,7 @@
  "fitness_age": 20,
  "training_status": "PEAKING_1",
  "fitness_trend": 3,
- "load_aerobic_low": 1222,
+ "load_aerobic_low": 1244,
  "load_aerobic_low_target": [
   698,
   1535
@@ -20,10 +20,10 @@
   837
  ],
  "load_balance_feedback": "AEROBIC_HIGH_SHORTAGE",
- "readiness_score": 95,
- "readiness_level": "prime",
- "readiness_feedback": "primed for performance",
- "readiness_recovery_hours": 0,
+ "readiness_score": 91,
+ "readiness_level": "high",
+ "readiness_feedback": "rested and ready",
+ "readiness_recovery_hours": 6,
  "readiness_hrv_factor": "good",
  "readiness_acwr_factor": "very good",
  "readiness_sleep_factor": "very good",

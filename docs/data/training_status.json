@@ -2,9 +2,9 @@
  "vo2max_generic": 56.3,
  "vo2max_cycling": 56.3,
  "fitness_age": 20,
- "training_status": "RECOVERY_2",
+ "training_status": "MAINTAINING_4",
  "fitness_trend": 2,
- "load_aerobic_low": 1088,
+ "load_aerobic_low": 1100,
  "load_aerobic_low_target": [
   698,
   1535
@@ -23,9 +23,9 @@
  "readiness_score": 75,
  "readiness_level": "high",
  "readiness_feedback": "energized by good sleep",
- "readiness_recovery_hours": 25,
+ "readiness_recovery_hours": 23,
  "readiness_hrv_factor": "good",
- "readiness_acwr_factor": "very good",
+ "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "moderate",
  "readiness_sleep_history": "very good",
  "readiness_stress_history": "good",

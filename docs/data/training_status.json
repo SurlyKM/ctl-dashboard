@@ -20,15 +20,15 @@
   837
  ],
  "load_balance_feedback": "ANAEROBIC_FOCUS",
- "readiness_score": 62,
- "readiness_level": "moderate",
- "readiness_feedback": "boosted by good sleep",
- "readiness_recovery_hours": 32,
+ "readiness_score": 82,
+ "readiness_level": "high",
+ "readiness_feedback": "well recovered",
+ "readiness_recovery_hours": 4,
  "readiness_hrv_factor": "good",
  "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "good",
  "readiness_sleep_history": "good",
  "readiness_stress_history": "good",
- "readiness_recovery_factor": "moderate",
+ "readiness_recovery_factor": "good",
  "readiness_hrv_weekly_avg": 48
 }

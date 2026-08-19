@@ -5302,5 +5302,22 @@
   "aerobic_te": 0.0,
   "load": 1.2,
   "sport": "cycling"
+ },
+ {
+  "id": 24041742779,
+  "type": "road_biking",
+  "start": "2026-08-20 05:18:45",
+  "duration_s": 6274.56201171875,
+  "distance_m": 50960.53125,
+  "elev_gain_m": 550.0,
+  "avg_hr": 152.0,
+  "max_hr": 186.0,
+  "avg_power": 182.0,
+  "norm_power": 214.0,
+  "calories": 1289.0,
+  "training_load": 198.38287353515625,
+  "aerobic_te": 3.700000047683716,
+  "load": 198.4,
+  "sport": "cycling"
  }
 ]

@@ -1,6 +1,11 @@
 {
  "week_start": "2026-08-17",
- "coach_says": "You're fresh (TSB +4, readiness 85, Garmin Productive), so this is a build week \u2014 but your load balance shows an aerobic-high shortage alongside excess anaerobic load, so the added quality is tempo/threshold work, not more sprints. Tuesday's committed double stands as your big anaerobic day; the extra quality goes to Thursday, the only reliably dry day, as a sweet-spot session, with the long Zone 2 ride placed Saturday when winds are lightest. Watch HRV Wednesday morning after the Tuesday double \u2014 if it drops sharply, downgrade Thursday's tempo to steady Zone 2.",
+ "recovery_state": "Managing Fatigue",
+ "training_phase": "Build",
+ "weekly_objective": "Absorb Tuesday's hard double without digging a deeper fatigue hole \u2014 protect aerobic volume, strip out unnecessary intensity, and let the one remaining strength session land safely after a shortened long ride.",
+ "quality_sessions": 2,
+ "coach_says": "Readiness dropped 23 points and TSB fell further since Sunday, and your anaerobic load is already well over target from Tuesday's double \u2014 so Thursday's sweet spot intervals are downgraded to an easy Z2 spin on the week's best-weather day, and Saturday's long ride is shortened rather than cancelled given the wet forecast and rising ATL. Sunday's strength session stays but with lighter target loads. Everything else this week is about consolidating the aerobic base you've already banked without adding more anaerobic stress.",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -29,10 +34,10 @@
   {
    "day": "Thu",
    "sport": "cycling",
-   "session": "Sweet Spot Intervals (outdoor \u2014 best weather day)",
-   "duration_min": 50,
-   "intensity": "hard",
-   "details": "Total 50 min | Primary objective: aerobic-high load \u2014 closing your tempo/threshold shortage | Zone 3-4 (sweet spot, 88-94% FTP, RPE 7). Best dry day of the week (~21\u00b0C, manageable wind) \u2014 ride outdoors before or after work. Structure: 10 min progressive Z1-Z2 warm-up, then 2x15 min at sweet spot with 5 min Z1 spinning between, 5 min Z1 cool-down. Keep cadence 85-95 rpm and effort steady \u2014 no surges. This session directly addresses the Garmin aerobic-high gap without adding to the anaerobic surplus."
+   "session": "Easy-Moderate Z2 Endurance Spin (downgraded \u2014 recovery protection)",
+   "duration_min": 60,
+   "intensity": "moderate",
+   "details": "Total 60 min, no structured intervals | Zone 2 throughout (65-72% FTP, RPE 4-5, conversational). Best weather day of the week (dry, light wind, mild) \u2014 get outside and enjoy it, but this is deliberately downgraded from the original sweet spot session: readiness has dropped 23 points since Sunday and anaerobic load is already well over target, so there's no need to add threshold stress. 10 min easy spin to open up, 40 min steady Z2, 10 min easy cool-down. Keep cadence relaxed, no surges, no hills treated as efforts. This is about turning the legs over and banking easy aerobic time while you recover from Tuesday."
   },
   {
    "day": "Fri",
@@ -40,24 +45,25 @@
    "session": "Aerobic Swim \u2014 Structured 1km",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "Lunch swim (wet day, pool is the smart choice). Warmup: 200m easy freestyle + 100m as 4x25m drill (catch-up or fingertip drag), 15s rest per 25. Main set: 8x50m aerobic freestyle at steady effort (RPE 5-6), 20s rest between reps; then 4x25m smooth build (easy to strong, not sprinting), 20s rest. Cooldown: 100m very easy mixed strokes. Total: 1000m. Objective: aerobic maintenance and upper-body recovery flush between Thursday's intervals and Saturday's long ride \u2014 keep it genuinely easy."
+   "details": "Lunch swim (wet day, pool is the smart choice). Warmup: 200m easy freestyle + 100m as 4x25m drill (catch-up or fingertip drag), 15s rest per 25. Main set: 8x50m aerobic freestyle at steady effort (RPE 5-6), 20s rest between reps; then 4x25m smooth build (easy to strong, not sprinting), 20s rest. Cooldown: 100m very easy mixed strokes. Total: 1000m. Objective: aerobic maintenance and upper-body recovery flush ahead of Saturday's ride \u2014 keep it genuinely easy, recovery is still the priority this week."
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Long Endurance Ride Z2",
-   "duration_min": 180,
+   "session": "Shortened Long Endurance Ride Z2 (protected, not cancelled)",
+   "duration_min": 120,
    "intensity": "moderate",
-   "details": "Total 3 h | Primary objective: aerobic base volume | Zone 2 (65-75% FTP, RPE 4-5, conversational throughout). Saturday has the lightest winds of the week (~9 km/h) but showers are possible \u2014 take a rain layer and mudguards, or split as 2 h outdoors + 1 h on Zwift if it's tipping down. No intervals: hold steady Z2, keep climbs seated and capped at low Z3, fuel 60-80 g carbs/hour from hour one. This is the biggest aerobic-low deposit of the week and sets up next week's build."
+   "details": "Total 2 h (shortened from the original 3 h) | Primary objective: aerobic-low volume without piling more strain onto a declining TSB | Zone 2 (65-75% FTP, RPE 4-5, conversational throughout). Both Friday and Saturday are forecast wet, so plan this on the trainer or as a shorter outdoor loop with rain layer/mudguards if there's a dry window. No intervals, no Z3 surges on climbs \u2014 stay seated and steady. Fuel 60-80 g carbs/hour. This still banks meaningful aerobic-low volume while respecting that readiness dropped 23 points this week and recovery_time is only 'moderate.'"
   },
   {
    "day": "Sun",
    "sport": "gym",
-   "session": "Workout B \u2014 Posterior Chain Strength",
+   "session": "Workout B \u2014 Posterior Chain Strength (tempered load)",
    "duration_min": 50,
    "intensity": "moderate",
-   "details": "Workout B (50 min, flexible timing). Warm-up: 5 min row or bike easy + bodyweight hinge patterning 2x10 + banded good mornings 2x12. Main: Romanian Deadlift 4x6 (moderate-heavy, RPE 7-8, progressive from last block) | Rear-foot Elevated Split Squat with DBs 3x8/side | Single-leg Hip Thrust 3x10/side | DB Row 3x10/side | Hanging Knee Raise 3x10 | Calf Raise (single-leg) 3x12/side. Rest 2 min on RDLs, 90s elsewhere. Objective: posterior chain and single-leg strength \u2014 the main progressive-overload stimulus of the week, placed after the long ride so it never compromises a key session. Legs will feel Saturday's ride, so warm up thoroughly and let bar speed guide load. Finish with 10 min easy stretching."
+   "details": "Workout B (50 min, flexible timing). Warm-up: 5 min row or bike easy + bodyweight hinge patterning 2x10 + banded good mornings 2x12. Main: Romanian Deadlift 4x6 (moderate, RPE 6-7 \u2014 hold back from last block's top-end load given this week's fatigue trend) | Rear-foot Elevated Split Squat with DBs 3x8/side | Single-leg Hip Thrust 3x10/side | DB Row 3x10/side | Hanging Knee Raise 3x10 | Calf Raise (single-leg) 3x12/side. Rest 2 min on RDLs, 90s elsewhere. Objective: maintain the week's strength stimulus without chasing PRs \u2014 legs will feel Saturday's ride and the week's cumulative fatigue, so let bar speed and RPE guide load, not the number on the bar. Finish with 10 min easy stretching."
   }
  ],
- "generated_at": "2026-08-16T08:13:36.573926+00:00"
+ "generated_at": "2026-08-19T00:37:23.090582+00:00",
+ "midweek_revision": true
 }

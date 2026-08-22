@@ -2200,14 +2200,14 @@
   "stress_avg": 23
  },
  "2026-08-23": {
-  "body_battery_high": 42,
+  "body_battery_high": 84,
   "body_battery_low": 40,
   "hrv_last_night": null,
   "hrv_status": null,
   "hrv_weekly_avg": null,
-  "resting_hr": 57,
+  "resting_hr": 55,
   "sleep_s": null,
   "sleep_score": null,
-  "stress_avg": 23
+  "stress_avg": 18
  }
 }

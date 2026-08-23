@@ -5302,5 +5302,22 @@
   "aerobic_te": 0.0,
   "load": 0.0,
   "sport": "yoga"
+ },
+ {
+  "id": 24080501269,
+  "type": "mountain_biking",
+  "start": "2026-08-23 15:54:40",
+  "duration_s": 4878.10595703125,
+  "distance_m": 20778.6796875,
+  "elev_gain_m": 569.0,
+  "avg_hr": 129.0,
+  "max_hr": 190.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 682.0,
+  "training_load": 117.97576904296875,
+  "aerobic_te": 2.4000000953674316,
+  "load": 118.0,
+  "sport": "mtb"
  }
 ]

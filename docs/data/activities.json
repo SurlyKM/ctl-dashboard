@@ -5285,5 +5285,22 @@
   "aerobic_te": 2.4000000953674316,
   "load": 118.0,
   "sport": "mtb"
+ },
+ {
+  "id": 24091127558,
+  "type": "indoor_cycling",
+  "start": "2026-08-24 08:51:00",
+  "duration_s": 1526.7149658203125,
+  "distance_m": 12617.3203125,
+  "elev_gain_m": null,
+  "avg_hr": 133.0,
+  "max_hr": 150.0,
+  "avg_power": 158.0,
+  "norm_power": 160.0,
+  "calories": 278.0,
+  "training_load": 29.24658203125,
+  "aerobic_te": 2.0,
+  "load": 29.2,
+  "sport": "cycling"
  }
 ]

@@ -5319,5 +5319,22 @@
   "aerobic_te": 0.699999988079071,
   "load": 10.6,
   "sport": "walk_hike"
+ },
+ {
+  "id": 24094370200,
+  "type": "yoga",
+  "start": "2026-08-24 17:52:36",
+  "duration_s": 6203.6689453125,
+  "distance_m": null,
+  "elev_gain_m": null,
+  "avg_hr": 85.0,
+  "max_hr": 148.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 335.0,
+  "training_load": 8.161361694335938,
+  "aerobic_te": 0.6000000238418579,
+  "load": 8.2,
+  "sport": "yoga"
  }
 ]

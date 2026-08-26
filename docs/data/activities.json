@@ -5336,5 +5336,22 @@
   "aerobic_te": 0.10000000149011612,
   "load": 1.9,
   "sport": "yoga"
+ },
+ {
+  "id": 24118750465,
+  "type": "lap_swimming",
+  "start": "2026-08-26 14:55:08",
+  "duration_s": 1740.177978515625,
+  "distance_m": 1500.0,
+  "elev_gain_m": null,
+  "avg_hr": 114.0,
+  "max_hr": 155.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 266.0,
+  "training_load": 51.80375671386719,
+  "aerobic_te": 2.0999999046325684,
+  "load": 51.8,
+  "sport": "swim"
  }
 ]

@@ -1,6 +1,11 @@
 {
  "week_start": "2026-08-24",
- "coach_says": "Your anaerobic load is well above target (1009 vs 837 max) while both aerobic buckets are on point, so this week Tuesday's committed double carries all the intensity and everything else stays firmly aerobic. TSB is positive (+8) and HRV balanced, but your rising resting HR and moderate readiness (52) say don't stack extra hard work on top. Watch that resting HR trend \u2014 if it keeps climbing through midweek, swap Friday's long ride for a shorter Z2 spin and tell me.",
+ "recovery_state": "Managing Fatigue",
+ "training_phase": "Base",
+ "weekly_objective": "Hold the planned aerobic volume and moderate strength work while letting the elevated anaerobic load from Tuesday's double settle before any new intensity is added.",
+ "quality_sessions": 1,
+ "coach_says": "Your readiness bounced back nicely (52 to 78) and HRV/sleep look great, which is a good sign you're absorbing Tuesday's double okay. But your anaerobic load is still well above target, so despite feeling fresher, this isn't the week to add another hard session or upgrade Friday's ride \u2014 we're keeping Thu-Sun exactly as planned: moderate gym Thursday, the big Z2 endurance ride Friday while the weather is clean, gym again Saturday before Sunday's easy MTB spin. Let the readiness gains show up as easier recovery from the volume rather than more intensity.",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -32,7 +37,7 @@
    "session": "Workout A \u2014 posterior chain & stability (lunch)",
    "duration_min": 45,
    "intensity": "moderate",
-   "details": "Warm-up: 8 min \u2014 bike erg easy 4 min, then glute bridges 2x10, banded lateral walks 2x10/side, bodyweight single-leg RDL 1x8/side. Main: RomanianDeadlift 3x8 (moderate load, ~70% effort \u2014 deliberately not maxed, long ride tomorrow) | BulgarianSplitSquat 3x8/leg (dumbbells, controlled tempo) | SingleLegGluteBridge 3x10/leg | PallofPress 3x10/side | SidePlank 3x30s/side. Rest 90s between strength sets, 60s on core. Objective: posterior chain strength and hip stability to support climbing power \u2014 loads kept moderate so your legs are ready for Friday's endurance ride. No heavy quad-dominant work today."
+   "details": "Warm-up: 8 min \u2014 bike erg easy 4 min, then glute bridges 2x10, banded lateral walks 2x10/side, bodyweight single-leg RDL 1x8/side. Main: RomanianDeadlift 3x8 (moderate load, ~70% effort \u2014 deliberately not maxed, long ride tomorrow) | BulgarianSplitSquat 3x8/leg (dumbbells, controlled tempo) | SingleLegGluteBridge 3x10/leg | PallofPress 3x10/side | SidePlank 3x30sec/side. Rest 90sec between strength sets, 60sec on core. Objective: posterior chain strength and hip stability to support climbing power \u2014 loads kept moderate so your legs are ready for Friday's endurance ride. No heavy quad-dominant work today."
   },
   {
    "day": "Fri",
@@ -40,7 +45,7 @@
    "session": "Long Z2 endurance ride",
    "duration_min": 170,
    "intensity": "easy",
-   "details": "Total 2h50 | Primary objective: aerobic base volume \u2014 this is the biggest ride of the week | Zone 2 throughout, RPE 3-4, HR capped below top of Z2. Cooler and mostly dry \u2014 dress in layers and pack a rain jacket for possible drizzle. Rolling terrain fine, but stay seated and steady on rises \u2014 no threshold spikes, no town-sign sprints (protecting that anaerobic budget). Cadence 85-95rpm. Fuel from the start: 60-80g carbs/hour, drink to thirst. Discipline on the easy end is the whole point of this session."
+   "details": "Total 2h50 | Primary objective: aerobic base volume \u2014 this is the biggest ride of the week | Zone 2 throughout, RPE 3-4, HR capped below top of Z2. Weather has cleared to mostly dry \u2014 good conditions for the big outdoor ride. Rolling terrain fine, but stay seated and steady on rises \u2014 no threshold spikes, no town-sign sprints (protecting that anaerobic budget). Cadence 85-95rpm. Fuel from the start: 60-80g carbs/hour, drink to thirst. Discipline on the easy end is the whole point of this session."
   },
   {
    "day": "Sat",
@@ -48,7 +53,7 @@
    "session": "Workout B \u2014 strength & core",
    "duration_min": 45,
    "intensity": "moderate",
-   "details": "Warm-up: 8 min \u2014 row erg easy 4 min, hip openers, bird-dogs 2x8/side, bodyweight squats 2x10. Main: TrapBarDeadlift 3x6 (moderate-heavy, leave 2 reps in reserve \u2014 Sunday's ride is easy so you can load a touch more than Thursday) | StepUp 3x8/leg (dumbbells, knee-height box, drive through the heel) | NordicCurlNegative 3x5 (or SwissBallLegCurl 3x10) | DeadBug 3x10/side | FarmerCarry 3x40m heavy. Rest 2 min on deadlifts, 90s elsewhere. Objective: progressive strength stimulus for the posterior chain and hamstring durability \u2014 the eccentric hamstring work protects you on the MTB. Optional: 15-20 min gentle yoga in the evening if you feel tight."
+   "details": "Warm-up: 8 min \u2014 row erg easy 4 min, hip openers, bird-dogs 2x8/side, bodyweight squats 2x10. Main: TrapBarDeadlift 3x6 (moderate-heavy, leave 2 reps in reserve \u2014 Sunday's ride is easy so you can load a touch more than Thursday) | StepUp 3x8/leg (dumbbells, knee-height box, drive through the heel) | NordicCurlNegative 3x5 (or SwissBallLegCurl 3x10) | DeadBug 3x10/side | FarmerCarry 3x40m heavy. Rest 2min on deadlifts, 90sec elsewhere. Objective: progressive strength stimulus for the posterior chain and hamstring durability \u2014 the eccentric hamstring work protects you on the MTB. Showery weather today makes the indoor session the right call. Optional: 15-20 min gentle yoga in the evening if you feel tight."
   },
   {
    "day": "Sun",
@@ -56,8 +61,9 @@
    "session": "Z2 MTB endurance ride",
    "duration_min": 120,
    "intensity": "easy",
-   "details": "Total 2h | Primary objective: aerobic volume with skills, keeping the week fun and varied | Zone 2, RPE 3-4. Flowing trails rather than punchy technical climbs \u2014 walk or granny-gear anything that would force an anaerobic surge. Overcast with possible drizzle: pick trails that drain well and take a shell. This caps a solid aerobic week without adding intensity. Check in Monday morning: if resting HR is still trending up despite the easy back half of this week, next week starts with a lighter loading pattern."
+   "details": "Total 2h | Primary objective: aerobic volume with skills, keeping the week fun and varied | Zone 2, RPE 3-4. Conditions are drying out \u2014 flowing trails rather than punchy technical climbs, walk or granny-gear anything that would force an anaerobic surge. This caps a solid aerobic week without adding intensity. Check in Monday morning: readiness has climbed nicely this week, but anaerobic load is still elevated, so next week should start conservatively until that settles."
   }
  ],
- "generated_at": "2026-08-23T08:14:52.734804+00:00"
+ "generated_at": "2026-08-26T00:38:31.167154+00:00",
+ "midweek_revision": true
 }

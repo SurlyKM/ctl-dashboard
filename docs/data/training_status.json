@@ -20,10 +20,10 @@
   837
  ],
  "load_balance_feedback": "ANAEROBIC_FOCUS",
- "readiness_score": 47,
- "readiness_level": "low",
+ "readiness_score": 50,
+ "readiness_level": "moderate",
  "readiness_feedback": "high recovery needs",
- "readiness_recovery_hours": 42,
+ "readiness_recovery_hours": 41,
  "readiness_hrv_factor": "very good",
  "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "good",

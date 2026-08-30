@@ -1,69 +1,63 @@
 {
- "week_start": "2026-08-24",
- "recovery_state": "Managing Fatigue",
- "training_phase": "Base",
- "weekly_objective": "Hold the planned aerobic volume and moderate strength work while letting the elevated anaerobic load from Tuesday's double settle before any new intensity is added.",
- "quality_sessions": 1,
- "coach_says": "Your readiness bounced back nicely (52 to 78) and HRV/sleep look great, which is a good sign you're absorbing Tuesday's double okay. But your anaerobic load is still well above target, so despite feeling fresher, this isn't the week to add another hard session or upgrade Friday's ride \u2014 we're keeping Thu-Sun exactly as planned: moderate gym Thursday, the big Z2 endurance ride Friday while the weather is clean, gym again Saturday before Sunday's easy MTB spin. Let the readiness gains show up as easier recovery from the volume rather than more intensity.",
- "revised": true,
+ "week_start": "2026-08-31",
+ "coach_says": "Your anaerobic load is well over target (1039 vs 837 max) while both aerobic buckets are in range, and with TSB at -11.5 and moderate readiness, this week concentrates all intensity into your committed Tuesday double and keeps everything else firmly aerobic. Friday and Sunday get the long Zone 2 work in the best weather windows, with Wednesday locked in as pure recovery. Watch morning HRV after Tuesday \u2014 if it drops sharply, downgrade Thursday's gym session to yoga and push it to Saturday.",
  "days": [
   {
    "day": "Mon",
    "sport": "cycling",
-   "session": "Easy Z2 road spin (best weather day)",
+   "session": "Z2 Endurance Ride",
    "duration_min": 60,
    "intensity": "easy",
-   "details": "Total 60 min | Primary objective: aerobic maintenance and leg-opener before Tuesday's double | Zone 2, RPE 3-4, conversational throughout. Outdoor road ride before work \u2014 Monday is the driest day of the week, so enjoy it. Flat to rolling route, high cadence (90-95rpm), no surges, no sprints for signs. Finish feeling like you did nothing. This keeps you fresh for tomorrow's committed hard day."
+   "details": "Total: 60 min | Objective: aerobic maintenance, fresh legs for Tuesday | Zone 2, RPE 3-4. Outdoor road ride before work \u2014 clear skies and light wind make this a great morning. Steady conversational pace throughout, high cadence (90+ rpm), no surges, no sprints. Flat or rolling route. This is deliberately easy: tomorrow is your only hard day of the week."
   },
   {
    "day": "Tue",
    "sport": "cycling",
-   "session": "Double day: AM hills + PM hard MTB group",
+   "session": "Double: Hills AM + Hard MTB Group PM",
    "duration_min": 150,
    "intensity": "hard",
-   "details": "AM (before work, ~60 min): Committed hills road ride. Rain forecast \u2014 mudguards and lights, or ride the climbs on the trainer if conditions are dangerous. Total 60 min | Objective: sustained climbing strength | 3-4 climbs at Zone 3-4 (RPE 6-7), seated, controlled \u2014 do NOT sprint the tops; your anaerobic load is already over target, so make these steady threshold efforts, not attacks. Z1 recovery between climbs. || PM (~90 min): Committed hard MTB group ride, non-negotiable. Ride it as it comes, but where the group allows, sit in rather than animating \u2014 you don't need more anaerobic spikes this week. Fuel well between sessions: carbs at lunch and a snack 60-90 min before the evening ride."
+   "details": "AM (60 min): Hills road ride | Objective: sustained climbing strength | Warm up 15 min Z2, then ride the climbs at Zone 3-4 (RPE 6-7) seated where possible \u2014 sustained tempo/threshold rather than punchy attacks, since your anaerobic load is already over target. Descend and recover between climbs, cool down 10 min Z1. PM (90 min): Hard MTB group ride \u2014 committed session, ride as it comes. Fuel well between sessions (carbs at lunch, eat within 30 min of finishing the evening ride) and prioritise sleep tonight."
   },
   {
    "day": "Wed",
-   "sport": "swim",
-   "session": "Recovery swim (lunch)",
-   "duration_min": 30,
+   "sport": "yoga",
+   "session": "Recovery Yoga",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "Warmup: 200m easy freestyle, focus on long exhale and relaxed stroke. Main set: 4x100m easy freestyle with 20s rest (RPE 3, no clock-chasing) + 4x50m drill (25m catch-up drill / 25m easy swim) with 15s rest. Cooldown: 100m very easy backstroke/breaststroke mix. Total: 900m. Purpose: pure recovery from Tuesday's double \u2014 blood flow, zero load on the legs. Rain and wind outside make the pool the right call. If you feel wrecked, cut the main set in half or swap for 30 min gentle yoga."
+   "details": "45 min gentle recovery flow. Focus: hips, hip flexors, glutes, lower back and thoracic spine \u2014 everything Tuesday's double loaded up. Long holds (60-90s), deep breathing, nothing strenuous. No riding today regardless of how you feel. Windy outside anyway \u2014 nothing missed."
   },
   {
    "day": "Thu",
    "sport": "gym",
-   "session": "Workout A \u2014 posterior chain & stability (lunch)",
+   "session": "Workout A \u2014 Posterior Chain & Stability",
    "duration_min": 45,
    "intensity": "moderate",
-   "details": "Warm-up: 8 min \u2014 bike erg easy 4 min, then glute bridges 2x10, banded lateral walks 2x10/side, bodyweight single-leg RDL 1x8/side. Main: RomanianDeadlift 3x8 (moderate load, ~70% effort \u2014 deliberately not maxed, long ride tomorrow) | BulgarianSplitSquat 3x8/leg (dumbbells, controlled tempo) | SingleLegGluteBridge 3x10/leg | PallofPress 3x10/side | SidePlank 3x30sec/side. Rest 90sec between strength sets, 60sec on core. Objective: posterior chain strength and hip stability to support climbing power \u2014 loads kept moderate so your legs are ready for Friday's endurance ride. No heavy quad-dominant work today."
+   "details": "Lunch gym session, 45 min. Warm-up: 8 min \u2014 bike erg easy spin, glute bridges 2x12, band walks 2x10 each way. Main: Romanian Deadlift 3x8 (moderate load, controlled tempo), Single-Leg Step-Up 3x8 each leg (moderate dumbbells), Hip Thrust 3x10, Single-Leg Calf Raise 2x12 each, Pallof Press 3x10 each side, Side Plank 3x30s each side. Rest 90s between main lifts, 60s on core work. Objective: posterior chain strength and single-leg stability at moderate load \u2014 deliberately no heavy quad-dominant work (no back squats today) with tomorrow's long ride ahead. Leave 2-3 reps in reserve on every set."
   },
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Long Z2 endurance ride",
-   "duration_min": 170,
-   "intensity": "easy",
-   "details": "Total 2h50 | Primary objective: aerobic base volume \u2014 this is the biggest ride of the week | Zone 2 throughout, RPE 3-4, HR capped below top of Z2. Weather has cleared to mostly dry \u2014 good conditions for the big outdoor ride. Rolling terrain fine, but stay seated and steady on rises \u2014 no threshold spikes, no town-sign sprints (protecting that anaerobic budget). Cadence 85-95rpm. Fuel from the start: 60-80g carbs/hour, drink to thirst. Discipline on the easy end is the whole point of this session."
+   "session": "Long Z2 Endurance Ride",
+   "duration_min": 180,
+   "intensity": "moderate",
+   "details": "Total: 3 hr | Objective: aerobic base volume | Zone 2 throughout, RPE 3-4. Clear conditions \u2014 take the road bike on a rolling route. Steady discipline: keep power/HR capped in Z2 even on climbs (shift down, spin up). No intervals \u2014 your aerobic-low bucket does the work here. Fuel 60-80g carbs/hr and drink to thirst. If you feel flat from Tuesday, cut to 2 hr rather than pushing intensity up."
   },
   {
    "day": "Sat",
-   "sport": "gym",
-   "session": "Workout B \u2014 strength & core",
+   "sport": "swim",
+   "session": "Aerobic Swim + Optional Walk",
    "duration_min": 45,
-   "intensity": "moderate",
-   "details": "Warm-up: 8 min \u2014 row erg easy 4 min, hip openers, bird-dogs 2x8/side, bodyweight squats 2x10. Main: TrapBarDeadlift 3x6 (moderate-heavy, leave 2 reps in reserve \u2014 Sunday's ride is easy so you can load a touch more than Thursday) | StepUp 3x8/leg (dumbbells, knee-height box, drive through the heel) | NordicCurlNegative 3x5 (or SwissBallLegCurl 3x10) | DeadBug 3x10/side | FarmerCarry 3x40m heavy. Rest 2min on deadlifts, 90sec elsewhere. Objective: progressive strength stimulus for the posterior chain and hamstring durability \u2014 the eccentric hamstring work protects you on the MTB. Showery weather today makes the indoor session the right call. Optional: 15-20 min gentle yoga in the evening if you feel tight."
+   "intensity": "easy",
+   "details": "Windy day (32 km/h) \u2014 pool day. Warmup: 200m easy freestyle mixed with 100m drill (catch-up or fingertip drag). Main set: 6x100m freestyle at steady aerobic effort (RPE 5), 20s rest between reps. Cooldown: 100m very easy choice of stroke. Total: 1000m. Focus on long strokes and relaxed breathing \u2014 this is active recovery for the legs, light work for the upper body. Optional: 30-45 min easy walk later in the day if you want to move."
   },
   {
    "day": "Sun",
-   "sport": "mtb",
-   "session": "Z2 MTB endurance ride",
-   "duration_min": 120,
-   "intensity": "easy",
-   "details": "Total 2h | Primary objective: aerobic volume with skills, keeping the week fun and varied | Zone 2, RPE 3-4. Conditions are drying out \u2014 flowing trails rather than punchy technical climbs, walk or granny-gear anything that would force an anaerobic surge. This caps a solid aerobic week without adding intensity. Check in Monday morning: readiness has climbed nicely this week, but anaerobic load is still elevated, so next week should start conservatively until that settles."
+   "sport": "cycling",
+   "session": "Long Endurance Ride with Tempo Blocks",
+   "duration_min": 210,
+   "intensity": "moderate",
+   "details": "Total: 3.5 hr | Objective: aerobic endurance with controlled sustained work | Best weather of the week \u2014 clear, light wind. Road bike or MTB, your choice for variety. Structure: 45 min Z2 warm-up, then 2x15 min Zone 3 tempo (RPE 5-6, smooth and seated) with 10 min Z2 between blocks, remainder in Z2, final 15 min easy Z1. Tempo blocks add sustained aerobic-high stimulus without touching the anaerobic system \u2014 absolutely no sprints or punchy efforts. Fuel 60-80g carbs/hr. If legs feel heavy in the first hour, skip the tempo blocks and ride pure Z2."
   }
  ],
- "generated_at": "2026-08-26T00:38:31.167154+00:00",
- "midweek_revision": true
+ "generated_at": "2026-08-30T13:22:03.894499+00:00"
 }

@@ -1,22 +1,5 @@
 [
  {
-  "id": 21849616172,
-  "type": "road_biking",
-  "start": "2026-02-13 05:35:34",
-  "duration_s": 4740.35400390625,
-  "distance_m": 38374.359375,
-  "elev_gain_m": 394.0,
-  "avg_hr": 137.0,
-  "max_hr": 183.0,
-  "avg_power": 164.0,
-  "norm_power": 233.0,
-  "calories": 892.0,
-  "training_load": 125.05308532714844,
-  "aerobic_te": 3.0,
-  "load": 125.1,
-  "sport": "cycling"
- },
- {
   "id": 21860959366,
   "type": "mountain_biking",
   "start": "2026-02-14 11:19:59",
@@ -5370,5 +5353,22 @@
   "aerobic_te": 3.5999999046325684,
   "load": 188.8,
   "sport": "cycling"
+ },
+ {
+  "id": 24194417857,
+  "type": "mountain_biking",
+  "start": "2026-09-01 17:16:57",
+  "duration_s": 6293.3330078125,
+  "distance_m": 32124.689453125,
+  "elev_gain_m": 761.0,
+  "avg_hr": 132.0,
+  "max_hr": 190.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 962.0,
+  "training_load": 138.99530029296875,
+  "aerobic_te": 2.799999952316284,
+  "load": 139.0,
+  "sport": "mtb"
  }
 ]

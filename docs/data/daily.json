@@ -2198,5 +2198,16 @@
   "sleep_s": 27480,
   "sleep_score": 84,
   "stress_avg": 30
+ },
+ "2026-09-04": {
+  "body_battery_high": 92,
+  "body_battery_low": 32,
+  "hrv_last_night": 49,
+  "hrv_status": "BALANCED",
+  "hrv_weekly_avg": 46,
+  "resting_hr": 52,
+  "sleep_s": 25920,
+  "sleep_score": 83,
+  "stress_avg": 12
  }
 }

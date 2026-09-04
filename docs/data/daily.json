@@ -2197,6 +2197,17 @@
   "resting_hr": 52,
   "sleep_s": 25920,
   "sleep_score": 83,
-  "stress_avg": 26
+  "stress_avg": 24
+ },
+ "2026-09-05": {
+  "body_battery_high": 100,
+  "body_battery_low": 56,
+  "hrv_last_night": 54,
+  "hrv_status": "BALANCED",
+  "hrv_weekly_avg": 48,
+  "resting_hr": 52,
+  "sleep_s": 29460,
+  "sleep_score": 92,
+  "stress_avg": 9
  }
 }

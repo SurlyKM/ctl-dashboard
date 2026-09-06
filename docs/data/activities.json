@@ -1,22 +1,5 @@
 [
  {
-  "id": 21903971399,
-  "type": "mountain_biking",
-  "start": "2026-02-18 17:35:42",
-  "duration_s": 2991.277099609375,
-  "distance_m": 12435.3603515625,
-  "elev_gain_m": 323.0,
-  "avg_hr": 122.0,
-  "max_hr": 169.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 416.0,
-  "training_load": 30.305282592773438,
-  "aerobic_te": 2.0,
-  "load": 30.3,
-  "sport": "mtb"
- },
- {
   "id": 21911285651,
   "type": "road_biking",
   "start": "2026-02-19 05:40:36",

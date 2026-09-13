@@ -1,15 +1,4 @@
 {
- "2026-02-25": {
-  "body_battery_high": 100,
-  "body_battery_low": 30,
-  "hrv_last_night": 51,
-  "hrv_status": "BALANCED",
-  "hrv_weekly_avg": 53,
-  "resting_hr": 47,
-  "sleep_s": 29040,
-  "sleep_score": 94,
-  "stress_avg": 22
- },
  "2026-02-26": {
   "body_battery_high": 99,
   "body_battery_low": 30,

@@ -20,15 +20,15 @@
   837
  ],
  "load_balance_feedback": "AEROBIC_HIGH_SHORTAGE",
- "readiness_score": null,
- "readiness_level": "",
- "readiness_feedback": "",
- "readiness_recovery_hours": null,
- "readiness_hrv_factor": "",
- "readiness_acwr_factor": "",
- "readiness_sleep_factor": "",
- "readiness_sleep_history": "",
- "readiness_stress_history": "",
- "readiness_recovery_factor": "",
- "readiness_hrv_weekly_avg": null
+ "readiness_score": 39,
+ "readiness_level": "low",
+ "readiness_feedback": "listen to your body",
+ "readiness_recovery_hours": 3,
+ "readiness_hrv_factor": "moderate",
+ "readiness_acwr_factor": "very good",
+ "readiness_sleep_factor": "poor",
+ "readiness_sleep_history": "good",
+ "readiness_stress_history": "good",
+ "readiness_recovery_factor": "good",
+ "readiness_hrv_weekly_avg": 44
 }

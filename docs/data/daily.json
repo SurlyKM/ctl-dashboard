@@ -2206,8 +2206,8 @@
   "hrv_status": "UNBALANCED",
   "hrv_weekly_avg": 44,
   "resting_hr": 56,
-  "sleep_s": 16320,
-  "sleep_score": 47,
-  "stress_avg": 27
+  "sleep_s": 22080,
+  "sleep_score": 58,
+  "stress_avg": 31
  }
 }

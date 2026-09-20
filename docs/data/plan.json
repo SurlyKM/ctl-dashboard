@@ -1,63 +1,63 @@
 {
- "week_start": "2026-09-14",
- "coach_says": "This is a dedicated recovery week. You've just absorbed a 700 km / 8000 m bikepacking block that Garmin badly undercounted \u2014 your positive TSB and UNBALANCED HRV confirm the numbers can't be trusted at face value, so the override drove every decision: Tuesday's hills ride and hard MTB group ride are cancelled, Friday and Saturday are full conference rest, and there are zero quality sessions. The aerobic-high shortage is real but gets addressed next week once HRV normalises \u2014 watch for HRV returning to balanced and morning legs feeling springy by the weekend before we reload.",
+ "week_start": "2026-09-21",
+ "coach_says": "Your TSB is very high (+43) but the recovery signals disagree \u2014 HRV is low, resting HR is rising, and readiness is 32 with Garmin flagging STRAINED. So the week protects your committed Tuesday double, keeps everything around it genuinely easy, and adds one tempo session on Friday to attack the -547 aerobic-high shortage without adding more anaerobic load (which is already over target). The conference override shaped Thursday through Sunday into morning MTB only, so gym is skipped this week \u2014 resume Workout A next Monday. Watch morning HRV: if it hasn't rebounded by Friday, downgrade the tempo intervals to steady Zone 2.",
  "days": [
   {
    "day": "Mon",
-   "sport": "cycling",
-   "session": "Recovery spin outdoors",
-   "duration_min": 60,
+   "sport": "yoga",
+   "session": "Recovery yoga + mobility",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "Total 60 min | Primary objective: flush the legs after the bikepacking block | Zone 1, RPE 2-3. Flat route, high cadence (90-100 rpm), conversational the entire time. No intervals, no hills, no chasing anyone. Take advantage of the dry, mild conditions \u2014 this is the best outdoor day until the weekend. If legs feel wrecked, cut to 40 min without guilt."
+   "details": "45 min restorative/yin-style flow at lunch. Focus: hips, hamstrings, thoracic spine, and 5 min of diaphragmatic breathing to finish. No loading today \u2014 readiness is 32 with ~30h recovery time outstanding, and tomorrow is your committed double hard day. Weather is drizzly and windy anyway. Goal: arrive at Tuesday as fresh as possible."
   },
   {
    "day": "Tue",
-   "sport": "swim",
-   "session": "Easy recovery swim (lunch)",
-   "duration_min": 35,
-   "intensity": "easy",
-   "details": "NOTE: the usual Tuesday hills ride and evening MTB group ride are cancelled this week per the recovery override \u2014 weather is wet and windy anyway. Warmup: 200m easy mixed strokes. Main set: 4x100m freestyle at relaxed aerobic effort (RPE 3-4), 30s rest between reps; 4x50m drill focus (catch-up or single-arm), 20s rest. Cooldown: 100m very easy backstroke/breaststroke. Total: 900m. Non-weight-bearing, spine-friendly recovery after a week hunched on a loaded bike."
+   "sport": "cycling",
+   "session": "AM hills ride + PM hard MTB group ride (committed double)",
+   "duration_min": 150,
+   "intensity": "hard",
+   "details": "AM (60 min | Threshold hills | Zone 3-4): Warm up 15 min Zone 2, then 3 x 8 min sustained climbing at Zone 3 high to Zone 4 low (RPE 7-8), 5 min easy spinning between efforts, cool down 10 min Zone 1. Ride the climbs seated and steady \u2014 this targets your aerobic-high shortage, so avoid surging above threshold. Wet and windy forecast: mudguards, layers, and pick sheltered climbs. PM (90 min | Hard MTB group ride | Zone 4-5 bursts): Non-negotiable committed session. Ride it as it comes, but given anaerobic load is already above target, resist contesting every sprint \u2014 sit in where you can. Fuel well between sessions (carbs within 30 min of the AM ride) and prioritise an early night."
   },
   {
    "day": "Wed",
-   "sport": "yoga",
-   "session": "Restorative yoga + mobility",
-   "duration_min": 35,
+   "sport": "swim",
+   "session": "Easy recovery swim before travel",
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "Indoor session on the wet, windy day. 35 min restorative flow targeting the bikepacking posture: hip flexor openers (low lunge, couch stretch 2 min/side), thoracic extension over a foam roller, pigeon pose 2 min/side, hamstring floss, finish with 5 min legs-up-the-wall and slow nasal breathing. Objective: parasympathetic recovery and undoing 7 days of flexed-hip riding position. No strength work, no load."
+   "details": "Lunch swim, ~1000m total, purely recovery flush after yesterday's double. Warmup: 200m easy freestyle, focus on long strokes. Main set: 4 x 100m easy freestyle at RPE 3-4 with 20s rest, then 4 x 50m drill (catch-up or single-arm) with 15s rest. Cooldown: 200m very easy mixed strokes. No hard efforts at all \u2014 this is circulation and range of motion before travelling to the conference this evening. Wettest day of the week, so the pool is the right call."
   },
   {
    "day": "Thu",
-   "sport": "gym",
-   "session": "Workout A \u2014 deload strength (lunch)",
-   "duration_min": 45,
+   "sport": "mtb",
+   "session": "Zone 2 endurance MTB (conference, AM only)",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "Warm-up: 8 min \u2014 bike erg easy spin 5 min, then glute bridges 2x10, band lateral walks 2x10/side. Main: Romanian Deadlift 3x8 (light, ~50-60% of usual working weight, focus on hinge quality), Bulgarian Split Squat 2x8/leg (bodyweight or light dumbbells), Single-Leg Glute Bridge 2x10/leg, Side Plank 2x30s/side, Bird Dog 2x8/side, Dead Bug 2x10/side. Rest 90s between sets, nothing to failure. Objective: deload session \u2014 maintain movement patterns and hip stability without adding fatigue during the recovery week. No heavy loading; Friday is full rest so no ride conflict."
+   "details": "90 min | Aerobic base | Zone 2, RPE 3-4, conversational throughout. Morning ride within the 2h conference window. Choose flowing, non-technical trails and keep power/HR capped in Zone 2 \u2014 spin up climbs seated, no punchy efforts. Yesterday's double plus low readiness means today is about easy aerobic volume only. Wet forecast: allow extra time for bike cleaning, and cut to 60 min if trails are badly waterlogged."
   },
   {
    "day": "Fri",
-   "sport": "rest",
-   "session": "Full rest \u2014 conference",
-   "duration_min": 0,
-   "intensity": "easy",
-   "details": "Conference day, no training per the override. This lands perfectly in a recovery week. Prioritise walking between sessions, hydration, and getting to bed at a normal hour despite the social schedule."
+   "sport": "mtb",
+   "session": "MTB tempo intervals (best weather day)",
+   "duration_min": 110,
+   "intensity": "moderate",
+   "details": "110 min | Tempo \u2014 aerobic-high development | Zone 3. Warm up 20 min Zone 2 with 3 x 30s leg-speed spins. Main set: 3 x 12 min at Zone 3 (RPE 6, controlled breathing, sustainable) with 6 min easy spinning between. Use fire roads or steady climbs so efforts stay smooth \u2014 no anaerobic spikes. Cool down 15-20 min Zone 1. Clearest weather of the week, so make this the quality ride. This directly targets the aerobic-high load gap. Checkpoint: if morning HRV is still low, convert efforts to steady Zone 2 and ride 2 hours easy instead."
   },
   {
    "day": "Sat",
-   "sport": "rest",
-   "session": "Full rest \u2014 conference",
-   "duration_min": 0,
+   "sport": "mtb",
+   "session": "Easy trail spin (conference, AM only)",
+   "duration_min": 75,
    "intensity": "easy",
-   "details": "Second conference day, full rest per the override. Two consecutive rest days at the end of a recovery week is exactly what this block needs \u2014 expect HRV and legs to bounce back noticeably by Sunday morning."
+   "details": "75 min | Recovery/easy aerobic | Zone 1-2, RPE 2-3. Morning ride, well within the 2h limit. Relaxed trail riding \u2014 soft-pedal, high cadence, freewheel the descents, no efforts. Drizzle and wind forecast, so keep it short and enjoyable rather than forcing distance. This buffers recovery between Friday's tempo work and Sunday's longer ride."
   },
   {
    "day": "Sun",
-   "sport": "cycling",
-   "session": "Steady Zone 2 endurance ride",
-   "duration_min": 105,
+   "sport": "mtb",
+   "session": "Long endurance MTB before travelling home",
+   "duration_min": 150,
    "intensity": "easy",
-   "details": "Total 105 min | Primary objective: reintroduce aerobic volume after two rest days without breaking the recovery week | Zone 2, RPE 3-4. Dry but breezy \u2014 head out into the wind, ride home with it. Steady conversational pace throughout, cadence 85-95 rpm, no surges on climbs. Optional: if HRV is back to balanced and legs feel genuinely fresh, add 2x8 min at upper Zone 2 / low Zone 3 with 5 min easy between as a gentle primer for next week's return to tempo/threshold work \u2014 which is where we'll attack the aerobic-high shortage properly."
+   "details": "2.5 hrs | Long aerobic endurance | Zone 2, RPE 3-4. The one day the override allows a longer ride \u2014 use it for steady aerobic volume. Ride continuously in Zone 2, seated climbing, minimal coasting, fuelling every 45 min (60g carbs/hr). No intervals: the week's quality quota is filled by Tuesday and Friday, and this keeps the week close to 80/20. Finish with enough margin to clean up and travel home in the evening. If legs feel heavy after the week, cap it at 2 hours."
   }
  ],
- "generated_at": "2026-09-13T12:52:48.769311+00:00"
+ "generated_at": "2026-09-20T12:39:55.101690+00:00"
 }

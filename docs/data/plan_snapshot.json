@@ -1,12 +1,13 @@
 {
- "tsb": 18.6,
- "ctl": 103.5,
- "atl": 82.6,
- "readiness_score": 61,
- "readiness_level": "moderate",
+ "tsb": 43.1,
+ "ctl": 94.3,
+ "atl": 56.6,
+ "readiness_score": 32,
+ "readiness_level": "low",
  "override": [
-  "At a conference Friday 18 and Saturday 19. No training possible either day, treat both as full rest.",
-  "Just finished 7 consecutive days of loaded bikepacking, roughly 700 km and 8000 m climbing. Garmin scored these rides at about a third of their true cost because they were long and low intensity, so TSB near zero and MAINTAINING status both badly understate the fatigue. Plan this week as recovery from a large block."
+  "At a conference from Wednesday 23 evening until Sunday 27 evening. Wednesday daytime is free for a session as normal before departure.",
+  "Thursday 24 to Saturday 26 the only training available is MTB, mornings only, about 2 hours maximum. No gym, no pool, no other options those days.",
+  "Sunday 27 MTB is available and could run longer than 2 hours, but travelling home that evening."
  ],
- "generated_at": "2026-09-13T12:52:48.769311+00:00"
+ "generated_at": "2026-09-20T12:39:55.101690+00:00"
 }

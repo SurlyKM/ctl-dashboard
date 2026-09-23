@@ -1,6 +1,11 @@
 {
  "week_start": "2026-09-21",
- "coach_says": "Your TSB is very high (+43) but the recovery signals disagree \u2014 HRV is low, resting HR is rising, and readiness is 32 with Garmin flagging STRAINED. So the week protects your committed Tuesday double, keeps everything around it genuinely easy, and adds one tempo session on Friday to attack the -547 aerobic-high shortage without adding more anaerobic load (which is already over target). The conference override shaped Thursday through Sunday into morning MTB only, so gym is skipped this week \u2014 resume Workout A next Monday. Watch morning HRV: if it hasn't rebounded by Friday, downgrade the tempo intervals to steady Zone 2.",
+ "recovery_state": "Fatigued",
+ "training_phase": "Build",
+ "weekly_objective": "Protect recovery through the conference travel block by keeping all remaining rides easy-to-moderate MTB within override limits, deferring quality work until fatigue markers improve.",
+ "quality_sessions": 1,
+ "coach_says": "TSB has dropped 16 points since Sunday and your HRV, resting HR trend, and Garmin recovery status all point the same direction \u2014 you're still digging out from Tuesday's double even though the numbers on paper look 'manageable.' Given the conference override already restricts Thu-Sat to short AM MTB anyway, I've used that natural cap to full advantage: Friday's tempo intervals are shelved in favour of an easy spin, and Saturday/Sunday are trimmed slightly to keep the week net-recovering rather than net-loading. Sunday's long ride survives but shorter, and the aerobic-high gap will get proper attention once you're back to baseline.",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -29,35 +34,36 @@
   {
    "day": "Thu",
    "sport": "mtb",
-   "session": "Zone 2 endurance MTB (conference, AM only)",
-   "duration_min": 90,
+   "session": "Zone 2 endurance MTB (conference, AM only, shortened)",
+   "duration_min": 75,
    "intensity": "easy",
-   "details": "90 min | Aerobic base | Zone 2, RPE 3-4, conversational throughout. Morning ride within the 2h conference window. Choose flowing, non-technical trails and keep power/HR capped in Zone 2 \u2014 spin up climbs seated, no punchy efforts. Yesterday's double plus low readiness means today is about easy aerobic volume only. Wet forecast: allow extra time for bike cleaning, and cut to 60 min if trails are badly waterlogged."
+   "details": "75 min | Aerobic base | Zone 2, RPE 3-4, conversational throughout. Morning ride within the 2h conference window. Choose flowing, non-technical trails and keep power/HR capped in Zone 2 \u2014 spin up climbs seated, no punchy efforts. Trimmed 15 min off the original plan: TSB has fallen sharply since Sunday, HRV is poor, resting HR is trending up, and Garmin flags you as strained. Today is pure easy aerobic volume, nothing more. Wet forecast: allow extra time for bike cleaning, and cut to 60 min if trails are badly waterlogged."
   },
   {
    "day": "Fri",
    "sport": "mtb",
-   "session": "MTB tempo intervals (best weather day)",
-   "duration_min": 110,
-   "intensity": "moderate",
-   "details": "110 min | Tempo \u2014 aerobic-high development | Zone 3. Warm up 20 min Zone 2 with 3 x 30s leg-speed spins. Main set: 3 x 12 min at Zone 3 (RPE 6, controlled breathing, sustainable) with 6 min easy spinning between. Use fire roads or steady climbs so efforts stay smooth \u2014 no anaerobic spikes. Cool down 15-20 min Zone 1. Clearest weather of the week, so make this the quality ride. This directly targets the aerobic-high load gap. Checkpoint: if morning HRV is still low, convert efforts to steady Zone 2 and ride 2 hours easy instead."
+   "session": "Easy MTB spin (tempo shelved due to declining recovery)",
+   "duration_min": 85,
+   "intensity": "easy",
+   "details": "85 min | Aerobic base | Zone 1-2, RPE 3-4, fully conversational. Originally planned as tempo intervals to target the aerobic-high shortage, but with TSB down 16 points since Sunday, HRV still poor, resting HR rising, and anaerobic load already over target, this is not the week to add quality. Ride flowing trails or fire roads, seated spin, no efforts above Zone 2 regardless of how good the legs feel in the clear weather. If HRV/readiness clearly rebound by Friday morning, you may hold a slightly firmer Zone 2-3 pace on climbs, but do not chase intervals \u2014 save that for next week once recovered."
   },
   {
    "day": "Sat",
    "sport": "mtb",
-   "session": "Easy trail spin (conference, AM only)",
-   "duration_min": 75,
+   "session": "Easy trail spin (conference, AM only, trimmed)",
+   "duration_min": 60,
    "intensity": "easy",
-   "details": "75 min | Recovery/easy aerobic | Zone 1-2, RPE 2-3. Morning ride, well within the 2h limit. Relaxed trail riding \u2014 soft-pedal, high cadence, freewheel the descents, no efforts. Drizzle and wind forecast, so keep it short and enjoyable rather than forcing distance. This buffers recovery between Friday's tempo work and Sunday's longer ride."
+   "details": "60 min | Recovery/easy aerobic | Zone 1-2, RPE 2-3. Morning ride, well within the 2h limit, shortened slightly from the original 75 min to keep the deload going ahead of Sunday. Relaxed trail riding \u2014 soft-pedal, high cadence, freewheel the descents, no efforts. Drizzle and wind forecast, so keep it short and enjoyable rather than forcing distance. This buffers recovery between Friday's easy ride and Sunday's longer ride."
   },
   {
    "day": "Sun",
    "sport": "mtb",
-   "session": "Long endurance MTB before travelling home",
-   "duration_min": 150,
+   "session": "Long endurance MTB before travelling home (shortened)",
+   "duration_min": 120,
    "intensity": "easy",
-   "details": "2.5 hrs | Long aerobic endurance | Zone 2, RPE 3-4. The one day the override allows a longer ride \u2014 use it for steady aerobic volume. Ride continuously in Zone 2, seated climbing, minimal coasting, fuelling every 45 min (60g carbs/hr). No intervals: the week's quality quota is filled by Tuesday and Friday, and this keeps the week close to 80/20. Finish with enough margin to clean up and travel home in the evening. If legs feel heavy after the week, cap it at 2 hours."
+   "details": "2 hrs | Long aerobic endurance | Zone 2, RPE 3-4. Shortened from the original 2.5 hrs \u2014 recovery has continued to decline through the week (TSB down 16 pts, HRV poor, resting HR rising), so protecting the long ride means trimming it rather than cancelling it. Ride continuously in Zone 2, seated climbing, minimal coasting, fuelling every 45 min (60g carbs/hr). No intervals: quality quota for the week was Tuesday only, given Friday's tempo was shelved. Stronger winds and returning drizzle mean an earlier or more sheltered route is wise. Finish with enough margin to clean up and travel home in the evening \u2014 if legs feel heavy, cap it at 90 minutes."
   }
  ],
- "generated_at": "2026-09-20T12:39:55.101690+00:00"
+ "generated_at": "2026-09-23T02:18:02.787175+00:00",
+ "midweek_revision": true
 }

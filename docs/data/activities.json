@@ -1,22 +1,5 @@
 [
  {
-  "id": 22111756745,
-  "type": "cycling",
-  "start": "2026-03-09 18:41:42",
-  "duration_s": 3790.5810546875,
-  "distance_m": 19190.51953125,
-  "elev_gain_m": 83.0,
-  "avg_hr": 111.0,
-  "max_hr": 146.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 415.0,
-  "training_load": 14.697189331054688,
-  "aerobic_te": 1.100000023841858,
-  "load": 14.7,
-  "sport": "cycling"
- },
- {
   "id": 22123701771,
   "type": "cycling",
   "start": "2026-03-10 17:39:25",

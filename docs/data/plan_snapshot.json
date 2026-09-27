@@ -1,13 +1,9 @@
 {
- "tsb": 43.1,
- "ctl": 94.3,
- "atl": 56.6,
- "readiness_score": 32,
- "readiness_level": "low",
- "override": [
-  "At a conference from Wednesday 23 evening until Sunday 27 evening. Wednesday daytime is free for a session as normal before departure.",
-  "Thursday 24 to Saturday 26 the only training available is MTB, mornings only, about 2 hours maximum. No gym, no pool, no other options those days.",
-  "Sunday 27 MTB is available and could run longer than 2 hours, but travelling home that evening."
- ],
- "generated_at": "2026-09-20T12:39:55.101690+00:00"
+ "tsb": 30.9,
+ "ctl": 89.5,
+ "atl": 57.6,
+ "readiness_score": 75,
+ "readiness_level": "high",
+ "override": [],
+ "generated_at": "2026-09-27T13:21:41.544196+00:00"
 }

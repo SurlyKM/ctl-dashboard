@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-09-29T16:34:10.974132+00:00",
+ "generated_at": "2026-09-29T23:03:50.674075+00:00",
  "current": {
   "date": "2026-09-30",
-  "load": 0.0,
-  "ctl": 87.2,
-  "atl": 56.8,
+  "load": 131.9,
+  "ctl": 90.3,
+  "atl": 74.4,
   "tsb": 23.7
  },
  "series": [
@@ -1410,9 +1410,9 @@
   },
   {
    "date": "2026-09-30",
-   "load": 0.0,
-   "ctl": 87.2,
-   "atl": 56.8,
+   "load": 131.9,
+   "ctl": 90.3,
+   "atl": 74.4,
    "tsb": 23.7
   }
  ],
@@ -1492,15 +1492,15 @@
   {
    "week": "2026-W40",
    "hours": {
-    "cycling": 1.52,
+    "cycling": 2.57,
     "yoga": 1.8,
     "mtb": 0.89
    },
-   "load": 175
+   "load": 307
   }
  ],
  "reference": {
   "max_hr_observed": 204.0,
-  "resting_hr_avg": 51.1
+  "resting_hr_avg": 51.2
  }
 }

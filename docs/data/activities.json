@@ -5353,5 +5353,39 @@
   "aerobic_te": 3.0,
   "load": 131.9,
   "sport": "cycling"
+ },
+ {
+  "id": 24549543712,
+  "type": "lap_swimming",
+  "start": "2026-09-30 13:47:05",
+  "duration_s": 1176.717041015625,
+  "distance_m": 1000.0,
+  "elev_gain_m": null,
+  "avg_hr": 132.0,
+  "max_hr": 150.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 243.0,
+  "training_load": 47.73921203613281,
+  "aerobic_te": 2.200000047683716,
+  "load": 47.7,
+  "sport": "swim"
+ },
+ {
+  "id": 24551087651,
+  "type": "mountain_biking",
+  "start": "2026-09-30 17:09:24",
+  "duration_s": 3140.6640625,
+  "distance_m": 13272.3701171875,
+  "elev_gain_m": 384.0,
+  "avg_hr": 121.0,
+  "max_hr": 163.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 421.0,
+  "training_load": 51.40763854980469,
+  "aerobic_te": 2.0999999046325684,
+  "load": 51.4,
+  "sport": "mtb"
  }
 ]

@@ -1,6 +1,11 @@
 {
  "week_start": "2026-09-28",
- "coach_says": "You're fresh (TSB +30.9, readiness 75) but Garmin flags a big aerobic-high shortage alongside excess anaerobic load \u2014 so this week's priority is sustained tempo/threshold work, not more sprints. Tuesday stays your committed double hard day, with a second quality block Thursday in the best weather of the week; the wet weekend pushes the long ride indoors and Sunday becomes recovery. On the MTB group ride, ride hard but resist repeated all-out sprint efforts \u2014 your anaerobic bucket is already overflowing.",
+ "recovery_state": "Managing Fatigue",
+ "training_phase": "Build",
+ "weekly_objective": "Protect recovery after Tuesday's double hard day while maintaining aerobic volume, deferring further quality work until readiness rebounds.",
+ "quality_sessions": 1,
+ "coach_says": "Your readiness dropped 25 points and ATL spiked hard after Tuesday's AM/PM double \u2014 a clear sign the body hasn't caught up yet, even though TSB and HRV still look okay. I've pulled Thursday's threshold intervals back to an easy spin, swapped Friday's gym to upper-body/core to keep your legs fully fresh (the original lower-body session sat too close to Saturday's long ride), and trimmed Saturday's long ride slightly. We'll pick the aerobic-high quality work back up once recovery-time and sleep factors move out of 'moderate.'",
+ "revised": true,
  "days": [
   {
    "day": "Mon",
@@ -29,26 +34,26 @@
   {
    "day": "Thu",
    "sport": "cycling",
-   "session": "Threshold intervals \u2014 outdoor road",
-   "duration_min": 60,
-   "intensity": "hard",
-   "details": "Before work, best weather of the week (dry, up to 25\u00b0C). Total 60 min | Primary objective: close the aerobic-high gap | Zone 4. Warm-up: 12 min progressive Z1-Z2 with 2x30s builds. Main set: 3x10 min at threshold (Z4, RPE 7-8, hard but controlled \u2014 a pace you could hold ~40-60 min fresh), 5 min easy Z1 spinning between reps. Cool-down: 8 min easy. Hold steady power/effort within each rep, no surging. This plus Tuesday's climbs directly targets the -652 aerobic-high shortage."
+   "session": "Easy aerobic ride \u2014 outdoor road",
+   "duration_min": 50,
+   "intensity": "easy",
+   "details": "Good weather window, but readiness has dropped sharply this week (75 to 50) with ATL climbing fast \u2014 this is a recovery-priority ride, not a quality session. Total 50 min | Zone 1-2 only, conversational pace throughout, RPE 3-4. No intervals, no surges. Flat-to-rolling terrain preferred over hills. Cool-down easy. The aerobic-high gap can wait until recovery is back on track \u2014 pushing threshold work now would only dig the hole deeper."
   },
   {
    "day": "Fri",
    "sport": "gym",
-   "session": "Workout B \u2014 Posterior chain & single-leg strength",
-   "duration_min": 50,
+   "session": "Workout B \u2014 Upper body & core (legs protected for Saturday)",
+   "duration_min": 45,
    "intensity": "moderate",
-   "details": "Lunch session (showery day \u2014 gym is the smart choice). Warm-up: 8 min bike + leg swings, bodyweight squats, glute activation. Main: Romanian Deadlift 4x6 (moderate-heavy, crisp form), Bulgarian Split Squat 3x8/side, Single-Leg Hip Thrust 3x10/side, Seated Hamstring Curl 3x8, Standing Calf Raise 3x12, Dead Bug 3x10/side. Rest 2 min on RDLs, 90s elsewhere. Objective: cycling-specific posterior chain and single-leg strength. Keep loads at ~80-85% of usual working weight since tomorrow is a long Z2 ride \u2014 solid stimulus, not smashed legs."
+   "details": "Lunch session. Warm-up: 8 min easy bike + shoulder and thoracic mobility. Main: DB Incline Press 3x8, Chin-ups 3x6-8, Cable Row 3x10, Pallof Press 3x12/side, Dead Bug 3x10/side, Side Plank 3x40s, Farmer Carry 3x40m. Rest 90s between sets. Switched from the original posterior-chain/single-leg session to protect your legs fully \u2014 heavy lower-body work sits too close to tomorrow's long ride, and fatigue is already elevated this week. Strength stimulus maintained via upper body and trunk work instead."
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Long endurance ride \u2014 indoor (Zwift)",
-   "duration_min": 135,
+   "session": "Long endurance ride \u2014 indoor (Zwift), shortened",
+   "duration_min": 110,
    "intensity": "easy",
-   "details": "Heavy drizzle and gusty wind rule out the road, so take the long ride to the trainer. Total 2h15 | Primary objective: aerobic base volume | Zone 2, conversational pace throughout. No intervals \u2014 steady Z2 (RPE 4-5), aiming for consistent power. Optionally include 3x8 min at low cadence (60-65 rpm) at the same Z2 power for muscular endurance without adding intensity. Fuel from the start (60g+ carbs/hour), fan on, and keep it disciplined \u2014 this ride must stay easy to preserve the 80/20 balance after two quality days."
+   "details": "Rain risk remains this weekend, so staying on the trainer. Total 1h50 (trimmed from the original 2h15 given this week's fatigue accumulation) | Primary objective: aerobic base volume without digging a deeper hole | Zone 2, conversational pace throughout, RPE 4-5. No intervals, no low-cadence blocks this week \u2014 just steady, easy riding. Fuel from the start (60g+ carbs/hour), fan on. Keep it fully disciplined; this is about maintaining aerobic volume while recovery catches up, not adding load."
   },
   {
    "day": "Sun",
@@ -56,8 +61,9 @@
    "session": "Recovery yoga + full rest",
    "duration_min": 40,
    "intensity": "easy",
-   "details": "Wet and windy \u2014 perfect rest day. 40 min gentle yoga/mobility flow: focus on hip flexors, hamstrings, glutes, thoracic spine and lower back after a big riding week. Long holds (60-90s), nasal breathing, nothing strenuous. Otherwise fully switch off, eat well, and get to bed early \u2014 sleep history was your weakest readiness factor this week, so bank hours tonight to start next week fresh."
+   "details": "40 min gentle yoga/mobility flow: focus on hip flexors, hamstrings, glutes, thoracic spine and lower back after a demanding week. Long holds (60-90s), nasal breathing, nothing strenuous. Otherwise fully switch off, eat well, and get to bed early \u2014 sleep-tonight and recovery-time were your weakest readiness factors this week, so prioritise banking hours to head into next week properly recovered."
   }
  ],
- "generated_at": "2026-09-27T13:21:41.544196+00:00"
+ "generated_at": "2026-09-30T02:52:43.394480+00:00",
+ "midweek_revision": true
 }

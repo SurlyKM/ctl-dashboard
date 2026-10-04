@@ -1,9 +1,9 @@
 {
- "tsb": 30.9,
- "ctl": 89.5,
- "atl": 57.6,
- "readiness_score": 75,
- "readiness_level": "high",
+ "tsb": 7.1,
+ "ctl": 90.2,
+ "atl": 74.9,
+ "readiness_score": 54,
+ "readiness_level": "moderate",
  "override": [],
- "generated_at": "2026-09-27T13:21:41.544196+00:00"
+ "generated_at": "2026-10-04T12:54:19.845285+00:00"
 }

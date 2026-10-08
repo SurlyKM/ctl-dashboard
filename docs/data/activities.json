@@ -1,22 +1,5 @@
 [
  {
-  "id": 22256122577,
-  "type": "mountain_biking",
-  "start": "2026-03-22 14:31:37",
-  "duration_s": 7074.10595703125,
-  "distance_m": 33702.55078125,
-  "elev_gain_m": 645.0,
-  "avg_hr": 131.0,
-  "max_hr": 182.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 1046.0,
-  "training_load": 141.11988830566406,
-  "aerobic_te": 3.0,
-  "load": 141.1,
-  "sport": "mtb"
- },
- {
   "id": 22267173804,
   "type": "lap_swimming",
   "start": "2026-03-23 14:21:10",

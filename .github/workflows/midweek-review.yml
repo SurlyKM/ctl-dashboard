@@ -2,8 +2,10 @@ name: Mid-week plan review
 
 on:
   schedule:
-    # Wednesday 8pm AEST — after the day's training is synced
-    - cron: "0 10 * * 3"
+    # Wednesday 8pm local, after the day's training is synced. The cron is
+    # evaluated in the timezone below, so this is local time, not UTC.
+    # (Was "0 10", which with the timezone key ran at 10am Wednesday.)
+    - cron: "0 20 * * 3"
       timezone: "Australia/Sydney"
   workflow_dispatch: {}
 
@@ -17,6 +19,7 @@ concurrency:
 jobs:
   review:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -44,16 +47,18 @@ jobs:
           LOCATION_LAT: ${{ secrets.LOCATION_LAT }}
           LOCATION_LON: ${{ secrets.LOCATION_LON }}
           TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
-          PLAN_OVERRIDE: ${{ secrets.PLAN_OVERRIDE }}
+          TRAINER_MODEL: ${{ vars.TRAINER_MODEL }}
+          TRAINER_EFFORT: ${{ vars.TRAINER_EFFORT }}
+          PLAN_OVERRIDE: ${{ vars.PLAN_OVERRIDE || secrets.PLAN_OVERRIDE }}
         run: python scripts/midweek_review.py
 
       - name: Commit revised plan
         run: |
           git config user.name "fitness-bot"
           git config user.email "actions@users.noreply.github.com"
-          git stash
-          git pull --rebase
-          git stash pop 2>/dev/null || true
           git add docs/data/
-          git diff --cached --quiet || git commit -m "midweek review $(date -u +%F)"
+          git diff --cached --quiet && exit 0
+          git commit -m "midweek review $(date -u +%F)"
+          # Rebase onto anything pushed while this job ran (e.g. a code change)
+          git pull --rebase
           git push

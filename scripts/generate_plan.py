@@ -1,8 +1,8 @@
-"""Sunday job: summarise recent training + recovery, ask the Trainer LLM
+"""Sunday job: summarise recent training + recovery, ask the coach model
 for a 7-day plan, save it, optionally notify Discord.
 
-The model only ever sees aggregates already stored in the repo, so it
-receives no more information than the public dashboard shows.
+The model only ever sees aggregates already stored in the repo plus the
+private athlete profile secret.
 """
 
 import json
@@ -10,8 +10,8 @@ import os
 import datetime as dt
 from pathlib import Path
 
-import anthropic
-from fetch_weather import get_weather_summary
+from coach_api import MODEL, SPORTS, DAY_NAMES, call_coach
+from fetch_weather import get_forecast_table
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
 
@@ -20,103 +20,98 @@ def _today_local() -> dt.date:
     """Return today in configured local timezone, not UTC."""
     try:
         import zoneinfo
-        tz = zoneinfo.ZoneInfo(os.environ.get("TIMEZONE", "Australia/Sydney"))
+        tz = zoneinfo.ZoneInfo(os.environ.get("TIMEZONE") or "Australia/Sydney")
         return dt.datetime.now(tz).date()
     except Exception:
         return dt.date.today()
-# `or` rather than a .get() default: an unset Actions variable arrives as ""
-MODEL = os.environ.get("TRAINER_MODEL") or "claude-fable-5"
+
+
+# Shared by the weekly plan and the mid-week review so the two never drift
+COACHING_RULES = """
+<priorities>
+1. Safety and recovery come first.
+2. week_override, committed_sessions and constraints are non-negotiable.
+3. Cycling performance is the primary goal.
+4. Strength supports cycling and should not compete with it.
+
+week_override, when present, applies to this week only. It describes a temporary change such as travel, illness or restricted equipment, and it outranks the athlete's usual pattern wherever the two conflict. Do not schedule a session the override rules out, even if it appears in committed_sessions. Say in coach_says how the override shaped the week.
+</priorities>
+
+<intensity_distribution>
+Aim for roughly 80% of the week's training time at low intensity (zone 1-2). Count only the work portion of intervals as high intensity; warm-ups, recoveries and cool-downs are low. A session's intensity label describes its hardest part.
+
+Garmin's monthly load balance is a secondary input. When its feedback conflicts with this distribution, close the gap by choosing the type of the quality sessions you already have (for example, make one of them tempo or threshold), not by adding more hard sessions.
+</intensity_distribution>
+
+<load_and_fatigue>
+Load figures are Garmin training load (EPOC based), not TSS. Garmin undercounts long low-intensity rides, so absolute TSS-style thresholds don't transfer. Judge form relative to fitness instead: form_pct = TSB / CTL x 100, provided in the data.
+- form_pct below -30, Garmin status unproductive or overreaching, or readiness below 40: at most one quality session, reduce total volume by roughly 20-30%.
+- form_pct between -30 and -5: normal productive training.
+- form_pct above +15 for more than a few days: the athlete is fresh; this is a good week for quality, unless it is a planned taper.
+- Week-to-week load: avoid jumps of more than about 10% over the recent 4-week average, except when returning from a recovery week.
+- Recovery weeks: after roughly three build weeks (see load_history), or when recovery signals have been poor for several days, plan a recovery week with about 30-40% less load. Keep one short session with some intensity so the athlete stays sharp.
+- When a goal event is given, periodise toward it: build, then a 7-10 day taper before the event.
+</load_and_fatigue>
+
+<recovery_signals>
+Read the signals together and weigh trends over single nights:
+- HRV: compare last night and the 7-day average to the athlete's baseline range. A 7-day average below baseline, or status unbalanced/low, means accumulated fatigue.
+- Resting HR: 5+ bpm above the 14-day average is a warning sign, especially alongside low HRV or poor sleep.
+- Readiness and sleep: supporting evidence, not decisive alone.
+The plan is written days ahead, so give every hard or key session a fallback: what to do instead if signals are poor that morning (for example, "ride the full duration in zone 2"). Leave fallback empty for easy and rest days.
+</recovery_signals>
+
+<scheduling>
+- Never schedule hard sessions on consecutive days.
+- Keep hard days hard and easy days easy. Put strength work on the same day as a hard ride (after it, ideally 6+ hours later) where the athlete's slots allow. Otherwise put it on a day at least 48 hours before the next key ride.
+- No heavy lower-body work in the 48 hours before a key ride, race or long ride.
+- Use the dated weather table: outdoor rides on dry days, indoor or alternative sessions on wet or very windy days.
+- Use compliance data. A missed session is information: a repeatedly missed slot points to a schedule problem, not low motivation; adjust rather than repeat.
+</scheduling>
+
+<strength>
+Evidence for cyclists (e.g. Rønnestad and colleagues) favours heavy strength training over light, high-rep work for cycling economy and sprint power.
+- Sessions: 2 per week in base and build phases, 1 maintenance session when peaking or in a recovery week. Label them Workout A and Workout B and alternate.
+- Include at least one heavy lower-body compound lift per session (back or half squat, leg press, Bulgarian split squat, Romanian deadlift, hip thrust): 3-4 sets of 4-8 reps at 1-3 reps in reserve. Add trunk and hip stability work.
+- Progress load week to week when recovered. In recovery weeks cut sets by about half and keep the load.
+</strength>
+
+<session_formats>
+The dashboard parses details, so follow these formats. Use newline characters between lines.
+
+Gym:
+Workout A:
+Warm-up: <what to do>
+<Exercise name> <sets>x<reps> (<optional note, e.g. load or RIR>)
+... one exercise per line; holds as e.g. Side Plank 3x30s/side
+Rest: <rest guidance>
+Objective: <one sentence>
+
+Swim (target ~1000 m unless recovery dictates shorter):
+Warmup: <distance and content>
+Main set: <sets with distances, effort and rest>
+Cooldown: <distance>
+Total: <distance>
+Objective: <one sentence>
+
+Cycling: first line "Total duration | Primary objective | Zone or RPE target", then the structure with work duration, recovery duration and repeats for any intervals, and a fuelling note for rides over 90 minutes. Session types: recovery (Z1-2, no intervals), base (Z2 steady), tempo (Z3), threshold (Z4), VO2 (Z5).
+
+One entry per day. If a day has two sessions (e.g. AM ride + PM gym), combine them in one entry and describe both in details.
+</session_formats>
+"""
 
 SYSTEM = """
 <role>
-You are an elite cycling and strength coach. Analyse the athlete data provided and write a 7-day training plan grounded in current exercise science evidence.
+You are an experienced cycling and strength coach writing next week's 7-day plan for one athlete, grounded in current exercise-science evidence and the athlete's actual data.
 </role>
-
-<priorities>
-1. Safety and recovery — always first
-2. Honour week_override, committed_sessions and constraints — non-negotiable
-3. Cycling performance — primary goal
-4. Strength — supports cycling, never competes with it
-5. 80/20 rule — roughly 80% easy, 20% hard across the week
-
-week_override, when present, applies to this week only. It describes a temporary change in circumstances such as travel, illness or restricted equipment, and it takes precedence over the athlete's usual pattern wherever the two conflict. Do not schedule a session the override rules out, even if it appears in committed_sessions. Say in coach_says how the override shaped the week.
-</priorities>
-
-<decision_rules>
-- TSB below -30 OR Garmin UNPRODUCTIVE: one quality session max, reduce total volume
-- AEROBIC_HIGH_SHORTAGE: include at least one tempo or threshold ride this week
-- Excess anaerobic load: reduce high-intensity work
-- Never schedule hard sessions on consecutive days
-- Never schedule heavy lower-body the day before a key ride, race, or long endurance session
-- Use all recovery signals together — readiness score, HRV, resting HR trend, sleep, TSB
-- Weather forecast: use it to place outdoor sessions on dry days and substitute indoor/yoga on wet days
-</decision_rules>
-
+""" + COACHING_RULES + """
 <planning_approach>
-Before writing the plan, reason through:
-- What is the athlete's primary objective this week given their recovery state?
-- How many quality sessions are appropriate given TSB, readiness, and Garmin status?
-- Which days should be hard, which easy, which rest?
-- How does the weather affect session placement?
-- What does the compliance data (if present) tell you about what is and isn't working?
-
-Select sessions, exercises, intervals and distances based on evidence and the athlete's current state — not a fixed template. A deeply fatigued athlete needs different gym work than a fresh one. A cyclist with aerobic high shortage needs different intervals than one who is peaking.
+Before writing, work out: the primary objective for the week given recovery state and load history; the training phase; how many quality sessions fit; which days are hard, easy and rest; how the weather affects placement; and what last week's compliance shows. Choose sessions, exercises, intervals and distances for this athlete's current state rather than from a fixed template.
 </planning_approach>
 
-<gym_format>
-Label sessions Workout A or Workout B. Alternate across the week. Maximum 2 gym sessions per week.
-Select exercises based on the week's objectives and recovery state:
-- Prioritise posterior chain, single-leg strength, hip stability, and core
-- Deload weeks: reduce load and sets, keep movement quality
-- Normal weeks: follow progressive overload principles
-- Avoid heavy quad-dominant work the day before a key ride
-
-Format each exercise as: ExerciseName SetsxReps (or SetsxDuration for holds)
-Include a warm-up line and rest period guidance.
-Add a brief objective note at the end explaining the session focus.
-</gym_format>
-
-<swim_format>
-Structure: Warmup / Main set / Cooldown / Total distance
-Select set structure based on the week's objectives:
-- Recovery weeks: easy continuous or low-intensity drills
-- Base weeks: aerobic sets with moderate rest
-- Quality weeks: threshold or sprint sets
-State distances, effort level, and rest intervals explicitly.
-Target ~1000m unless recovery dictates shorter.
-</swim_format>
-
-<cycling_format>
-State: Total duration | Primary objective | Zone or RPE target
-Structure intervals explicitly with work duration, recovery duration, and number of repeats.
-Select session type based on the athlete's needs:
-- Recovery: Zone 1-2, conversational pace, no intervals
-- Base: Zone 2 steady, long and easy
-- Tempo: Zone 3, sustained effort
-- Threshold: Zone 4, hard but controlled
-- VO2: Zone 5, short hard efforts
-Reference weather where relevant (outdoor vs indoor).
-</cycling_format>
-
-<response_schema>
-Respond ONLY with valid JSON. No markdown fences. No explanatory text.
-Exactly 7 entries Monday through Sunday. One entry per day — if Tuesday has AM and PM sessions, combine them into one entry and describe both in details.
-
-{
-  "week_start": "YYYY-MM-DD",
-  "coach_says": "2-3 sentences explaining the week's primary objective, what the data drove the decision, and what to watch for",
-  "days": [
-    {
-      "day": "Mon",
-      "sport": "gym|cycling|mtb|swim|yoga|walk_hike|rest",
-      "session": "short title",
-      "duration_min": 0,
-      "intensity": "easy|moderate|hard",
-      "details": "full session content using the formats above"
-    }
-  ]
-}
-</response_schema>
+<output>
+Return the plan in the required JSON schema. days has exactly 7 entries, Mon through Sun. coach_says is 2-3 sentences for the athlete: the week's objective, the data that drove it, and what to watch for. decision_log is a short bullet summary of your key decisions for the workflow log.
+</output>
 """
 
 
@@ -169,42 +164,60 @@ _SPORT_EQUIVALENTS = {
     "mtb":     {"mtb", "cycling"},
 }
 
-def compliance(plan: dict, activities: list) -> dict:
-    """How did last week's plan compare to what actually happened?
+def compliance(plan: dict, activities: list, today: dt.date | None = None) -> dict:
+    """How does the plan compare with what actually happened?
 
-    week_start in the plan JSON is the Monday of the plan week.
-    Day index 0 = Monday, 1 = Tuesday ... 6 = Sunday.
+    Every day is reported, including misses (the old version only passed
+    days with an activity, so skipped sessions were invisible to the coach).
+    status is one of: done, missed, rest_ok, today, upcoming.
+    unplanned lists sports recorded that day that the plan didn't call for.
     """
     if not plan:
         return {}
+    today = today or _today_local()
     week_start = dt.date.fromisoformat(plan["week_start"])
 
-    done_sports_by_day = {}
+    sports_by_day: dict[int, set] = {}
+    load_by_day: dict[int, float] = {}
     for a in activities:
         if not a.get("start"):
             continue
-        d = dt.date.fromisoformat(a["start"][:10])
-        offset = (d - week_start).days
+        offset = (dt.date.fromisoformat(a["start"][:10]) - week_start).days
         if 0 <= offset < 7:
-            done_sports_by_day.setdefault(offset, set()).add(a.get("sport"))
+            sports_by_day.setdefault(offset, set()).add(a.get("sport"))
+            load_by_day[offset] = load_by_day.get(offset, 0) + (a.get("load") or 0)
 
     results = []
     for i, day in enumerate(plan.get("days", [])):
+        date = week_start + dt.timedelta(days=i)
         planned = day.get("sport")
-        actual_set = done_sports_by_day.get(i, set())
-        actual = sorted(actual_set)
-        # Count as done if:
-        # - planned sport was recorded, or an accepted equivalent (MTB / road)
-        # - rest day with no activity or only gentle substitutes
+        actual_set = sports_by_day.get(i, set())
         if planned == "rest":
-            hit = not actual_set or actual_set.issubset(_REST_SUBSTITUTES)
+            accepted = set()
+            hit = date < today and actual_set.issubset(_REST_SUBSTITUTES)
         else:
             accepted = _SPORT_EQUIVALENTS.get(planned, {planned})
             hit = bool(accepted & actual_set)
-        results.append({"day": day.get("day"), "planned": planned,
-                        "actual": actual, "matched": hit})
-    matched = sum(1 for r in results if r["matched"])
-    return {"sessions_matched": f"{matched}/7", "detail": results}
+        unplanned = sorted(actual_set - accepted - _REST_SUBSTITUTES)
+
+        if hit:
+            status = "rest_ok" if planned == "rest" else "done"
+        elif date > today:
+            status = "upcoming"
+        elif date == today:
+            status = "today"
+        else:
+            status = "missed"
+        results.append({
+            "day": day.get("day"), "date": date.isoformat(),
+            "planned": planned, "planned_intensity": day.get("intensity"),
+            "planned_session": day.get("session"),
+            "actual": sorted(actual_set), "load": round(load_by_day.get(i, 0)),
+            "unplanned": unplanned, "matched": hit, "status": status,
+        })
+    elapsed = [r for r in results if r["status"] not in ("upcoming", "today")]
+    matched = sum(1 for r in elapsed if r["matched"])
+    return {"sessions_matched": f"{matched}/{len(elapsed)} elapsed days", "detail": results}
 
 
 def _avg(vals):
@@ -269,69 +282,96 @@ def _resting_hr_trend(daily_items: list) -> str:
     return "stable"
 
 
-def build_summary() -> dict:
-    metrics    = json.loads((DATA_DIR / "metrics.json").read_text())
-    daily      = json.loads((DATA_DIR / "daily.json").read_text())
-    activities = json.loads((DATA_DIR / "activities.json").read_text())
+def _avg_n(vals, nd=1):
+    """Mean of the non-null values, or None."""
+    vals = [v for v in vals if v is not None]
+    return round(sum(vals) / len(vals), nd) if vals else None
 
-    status_path = DATA_DIR / "training_status.json"
-    garmin_status = json.loads(status_path.read_text()) if status_path.exists() else {}
 
+def load_athlete_profile() -> dict:
     profile_path = DATA_DIR / "athlete_profile.json"
-    athlete_profile = json.loads(profile_path.read_text()) if profile_path.exists() else {}
+    profile = json.loads(profile_path.read_text()) if profile_path.exists() else {}
     private_raw = os.environ.get("ATHLETE_PROFILE_PRIVATE", "").strip()
     if private_raw:
         try:
-            athlete_profile.update(json.loads(private_raw))
+            profile.update(json.loads(private_raw))
         except json.JSONDecodeError as e:
             print(f"Warning: ATHLETE_PROFILE_PRIVATE is not valid JSON: {e}")
+    return profile
 
-    last14 = sorted(daily.items())[-14:]
-    last7  = last14[-7:]
 
-    # Current week hours by sport
-    import zoneinfo as _zi
-    _tz = _zi.ZoneInfo(os.environ.get("TIMEZONE", "Australia/Sydney"))
-    now = dt.datetime.now(_tz)
-    monday = now - dt.timedelta(days=now.weekday())
-    monday = monday.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+def build_summary(weather_dates: list[dt.date] | None = None) -> dict:
+    """Everything the coach sees, as a plain dict.
+
+    weather_dates: the days to include in the forecast table (the plan week
+    for the Sunday job, the remaining days for the mid-week review).
+    """
+    metrics    = json.loads((DATA_DIR / "metrics.json").read_text())
+    daily      = json.loads((DATA_DIR / "daily.json").read_text())
+    activities = json.loads((DATA_DIR / "activities.json").read_text())
+    status_path = DATA_DIR / "training_status.json"
+    garmin_status = json.loads(status_path.read_text()) if status_path.exists() else {}
+    today = _today_local()
+
+    days_sorted = sorted(daily.items())
+    last7, last14, last60 = days_sorted[-7:], days_sorted[-14:], days_sorted[-60:]
+    latest = days_sorted[-1][1] if days_sorted else {}
+
+    # Hours by sport in the current Monday-based week (on Sunday: the week
+    # that is just finishing)
+    monday = today - dt.timedelta(days=today.weekday())
     week_hours: dict = {}
     for a in activities:
-        if not a.get("start"):
-            continue
-        try:
-            start = dt.datetime.fromisoformat(a["start"])
-        except ValueError:
-            continue
-        if start >= monday:
+        start = (a.get("start") or "")[:10]
+        if start and start >= monday.isoformat():
             sport = a.get("sport", "other")
             week_hours[sport] = round(week_hours.get(sport, 0) + (a.get("duration_s") or 0) / 3600, 1)
 
-    # Only include compliance if the plan covers a fully completed week
+    # Compliance for the plan currently on file, once its week is (nearly)
+    # over. The Sunday job runs on the plan's last day, so the old check
+    # (today >= week_start + 7) never passed and the coach never saw it.
     plan_path = DATA_DIR / "plan.json"
     last_plan = json.loads(plan_path.read_text()) if plan_path.exists() else {}
     compliance_data = None
     if last_plan.get("week_start"):
-        week_end = dt.date.fromisoformat(last_plan["week_start"]) + dt.timedelta(days=7)
-        if _today_local() >= week_end:
-            compliance_data = compliance(last_plan, activities)
+        plan_start = dt.date.fromisoformat(last_plan["week_start"])
+        if plan_start + dt.timedelta(days=6) <= today < plan_start + dt.timedelta(days=14):
+            compliance_data = compliance(last_plan, activities, today)
 
+    # Load trend
+    series = metrics.get("series") or []
     cur = metrics.get("current") or {}
 
+    def ctl_ago(n):
+        return series[-1 - n]["ctl"] if len(series) > n else None
+    ctl = cur.get("ctl")
+    tsb = cur.get("tsb")
+    form_pct = round(tsb / ctl * 100) if ctl and tsb is not None else None
+
+    # HRV and resting HR relative to the athlete's own baseline
+    def hrv_vals(rows):
+        return [v.get("hrv_last_night") for _, v in rows]
+
     summary = {
-        "today": _today_local().isoformat(),
-        "athlete_profile": athlete_profile,
+        "today": today.isoformat(),
+        "athlete_profile": load_athlete_profile(),
         "load": {
-            "ctl": cur.get("ctl"),
-            "atl": cur.get("atl"),
-            "tsb": cur.get("tsb"),
+            "ctl": ctl, "atl": cur.get("atl"), "tsb": tsb, "form_pct": form_pct,
+            "ctl_7d_ago": ctl_ago(7), "ctl_28d_ago": ctl_ago(28),
         },
+        "load_history": metrics.get("weekly") or [],
         "this_week_hours": week_hours,
         "recovery": {
             "sleep_score_7d_avg": _avg([v.get("sleep_score") for _, v in last7]),
             "sleep_hours_7d_avg": _avg([(v.get("sleep_s") or 0) / 3600 for _, v in last7]),
-            "hrv_last_night":     last14[-1][1].get("hrv_last_night") if last14 else None,
-            "hrv_status":         last14[-1][1].get("hrv_status") if last14 else None,
+            "hrv_last_night":     latest.get("hrv_last_night"),
+            "hrv_7d_avg":         _avg_n(hrv_vals(last7)),
+            "hrv_60d_avg":        _avg_n(hrv_vals(last60)),
+            "hrv_baseline_low":   latest.get("hrv_baseline_low"),
+            "hrv_baseline_high":  latest.get("hrv_baseline_high"),
+            "hrv_status":         latest.get("hrv_status"),
+            "resting_hr_last":    latest.get("resting_hr"),
+            "resting_hr_14d_avg": _avg_n([v.get("resting_hr") for _, v in last14]),
             "resting_hr_trend":   _resting_hr_trend(last14),
         },
         "garmin_assessment": {
@@ -361,10 +401,12 @@ def build_summary() -> dict:
     }
     if compliance_data:
         summary["last_week_compliance"] = compliance_data
-    weather = get_weather_summary()
+    weather = get_forecast_table(weather_dates or [])
     if weather:
-        summary["weather_forecast_7day"] = weather
+        summary["weather_forecast"] = weather
     return summary
+
+
 def _load_balance_with_gap(load_balance: dict) -> dict:
     """Add gap field to each load balance zone for easier LLM reasoning."""
     out = {}
@@ -384,101 +426,98 @@ def _load_balance_with_gap(load_balance: dict) -> dict:
     return out
 
 
-def build_user_message(summary: dict, week_start: str,
-                       overrides: list[str] | None = None) -> str:
-    """Build a structured XML user message for the LLM."""
-    p = summary.get("athlete_profile", {})
+def _v(value, suffix: str = "") -> str:
+    """Format a value for the prompt; missing data reads as 'unknown', not 'None'."""
+    return "unknown" if value is None or value == "" else f"{value}{suffix}"
+
+
+def compliance_lines(comp: dict) -> list[str]:
+    lines = []
+    for d in comp.get("detail", []):
+        actual = ", ".join(d["actual"]) or "nothing recorded"
+        extra = f", unplanned={', '.join(d['unplanned'])}" if d.get("unplanned") else ""
+        lines.append(f"    {d['day']} {d['date']}: planned={d['planned']} ({_v(d.get('planned_intensity'))}) "
+                     f"\"{d.get('planned_session') or ''}\", actual={actual}, load={d['load']}, "
+                     f"status={d['status']}{extra}")
+    return lines
+
+
+def athlete_profile_xml(p: dict, overrides: list[str] | None) -> list[str]:
+    """Profile block shared with the mid-week review."""
+    goals = f"{p.get('goal_primary', '')}. Secondary: {p.get('goal_secondary', '')}".strip(". ")
+    prefs = list(dict.fromkeys((p.get("preferences") or []) + (p.get("notes") or [])))
+    parts = ["<athlete_profile>",
+             f"  <goals>{goals}</goals>"]
+    if p.get("goal_event"):
+        parts.append(f"  <goal_event date='{_v(p.get('goal_event_date'))}'>{p['goal_event']}</goal_event>")
+    parts += [
+        f"  <experience>{_v(p.get('experience_years'))} years</experience>",
+        f"  <equipment>Gym: {_v(p.get('gym_access'))} | Bikes: {', '.join(p.get('bike_types', [])) or 'unknown'} | Pool: {p.get('pool_access', False)}</equipment>",
+    ]
+
+    def block(tag, items):
+        parts.append(f"  <{tag}>")
+        parts.extend(f"    - {x}" for x in items)
+        if not items:
+            parts.append("    None.")
+        parts.append(f"  </{tag}>")
+    block("committed_sessions", p.get("committed_sessions") or [])
+    if overrides:
+        parts.append("  <week_override>")
+        parts.append("    This week only. Takes precedence over committed_sessions and constraints where they conflict.")
+        parts.extend(f"    - {o}" for o in overrides)
+        parts.append("  </week_override>")
+    block("constraints", p.get("constraints") or [])
+    block("available_slots", p.get("available_slots") or [])
+    if prefs:
+        block("preferences", prefs)
+    parts.append("</athlete_profile>")
+    return parts
+
+
+def training_data_xml(summary: dict) -> list[str]:
+    """Load, recovery and Garmin blocks shared with the mid-week review."""
     load = summary.get("load", {})
     rec = summary.get("recovery", {})
     ga = summary.get("garmin_assessment", {})
     tr = ga.get("training_readiness", {})
-    factors = tr.get("factors", {})
-    wh = summary.get("this_week_hours", {})
-    comp = summary.get("last_week_compliance")
-    weather = summary.get("weather_forecast_7day", "")
-
-    # Constraints — most important, first
-    constraints = p.get("constraints", [])
-    committed = p.get("committed_sessions", [])
-    slots = p.get("available_slots", [])
-    prefs = list(dict.fromkeys(p.get("preferences", []) + (p.get("notes") or [])))
-    goals = f"{p.get('goal_primary', '')}. Secondary: {p.get('goal_secondary', '')}".strip(". ")
-
-    # Load balance with gaps
     lb = _load_balance_with_gap(ga.get("load_balance", {}))
-    training_status = ga.get("training_status", "unknown")  # already translated by build_summary
 
-    # Only show completed compliance days
-    comp_lines = ""
-    if comp and comp.get("detail"):
-        done = [d for d in comp["detail"] if d.get("actual")]
-        if done:
-            comp_lines = "\n".join(
-                f"  {d['day']}: planned={d['planned']}, actual={', '.join(d['actual'])}, matched={d['matched']}"
-                for d in done
-            )
+    parts = ["  <load scale='Garmin training load (EPOC based), not TSS'>",
+             f"    <current ctl='{_v(load.get('ctl'))}' atl='{_v(load.get('atl'))}' tsb='{_v(load.get('tsb'))}' form_pct='{_v(load.get('form_pct'), '%')}' />",
+             f"    <fitness_trend ctl_7d_ago='{_v(load.get('ctl_7d_ago'))}' ctl_28d_ago='{_v(load.get('ctl_28d_ago'))}' />",
+             "  </load>",
+             "  <load_history note='ISO weeks, most recent last; the final week may be incomplete'>"]
+    for w in summary.get("load_history", [])[-6:]:
+        hrs = ", ".join(f"{k} {v}h" for k, v in sorted(w.get("hours", {}).items()))
+        total = round(sum(w.get("hours", {}).values()), 1)
+        parts.append(f"    <week id='{w.get('week')}' load='{w.get('load')}' hours='{total}'>{hrs}</week>")
+    parts.append("  </load_history>")
 
-    parts = [f"<task>Plan the week starting {week_start}.</task>", ""]
+    parts.append("  <current_week_so_far>")
+    for sport, hrs in (summary.get("this_week_hours") or {}).items():
+        parts.append(f"    <sport name='{sport}' hours='{hrs}' />")
+    parts.append("  </current_week_so_far>")
 
-    parts.append("<athlete_profile>")
-    parts.append(f"  <goals>{goals}</goals>")
-    parts.append(f"  <experience>{p.get('experience_years', '')} years</experience>")
-    parts.append(f"  <equipment>Gym: {p.get('gym_access', '')} | Bikes: {', '.join(p.get('bike_types', []))} | Pool: {p.get('pool_access', False)}</equipment>")
-    parts.append("")
-    parts.append("  <committed_sessions>")
-    for c in committed:
-        parts.append(f"    - {c}")
-    parts.append("  </committed_sessions>")
-    parts.append("")
-    if overrides:
-        parts.append("  <week_override>")
-        parts.append("    THIS WEEK ONLY. Non-negotiable. Takes precedence over")
-        parts.append("    committed_sessions and constraints where they conflict.")
-        for o in overrides:
-            parts.append(f"    - {o}")
-        parts.append("  </week_override>")
-        parts.append("")
-    parts.append("  <constraints>")
-    for c in constraints:
-        parts.append(f"    - {c}")
-    parts.append("  </constraints>")
-    parts.append("")
-    parts.append("  <available_slots>")
-    for s in slots:
-        parts.append(f"    - {s}")
-    parts.append("  </available_slots>")
-    parts.append("")
-    if prefs:
-        parts.append("  <preferences>")
-        for pr in prefs:
-            parts.append(f"    - {pr}")
-        parts.append("  </preferences>")
-    parts.append("</athlete_profile>")
-    parts.append("")
-
-    parts.append("<training_data>")
-    parts.append(f"  <load tsb='{load.get('tsb')}' ctl='{load.get('ctl')}' atl='{load.get('atl')}' />")
-    parts.append("")
-    parts.append("  <this_week>")
-    for sport, hrs in (wh or {}).items():
-        parts.append(f"    <session sport='{sport}' hours='{hrs}' />")
-    parts.append("  </this_week>")
-    parts.append("")
-    parts.append("  <recovery>")
-    parts.append(f"    <sleep score_7d_avg='{rec.get('sleep_score_7d_avg')}' hours_7d_avg='{rec.get('sleep_hours_7d_avg')}' />")
-    parts.append(f"    <hrv last_night='{rec.get('hrv_last_night')}ms' status='{rec.get('hrv_status')}' />")
-    parts.append(f"    <resting_hr trend='{rec.get('resting_hr_trend')}' />")
-    parts.append("  </recovery>")
-    parts.append("")
-    parts.append("  <garmin_assessment>")
-    parts.append(f"    <training_status>{training_status}</training_status>")
-    parts.append(f"    <fitness_trend>{ga.get('fitness_trend', '')}</fitness_trend>")
-    if tr:
-        parts.append(f"    <readiness score='{tr.get('score')}' level='{tr.get('level')}' recovery_hours='{tr.get('recovery_hours')}'>")
-        for fname, fval in factors.items():
-            parts.append(f"      <factor name='{fname}'>{fval}</factor>")
+    baseline = (f"{rec['hrv_baseline_low']}-{rec['hrv_baseline_high']} ms (Garmin)"
+                if rec.get("hrv_baseline_low") and rec.get("hrv_baseline_high")
+                else f"~{_v(rec.get('hrv_60d_avg'), ' ms')} (60-day average)")
+    parts += [
+        "  <recovery>",
+        f"    <hrv last_night='{_v(rec.get('hrv_last_night'), ' ms')}' avg_7d='{_v(rec.get('hrv_7d_avg'), ' ms')}' baseline='{baseline}' status='{_v(rec.get('hrv_status'))}' />",
+        f"    <resting_hr last='{_v(rec.get('resting_hr_last'), ' bpm')}' avg_14d='{_v(rec.get('resting_hr_14d_avg'), ' bpm')}' trend='{_v(rec.get('resting_hr_trend'))}' />",
+        f"    <sleep score_7d_avg='{_v(rec.get('sleep_score_7d_avg'))}' hours_7d_avg='{_v(rec.get('sleep_hours_7d_avg'))}' />",
+        "  </recovery>",
+        "  <garmin_assessment>",
+        f"    <training_status>{_v(ga.get('training_status'))}</training_status>",
+        f"    <fitness_trend>{_v(ga.get('fitness_trend'))}</fitness_trend>",
+    ]
+    if tr.get("score") is not None:
+        parts.append(f"    <readiness score='{tr.get('score')}' level='{_v(tr.get('level'))}' recovery_hours='{_v(tr.get('recovery_hours'))}'>")
+        for fname, fval in (tr.get("factors") or {}).items():
+            parts.append(f"      <factor name='{fname}'>{_v(fval)}</factor>")
         parts.append("    </readiness>")
-    parts.append("    <load_balance>")
+    parts.append("    <load_balance period='last 4 weeks'>")
     for zone, data in lb.items():
         if zone == "feedback":
             parts.append(f"      <feedback>{data}</feedback>")
@@ -486,17 +525,31 @@ def build_user_message(summary: dict, week_start: str,
             parts.append(f"      <{zone} actual='{data['actual']}' target_min='{data['target_min']}' target_max='{data['target_max']}' gap='{data['gap']}' />")
     parts.append("    </load_balance>")
     parts.append("  </garmin_assessment>")
-    parts.append("")
-    if comp_lines:
-        parts.append(f"  <last_week_compliance sessions='{comp.get('sessions_matched', '')}'>")
-        parts.append(comp_lines)
+    return parts
+
+
+def build_user_message(summary: dict, week_start: str,
+                       overrides: list[str] | None = None) -> str:
+    """Build a structured XML user message for the LLM."""
+    p = summary.get("athlete_profile", {})
+    comp = summary.get("last_week_compliance")
+    weather = summary.get("weather_forecast", "")
+    week_end = (dt.date.fromisoformat(week_start) + dt.timedelta(days=6)).isoformat()
+
+    parts = [f"<task>Today is {summary.get('today')}. Plan the week Monday {week_start} to Sunday {week_end}.</task>", ""]
+    parts += athlete_profile_xml(p, overrides)
+    parts += ["", "<training_data>"]
+    parts += training_data_xml(summary)
+    if comp:
+        parts.append(f"  <last_week_compliance week_start='{comp['detail'][0]['date']}' matched='{comp.get('sessions_matched', '')}'>")
+        parts += compliance_lines(comp)
         parts.append("  </last_week_compliance>")
     parts.append("</training_data>")
     parts.append("")
-
     if weather:
-        parts.append(f"<weather_forecast>{weather}</weather_forecast>")
-
+        parts += ["<weather_forecast>", weather, "</weather_forecast>"]
+    else:
+        parts.append("<weather_forecast>unavailable</weather_forecast>")
     return "\n".join(parts)
 
 
@@ -513,37 +566,16 @@ def next_monday() -> dt.date:
     return today + dt.timedelta(days=7 - today.weekday())
 
 
-VALID_SPORTS = {"gym", "cycling", "mtb", "swim", "yoga", "walk_hike", "rest"}
+VALID_SPORTS = set(SPORTS)
 VALID_INTENSITY = {"easy", "moderate", "hard"}
-DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-
-
-def parse_plan_json(text: str) -> dict:
-    """Pull the plan object out of a model response.
-
-    Tolerates prose or fences around the JSON by decoding from the first
-    '{' that yields a valid object with a "days" key.
-    """
-    text = text.replace("```json", "").replace("```", "").strip()
-    decoder = json.JSONDecoder()
-    i = text.find("{")
-    while i != -1:
-        try:
-            obj, _ = decoder.raw_decode(text, i)
-            if isinstance(obj, dict) and "days" in obj:
-                return obj
-        except json.JSONDecodeError:
-            pass
-        i = text.find("{", i + 1)
-    raise ValueError("No plan JSON object found in model response")
 
 
 def validate_plan(plan: dict, week_start: str) -> dict:
     """Check the plan's shape before it overwrites the live one.
 
-    Raises ValueError on anything the dashboard can't render, so a bad
-    response fails the workflow loudly and the previous plan stays up.
-    Minor issues (unknown intensity, wrong day label) are normalised.
+    Structured outputs guarantee the schema, but not that there are exactly
+    seven days. Raises ValueError on anything the dashboard can't render, so
+    a bad response fails the workflow loudly and the previous plan stays up.
     """
     days = plan.get("days")
     if not isinstance(days, list) or len(days) != 7:
@@ -561,23 +593,33 @@ def validate_plan(plan: dict, week_start: str) -> dict:
         except (TypeError, ValueError):
             d["duration_min"] = 0
         d["details"] = str(d.get("details") or "")
+        d["fallback"] = str(d.get("fallback") or "")
     if plan.get("week_start") != week_start:
         print(f"Model returned week_start {plan.get('week_start')!r}, correcting to {week_start}")
         plan["week_start"] = week_start
     return plan
 
 
+def print_decision_log(plan: dict) -> None:
+    """Show the coach's reasoning summary in the Actions log; not published."""
+    log = plan.pop("decision_log", "")
+    if log:
+        print("--- Coach decisions ---")
+        print(log)
+        print("--- End decisions ---")
+
+
 def main():
     import sys
     debug = "--debug" in sys.argv
-    summary = build_summary()
-    week_start = next_monday().isoformat()
+    week_start_d = next_monday()
+    week_start = week_start_d.isoformat()
+    summary = build_summary([week_start_d + dt.timedelta(days=i) for i in range(7)])
     overrides = load_week_override(week_start)
     user_msg = build_user_message(summary, week_start, overrides)
 
     if debug:
-        # Documented in the README: inspect the prompt without spending tokens
-        # or overwriting plan.json
+        # Inspect the prompt without spending tokens or overwriting plan.json
         print("=" * 60 + "\nUSER MESSAGE\n" + "=" * 60)
         print(user_msg)
         print(f"\nModel: {MODEL}")
@@ -585,27 +627,15 @@ def main():
         print(f"Approx user tokens:   {len(user_msg) // 4}")
         return
 
-    client = anthropic.Anthropic()
-    msg = client.messages.create(
-        model=MODEL,
-        max_tokens=8000,
-        system=SYSTEM,
-        messages=[{"role": "user", "content": user_msg}],
-    )
-    text = "".join(b.text for b in msg.content if b.type == "text").strip()
-    if not text:
-        print(f"Model returned empty response. Stop reason: {msg.stop_reason}")
-        print(f"Content blocks: {msg.content}")
-        raise ValueError("Empty response from model")
-    if msg.stop_reason == "max_tokens":
-        print("Warning: response hit max_tokens and may be truncated")
-    plan = validate_plan(parse_plan_json(text), week_start)
+    plan = validate_plan(call_coach(SYSTEM, user_msg), week_start)
+    print_decision_log(plan)
     plan["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     (DATA_DIR / "plan.json").write_text(json.dumps(plan, indent=1))
     print(f"Plan written for week starting {plan.get('week_start')}")
 
-    # Save snapshot of key metrics for mid-week comparison
+    # Snapshot of the state the plan was written against, for the mid-week review
     cur = summary.get("load", {})
+    rec = summary.get("recovery", {})
     readiness = summary.get("garmin_assessment", {}).get("training_readiness", {})
     snapshot = {
         "tsb": cur.get("tsb"),
@@ -613,6 +643,8 @@ def main():
         "atl": cur.get("atl"),
         "readiness_score": readiness.get("score"),
         "readiness_level": readiness.get("level"),
+        "hrv_status": rec.get("hrv_status"),
+        "resting_hr_14d_avg": rec.get("resting_hr_14d_avg"),
         "override": overrides,
         "generated_at": plan["generated_at"],
     }

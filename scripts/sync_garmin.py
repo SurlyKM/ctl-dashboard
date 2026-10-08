@@ -154,6 +154,11 @@ def fetch_daily(client: Garmin, existing: dict) -> dict:
             entry["hrv_last_night"] = hrv.get("lastNightAvg")
             entry["hrv_weekly_avg"] = hrv.get("weeklyAvg")
             entry["hrv_status"] = hrv.get("status")
+            # Personal "balanced" range, so the coach can compare against
+            # the athlete's own baseline rather than population norms
+            baseline = hrv.get("baseline") or {}
+            entry["hrv_baseline_low"] = baseline.get("balancedLow")
+            entry["hrv_baseline_high"] = baseline.get("balancedUpper")
         except Exception as e:
             print(f"hrv {key}: {e}")
         if any(v is not None for v in entry.values()):

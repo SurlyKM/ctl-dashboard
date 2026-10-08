@@ -2,6 +2,7 @@ name: Generate weekly plan
 
 on:
   schedule:
+    # Sunday 6pm local (cron is evaluated in the timezone below)
     - cron: "0 18 * * 0"
       timezone: "Australia/Sydney"
   workflow_dispatch: {}
@@ -16,6 +17,7 @@ concurrency:
 jobs:
   plan:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -42,16 +44,19 @@ jobs:
           ATHLETE_PROFILE_PRIVATE: ${{ secrets.ATHLETE_PROFILE_PRIVATE }}
           LOCATION_LAT: ${{ secrets.LOCATION_LAT }}
           LOCATION_LON: ${{ secrets.LOCATION_LON }}
-          PLAN_OVERRIDE: ${{ secrets.PLAN_OVERRIDE }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
+          TRAINER_MODEL: ${{ vars.TRAINER_MODEL }}
+          TRAINER_EFFORT: ${{ vars.TRAINER_EFFORT }}
+          PLAN_OVERRIDE: ${{ vars.PLAN_OVERRIDE || secrets.PLAN_OVERRIDE }}
         run: python scripts/generate_plan.py
 
       - name: Commit plan
         run: |
           git config user.name "fitness-bot"
           git config user.email "actions@users.noreply.github.com"
-          git stash
-          git pull --rebase
-          git stash pop 2>/dev/null || true
           git add docs/data/
-          git diff --cached --quiet || git commit -m "weekly plan $(date -u +%F)"
+          git diff --cached --quiet && exit 0
+          git commit -m "weekly plan $(date -u +%F)"
+          # Rebase onto anything pushed while this job ran (e.g. a code change)
+          git pull --rebase
           git push

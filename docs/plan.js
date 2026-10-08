@@ -178,7 +178,8 @@ function renderPlan(plan, activities) {
     weekStart.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
 
   const genEl = $("plan-generated");
-  if (genEl) genEl.textContent = (plan.midweek_revision ? "revised " : "generated ") +
+  if (genEl) genEl.textContent = (plan.training_phase ? plan.training_phase + " phase · " : "") +
+    (plan.midweek_revision ? "revised " : "generated ") +
     new Date(plan.generated_at).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" });
 
   // Say clearly when the plan on screen isn't this week's
@@ -240,7 +241,10 @@ function renderPlan(plan, activities) {
         '<span class="day-status">' + statusHtml + '</span>' +
         '<span class="day-chevron" aria-hidden="true">›</span>' +
       '</button>' +
-      '<div class="day-body" id="' + bodyId + '">' + parseDetails(d.details, d.sport) + '</div>' +
+      '<div class="day-body" id="' + bodyId + '">' + parseDetails(d.details, d.sport) +
+        (d.fallback ? '<p class="day-fallback"><span class="day-fallback-lbl">If you\'re not recovered</span>' +
+          esc(d.fallback) + '</p>' : '') +
+      '</div>' +
     '</div>';
   }).join("");
 }

@@ -1,46 +1,47 @@
 """Mid-week adaptive plan review.
 
-Runs Wednesday evening. Compares current recovery state to the Sunday
-snapshot saved when the plan was generated. If meaningful change has
-occurred, rewrites Thursday-Sunday only. Otherwise exits quietly.
+Runs Wednesday evening, after the day's training has synced. Looks for
+things the Sunday plan didn't expect and, if it finds any, rewrites
+Thursday-Sunday. Otherwise exits quietly.
 
-Thresholds for triggering a revision:
+Triggers (any one):
   - A one-off week override was added or changed since Sunday
-  - TSB moved more than 15 points in either direction
-  - Training readiness score changed more than 15 points
-  - Force flag set (FORCE_REVIEW=1 env var, for manual testing)
+  - A planned session was missed (Mon to yesterday)
+  - Substantial unplanned training was recorded
+  - HRV status turned unbalanced/low since the plan was written
+  - Training readiness is below READINESS_FLOOR
+  - Resting HR is RHR_RISE_BPM or more above its 14-day average
+  - FORCE_REVIEW=1 (manual testing)
 
-Note on thresholds: a hard Tuesday double day typically moves TSB by
-~7 points — below the threshold. A genuine recovery improvement or
-unexpected fatigue spike moves it 15+ points. This avoids triggering
-a revision every week just from planned hard days.
+Why not "TSB moved 15 points since Sunday"? The planned Tuesday double
+alone moves TSB that much, so the old trigger mostly fired on fatigue the
+plan had already accounted for, and revised about half of all weeks.
+Absolute signals and deviations from the plan are what the Sunday plan
+couldn't know about.
 """
 
 import json
 import os
+import sys
 import datetime as dt
 from pathlib import Path
 
-import anthropic
+from coach_api import MODEL, call_coach
+from generate_plan import (
+    COACHING_RULES, athlete_profile_xml, build_summary, compliance,
+    compliance_lines, load_week_override, print_decision_log,
+    training_data_xml, validate_plan, _today_local,
+)
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-# `or` rather than a .get() default: an unset Actions variable arrives as ""
-MODEL = os.environ.get("TRAINER_MODEL") or "claude-sonnet-5"
 
-TSB_THRESHOLD       = 15   # points — raised from 10 to avoid triggering on planned hard days
-READINESS_THRESHOLD = 15   # points
-
-
-def _today_local() -> dt.date:
-    try:
-        import zoneinfo
-        tz = zoneinfo.ZoneInfo(os.environ.get("TIMEZONE", "Australia/Sydney"))
-        return dt.datetime.now(tz).date()
-    except Exception:
-        return dt.date.today()
+READINESS_FLOOR = 40          # absolute; a planned hard day rarely takes it this low
+RHR_RISE_BPM = 5              # last night vs 14-day average
+UNPLANNED_LOAD_MIN = 60       # ignore commutes and short spins
+HRV_WARNING = {"UNBALANCED", "LOW", "POOR"}
 
 
-def load_sunday_snapshot(plan: dict) -> dict:
+def load_sunday_snapshot() -> dict:
     """Load the metrics snapshot saved when the plan was generated."""
     snapshot_path = DATA_DIR / "plan_snapshot.json"
     if snapshot_path.exists():
@@ -48,359 +49,174 @@ def load_sunday_snapshot(plan: dict) -> dict:
     return {}
 
 
-def should_revise(current: dict, snapshot: dict,
-                  overrides: list[str] | None = None) -> tuple[bool, str]:
-    """Return (should_revise, reason)."""
-    force = os.environ.get("FORCE_REVIEW", "0") == "1"
-    if force:
-        return True, "forced review"
-
-    # A one-off override set after Sunday is a trigger in its own right.
-    # Comparing against the snapshot means it fires once, not every run.
-    overrides = overrides or []
-    if overrides != (snapshot.get("override") or []):
-        return True, "one-off week override added or changed since the plan was generated"
-
-    if not snapshot:
-        return False, "no Sunday snapshot to compare against"
-
-    current_tsb = current.get("load", {}).get("tsb") or 0
-    snapshot_tsb = snapshot.get("tsb") or 0
-    tsb_delta = current_tsb - snapshot_tsb
-
-    current_readiness = (current.get("garmin_assessment", {})
-                         .get("training_readiness", {}).get("score")) or 0
-    snapshot_readiness = snapshot.get("readiness_score") or 0
-    readiness_delta = current_readiness - snapshot_readiness
+def find_triggers(current: dict, snapshot: dict, comp: dict,
+                  overrides: list[str]) -> list[str]:
+    """Everything that justifies a revision, as human-readable reasons."""
+    if os.environ.get("FORCE_REVIEW", "0") == "1":
+        return ["forced review"]
 
     reasons = []
-    if abs(tsb_delta) >= TSB_THRESHOLD:
-        direction = "improved" if tsb_delta > 0 else "declined"
-        reasons.append(f"TSB {direction} by {abs(tsb_delta):.1f} points ({snapshot_tsb:.1f} → {current_tsb:.1f})")
-    if abs(readiness_delta) >= READINESS_THRESHOLD:
-        direction = "improved" if readiness_delta > 0 else "declined"
-        reasons.append(f"readiness {direction} by {abs(readiness_delta):.0f} ({snapshot_readiness} → {current_readiness})")
+    # Compared against the snapshot, so a new override fires once, not every run
+    if overrides != (snapshot.get("override") or []):
+        reasons.append("one-off week override added or changed since the plan was generated")
 
-    if reasons:
-        return True, " and ".join(reasons)
-    return False, f"no significant change (TSB delta {tsb_delta:+.1f}, readiness delta {readiness_delta:+.0f})"
+    for d in comp.get("detail", []):
+        if d["status"] == "missed" and d["planned"] != "rest":
+            reasons.append(f"missed {d['day']} {d['planned']} session \"{d.get('planned_session')}\"")
+        if d["unplanned"] and d["load"] >= UNPLANNED_LOAD_MIN:
+            reasons.append(f"unplanned {', '.join(d['unplanned'])} on {d['day']} (day load {d['load']})")
+
+    rec = current.get("recovery", {})
+    hrv_now = (rec.get("hrv_status") or "").upper()
+    hrv_then = (snapshot.get("hrv_status") or "").upper()
+    if hrv_now in HRV_WARNING and hrv_then not in HRV_WARNING:
+        reasons.append(f"HRV status changed to {hrv_now.lower()} (was {hrv_then.lower() or 'unknown'} on Sunday)")
+
+    readiness = current.get("garmin_assessment", {}).get("training_readiness", {}).get("score")
+    if readiness is not None and readiness < READINESS_FLOOR:
+        reasons.append(f"training readiness {readiness} is below {READINESS_FLOOR}")
+
+    rhr, rhr_avg = rec.get("resting_hr_last"), rec.get("resting_hr_14d_avg")
+    if rhr and rhr_avg and rhr - rhr_avg >= RHR_RISE_BPM:
+        reasons.append(f"resting HR {rhr} bpm is {rhr - rhr_avg:.0f} above its 14-day average")
+    return reasons
 
 
 SYSTEM = """
 <role>
-You are an elite endurance cycling coach doing a mid-week plan revision.
-The athlete is partway through their week. Your job is to revise ONLY the remaining days
-(Thursday onwards) based on how they have actually responded to training so far.
-
-Completed days are fixed. Do not change Mon, Tue, or Wed entries.
+You are an experienced cycling and strength coach doing a mid-week revision of this athlete's 7-day plan. Something happened that the original plan didn't anticipate (see revision_trigger). Revise only the remaining days, and change as little as the situation requires.
 </role>
-
-<hard_constraints>
-These apply to the revised plan exactly as they do to the original.
-
-- Keep completed days (Mon-Wed) exactly as they appear in the original plan.
-- Revise Thursday through Sunday only.
-- Exactly 7 days total in the output — Mon through Sun.
-- If a day has two sessions, combine into ONE entry with both in details.
-- Maximum 2 gym sessions across the full week (count sessions already done Mon-Wed).
-- No hard cycling sessions on consecutive days.
-- No heavy lower-body gym work within 24 hours before a key ride or long ride.
-- Honour all committed_sessions and constraints from the athlete profile.
-- week_override, if present, applies to this week only and outranks committed_sessions
-  and constraints wherever they conflict. Never schedule a session it rules out.
-- Output valid JSON only — no markdown fences, no explanatory text outside the reasoning block.
-</hard_constraints>
-
-<output_schema>
-Your response must contain exactly two parts in this order:
-
-PART 1 — REASONING (plain text, required)
-REVISION_TRIGGERED_BY: <what changed since Sunday>
-RECOVERY_DIRECTION: <improving|declining|stable>
-CHANGES_MADE: <bullet list of what you changed Thu-Sun and why>
-CHANGES_NOT_MADE: <what you considered but left unchanged and why>
-
-PART 2 — REVISED PLAN (JSON only, no fences)
-Same schema as original plan. Include all 7 days.
-{
-  "week_start": "YYYY-MM-DD",
-  "recovery_state": "Recovered|Managing Fatigue|Fatigued|Highly Fatigued",
-  "training_phase": "Recovery|Base|Build|Peak|Taper",
-  "weekly_objective": "one sentence",
-  "quality_sessions": 0,
-  "coach_says": "2-3 sentences explaining what changed mid-week and why",
-  "revised": true,
-  "days": [ ... exactly 7 entries Mon-Sun ... ]
-}
-</output_schema>
-
+""" + COACHING_RULES + """
 <revision_rules>
-If recovery has IMPROVED (TSB risen, readiness up, HRV balanced, sleep good):
-- Consider upgrading one Thu-Sun session from easy to moderate.
-- Only add a quality session if TSB is above -15 AND readiness is above 70.
-- Do not upgrade more than one session.
-- Do not upgrade if anaerobic load is already above target.
-
-If recovery has DECLINED (TSB dropped further, readiness down, HRV low):
-- Downgrade the next hard session to easy or rest.
-- Protect the weekend long ride if it was planned — shorten rather than cancel.
-- Add a rest or yoga day if the athlete needs it.
-- Never add intensity when recovery is declining.
-
-If STABLE:
-- Keep Thu-Sun exactly as planned.
-- Only change session placement if weather has changed significantly.
-
-Always:
-- Respect committed_sessions — these cannot be moved or downgraded, unless week_override
-  rules that day or session out, in which case the override wins.
-- If week_override is the reason for this revision, say so in coach_says.
-- Apply the same gym formatting rules as the original plan.
-- Apply weather to specific days.
+- Days marked fixed are complete or in progress. Return them exactly as they appear in the original plan.
+- Return all 7 days, Mon through Sun.
+- Count completed sessions when applying weekly limits (for example, gym sessions).
+- A missed key session is not automatically rescheduled. Move it only if it fits the rules (no back-to-back hard days, recovery signals fine, no clash with committed sessions); otherwise drop it and say so.
+- After unplanned hard training, treat it as a hard day when spacing the remaining sessions.
+- When recovery signals are poor: downgrade the next hard session (its fallback is a good starting point), shorten rather than cancel a planned long ride, and add rest or yoga if needed. Never add intensity while signals are declining.
+- When the trigger turns out not to warrant changes, keep the remaining days as planned and say why.
+- Committed sessions cannot be moved or downgraded unless week_override rules them out.
+- Re-check placement against the weather for the remaining days.
 </revision_rules>
 
-<gym_format>
-Use this exact format — the dashboard parser depends on it.
-
-Header: Workout A: or Workout B:
-Warm-up line starts with: Warm-up:
-Rest line starts with: Rest:
-Each exercise: ExerciseName 3 x 12
-Optional note: ExerciseName 3 x 12 (note)
-Reps can be range: 3 x 8-12
-Valid suffixes: sec, min, each leg, each side, reps
-
-Do NOT use square brackets in output.
-Do NOT add any lines after the Rest: line.
-</gym_format>
+<output>
+Return the full revised plan in the required JSON schema. coach_says is 2-3 sentences for the athlete explaining what changed mid-week and why (or why nothing did). decision_log is a short bullet summary of what you changed, what you considered and left alone, and why.
+</output>
 """
 
 
-def build_review_message(current: dict, plan: dict, snapshot: dict, reason: str,
+def build_review_message(current: dict, plan: dict, snapshot: dict,
+                         reasons: list[str], comp: dict, days_fixed: int,
                          overrides: list[str] | None = None) -> str:
-    """Build a structured user message for the mid-week review.
-
-    Uses the same XML structure as generate_plan.py for consistency.
-    """
     today = _today_local()
-    week_start = dt.date.fromisoformat(plan["week_start"])
-    days_done = max(0, (today - week_start).days)
-
-    # Pull the same fields generate_plan uses
     load = current.get("load", {})
-    rec = current.get("recovery", {})
-    ga = current.get("garmin_assessment", {})
-    tr = ga.get("training_readiness", {})
-    factors = tr.get("factors", {})
-    p = current.get("athlete_profile", {})
-    lb_raw = ga.get("load_balance", {})
-    weather = current.get("weather_forecast_7day", "")
+    tr = current.get("garmin_assessment", {}).get("training_readiness", {})
+    weather = current.get("weather_forecast", "")
 
-    # Load balance gaps
-    from generate_plan import _load_balance_with_gap
-    lb = _load_balance_with_gap(lb_raw)
+    parts = [
+        f"<task>Mid-week review of the week starting {plan['week_start']}. Today is "
+        f"{today.isoformat()} ({today.strftime('%A')}). Days 1-{days_fixed} are fixed; "
+        f"revise days {days_fixed + 1}-7.</task>",
+        "",
+        "<revision_trigger>",
+        *[f"  - {r}" for r in reasons],
+        "</revision_trigger>",
+        "",
+        "<since_plan_was_written note='context only; planned training moves these'>",
+        f"  When planned: TSB={snapshot.get('tsb')} readiness={snapshot.get('readiness_score')} HRV status={snapshot.get('hrv_status')}",
+        f"  Now: TSB={load.get('tsb')} readiness={tr.get('score')} HRV status={current.get('recovery', {}).get('hrv_status')}",
+        "</since_plan_was_written>",
+        "",
+    ]
+    parts += athlete_profile_xml(current.get("athlete_profile", {}), overrides)
+    parts += ["", "<training_data>"]
+    parts += training_data_xml(current)
+    parts.append(f"  <compliance_this_week matched='{comp.get('sessions_matched', '')}'>")
+    parts += compliance_lines(comp)
+    parts.append("  </compliance_this_week>")
+    parts += ["</training_data>", ""]
 
-    constraints = p.get("constraints", [])
-    committed = p.get("committed_sessions", [])
-
-    # Compliance: which days were completed and what was done
-    from generate_plan import compliance
-    from pathlib import Path as _Path
-    import json as _json
-    activities = _json.loads((_Path(str(DATA_DIR)) / "activities.json").read_text())
-    comp = compliance(plan, activities)
-
-    parts = []
-
-    parts.append(f"<task>Mid-week review for week starting {plan['week_start']}. Today is {today.isoformat()} ({days_done} days in, {7 - days_done} days remaining).</task>")
-    parts.append("")
-
-    parts.append(f"<revision_trigger>{reason}</revision_trigger>")
-    parts.append("")
-
-    # What changed since Sunday
-    parts.append("<snapshot_comparison>")
-    parts.append(f"  Sunday snapshot: TSB={snapshot.get('tsb')}  CTL={snapshot.get('ctl')}  ATL={snapshot.get('atl')}  readiness={snapshot.get('readiness_score')} ({snapshot.get('readiness_level')})")
-    parts.append(f"  Now (Wednesday): TSB={load.get('tsb')}  CTL={load.get('ctl')}  ATL={load.get('atl')}  readiness={tr.get('score')} ({tr.get('level')})")
-    tsb_delta = (load.get('tsb') or 0) - (snapshot.get('tsb') or 0)
-    readiness_delta = (tr.get('score') or 0) - (snapshot.get('readiness_score') or 0)
-    parts.append(f"  TSB delta: {tsb_delta:+.1f}  Readiness delta: {readiness_delta:+.0f}")
-    parts.append("</snapshot_comparison>")
-    parts.append("")
-
-    # Current recovery signals
-    parts.append("<current_recovery>")
-    parts.append(f"  HRV last night: {rec.get('hrv_last_night')} ms  Status: {rec.get('hrv_status')}")
-    parts.append(f"  Resting HR trend (14 days): {rec.get('resting_hr_trend')}")
-    parts.append(f"  Sleep score 7d avg: {rec.get('sleep_score_7d_avg')}  Sleep hours: {rec.get('sleep_hours_7d_avg')}")
-    parts.append(f"  Garmin training status: {ga.get('training_status')}")
-    if factors:
-        parts.append("  Readiness factors:")
-        for fname, fval in factors.items():
-            parts.append(f"    {fname}: {fval}")
-    parts.append("</current_recovery>")
-    parts.append("")
-
-    # Load balance
-    tsb_val = load.get('tsb') or 0
-    parts.append("<load_balance>")
-    for zone, data in lb.items():
-        if zone == "feedback":
-            parts.append(f"  Feedback: {data}")
-            if tsb_val < -30:
-                parts.append(f"  Override: TSB {tsb_val} is below -30 — load balance feedback overridden by TSB constraint.")
-        else:
-            gap_note = "within range" if data['gap'] == 0 else (f"{data['gap']:+d} vs min" if data['gap'] < 0 else f"+{data['gap']} above max")
-            parts.append(f"  {zone}: actual={data['actual']}  target={data['target_min']}-{data['target_max']}  ({gap_note})")
-    parts.append("</load_balance>")
-    parts.append("")
-
-    # Compliance so far this week
-    parts.append("<compliance_this_week>")
-    if comp and comp.get("detail"):
-        for d in comp["detail"][:days_done]:
-            actual = ", ".join(d.get("actual") or ["nothing recorded"])
-            parts.append(f"  {d['day']}: planned={d['planned']}  actual={actual}  matched={d['matched']}")
-    parts.append("</compliance_this_week>")
-    parts.append("")
-
-    # Athlete constraints
-    parts.append("<athlete_constraints>")
-    parts.append("  <committed_sessions>")
-    for c in committed:
-        parts.append(f"    - {c}")
-    if not committed:
-        parts.append("    None.")
-    parts.append("  </committed_sessions>")
-    if overrides:
-        parts.append("  <week_override>")
-        parts.append("    THIS WEEK ONLY. Non-negotiable. Takes precedence over")
-        parts.append("    committed_sessions and constraints where they conflict.")
-        for o in overrides:
-            parts.append(f"    - {o}")
-        parts.append("  </week_override>")
-    parts.append("  <constraints>")
-    for c in constraints:
-        parts.append(f"    - {c}")
-    if not constraints:
-        parts.append("    None.")
-    parts.append("  </constraints>")
-    parts.append("</athlete_constraints>")
-    parts.append("")
-
-    # Original plan
-    parts.append("<original_plan>")
-    parts.append(_json.dumps(plan.get("days", []), indent=2))
-    parts.append("</original_plan>")
-    parts.append("")
-
+    days = []
+    for i, d in enumerate(plan.get("days", [])):
+        days.append({**d, "fixed": i < days_fixed})
+    parts += ["<original_plan>", json.dumps(days, indent=1), "</original_plan>", ""]
     if weather:
-        parts.append(f"<weather_forecast_remaining_days>")
-        parts.append(f"  {weather}")
-        parts.append(f"</weather_forecast_remaining_days>")
-
+        parts += ["<weather_forecast_remaining_days>", weather, "</weather_forecast_remaining_days>"]
     return "\n".join(parts)
 
 
 def main():
-    import sys
     debug = "--debug" in sys.argv
-
-    from generate_plan import build_summary, load_week_override
-    current = build_summary()
 
     plan_path = DATA_DIR / "plan.json"
     if not plan_path.exists():
         print("No plan found — skipping mid-week review")
         return
-
     plan = json.loads(plan_path.read_text())
-    snapshot = load_sunday_snapshot(plan)
+    week_start = dt.date.fromisoformat(plan["week_start"])
+    today = _today_local()
+    week_end = week_start + dt.timedelta(days=6)
+    if not week_start <= today <= week_end:
+        print(f"Plan on file is for {plan['week_start']}, not this week — skipping")
+        return
+
+    # Runs in the evening, so today counts as done
+    days_fixed = min(7, (today - week_start).days + 1)
+    remaining = [today + dt.timedelta(days=i) for i in range(1, (week_end - today).days + 1)]
+
+    current = build_summary(remaining)
+    activities = json.loads((DATA_DIR / "activities.json").read_text())
+    comp = compliance(plan, activities, today)
+    snapshot = load_sunday_snapshot()
     overrides = load_week_override(plan["week_start"])
 
-    should, reason = should_revise(current, snapshot, overrides)
-    print(f"Mid-week review: {reason}")
+    reasons = find_triggers(current, snapshot, comp, overrides)
+    # One data-driven revision per week. A re-run (manual, or a retried job)
+    # only acts on a new override or a forced review.
+    if snapshot.get("reviewed_week") == plan["week_start"]:
+        reasons = [r for r in reasons if r.startswith(("forced", "one-off"))]
+    print("Mid-week review triggers: " + ("; ".join(reasons) if reasons else "none"))
 
     if debug:
-        print("\n" + "=" * 60)
-        print("SNAPSHOT vs NOW")
-        print("=" * 60)
-        print(f"  Snapshot TSB:      {snapshot.get('tsb')}  readiness: {snapshot.get('readiness_score')}")
-        load = current.get("load", {})
-        tr = current.get("garmin_assessment", {}).get("training_readiness", {})
-        print(f"  Current  TSB:      {load.get('tsb')}  readiness: {tr.get('score')}")
-        print(f"  Snapshot override: {snapshot.get('override') or []}")
-        print(f"  Current  override: {overrides}")
-        print(f"  Would revise:      {should}")
-        print(f"  Reason:            {reason}")
-        print("\n" + "=" * 60)
-        print("FULL USER MESSAGE")
-        print("=" * 60)
-        msg = build_review_message(current, plan, snapshot, reason, overrides)
+        msg = build_review_message(current, plan, snapshot, reasons or ["(none — debug run)"],
+                                   comp, days_fixed, overrides)
+        print("=" * 60 + "\nUSER MESSAGE\n" + "=" * 60)
         print(msg)
-        print("\n" + "=" * 60)
-        print("SYSTEM PROMPT")
-        print("=" * 60)
-        print(SYSTEM)
-        print(f"\nApprox system tokens: {len(SYSTEM) // 4}")
+        print(f"\nModel: {MODEL}")
+        print(f"Would revise:         {bool(reasons)}")
+        print(f"Approx system tokens: {len(SYSTEM) // 4}")
         print(f"Approx user tokens:   {len(msg) // 4}")
         return
 
-    if not should:
+    if not reasons:
         print("No revision needed — plan stands as-is")
         return
 
-    print(f"Revising plan: {reason}")
-
-    msg = build_review_message(current, plan, snapshot, reason, overrides)
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=16000,
-        system=SYSTEM,
-        messages=[{"role": "user", "content": msg}],
-    )
-
-    text = "".join(b.text for b in response.content if b.type == "text")
-    text = text.replace("```json", "").replace("```", "").strip()
-
-    if not text:
-        print(f"Model returned empty response. Stop reason: {response.stop_reason}")
-        return
-
-    # Split reasoning from JSON. The reasoning block can itself contain "{",
-    # so decode from each candidate brace until a plan object parses.
-    from generate_plan import parse_plan_json, validate_plan
+    msg = build_review_message(current, plan, snapshot, reasons, comp, days_fixed, overrides)
     try:
-        revised = validate_plan(parse_plan_json(text), plan["week_start"])
-    except ValueError as e:
+        revised = validate_plan(call_coach(SYSTEM, msg), plan["week_start"])
+    except (ValueError, RuntimeError) as e:
         print(f"Revised plan rejected ({e}) — keeping original plan")
-        print(text[:1000])
         return
+    print_decision_log(revised)
 
-    reasoning = text[:text.find("{")].strip()
-    if reasoning:
-        print("--- Coach reasoning ---")
-        print(reasoning)
-        print("--- End reasoning ---")
-
-    # Completed days are fixed: restore them from the original in case the
-    # model edited them anyway
-    days_done = max(0, min(7, (_today_local() - dt.date.fromisoformat(plan["week_start"])).days))
-    for i in range(days_done):
+    # Fixed days are restored from the original in case the model edited them
+    for i in range(days_fixed):
         revised["days"][i] = plan["days"][i]
     revised["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     revised["midweek_revision"] = True
     plan_path.write_text(json.dumps(revised, indent=1))
 
-    # Fold the override into the snapshot so a re-run in the same week does
-    # not revise again for the same reason.
-    snapshot_path = DATA_DIR / "plan_snapshot.json"
-    if snapshot_path.exists():
-        snapshot["override"] = overrides
-        snapshot_path.write_text(json.dumps(snapshot, indent=1))
+    # Fold the current state into the snapshot so a re-run in the same week
+    # doesn't revise again for the same reason
+    snapshot.update({
+        "override": overrides,
+        "hrv_status": current.get("recovery", {}).get("hrv_status"),
+        "reviewed_week": plan["week_start"],
+    })
+    (DATA_DIR / "plan_snapshot.json").write_text(json.dumps(snapshot, indent=1))
 
-    print(f"Plan revised: {revised.get('coach_says', '')[:120]}")
+    print(f"Plan revised: {revised.get('coach_says', '')[:160]}")
 
     if os.environ.get("DISCORD_WEBHOOK_URL"):
         from notify_discord import send_plan

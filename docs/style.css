@@ -692,6 +692,26 @@ section {
 
 .detail-prose { font-size: 14px; color: var(--ink2); line-height: 1.6; margin: 10px 0 0; }
 
+/* Fallback option for hard/key sessions */
+.day-fallback {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.5;
+  background: var(--warn-bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 12px 0 0;
+}
+.day-fallback-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fatigue);
+  margin-bottom: 2px;
+}
+
 /* Compliance */
 .comp-head {
   display: flex;

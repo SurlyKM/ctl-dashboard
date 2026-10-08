@@ -24,7 +24,8 @@ def _today_local() -> dt.date:
         return dt.datetime.now(tz).date()
     except Exception:
         return dt.date.today()
-MODEL = os.environ.get("TRAINER_MODEL", "claude-fable-5")
+# `or` rather than a .get() default: an unset Actions variable arrives as ""
+MODEL = os.environ.get("TRAINER_MODEL") or "claude-fable-5"
 
 SYSTEM = """
 <role>
@@ -500,30 +501,105 @@ def build_user_message(summary: dict, week_start: str,
 
 
 def next_monday() -> dt.date:
+    """Monday of the week being planned.
+
+    The job is scheduled for Sunday evening, but GitHub cron can start runs
+    hours late. If it slips past midnight into Monday, plan the week that
+    is starting today rather than the one after it.
+    """
     today = _today_local()
-    days_ahead = (7 - today.weekday()) % 7
-    return today + dt.timedelta(days=days_ahead or 7)
+    if today.weekday() == 0:
+        return today
+    return today + dt.timedelta(days=7 - today.weekday())
+
+
+VALID_SPORTS = {"gym", "cycling", "mtb", "swim", "yoga", "walk_hike", "rest"}
+VALID_INTENSITY = {"easy", "moderate", "hard"}
+DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+
+def parse_plan_json(text: str) -> dict:
+    """Pull the plan object out of a model response.
+
+    Tolerates prose or fences around the JSON by decoding from the first
+    '{' that yields a valid object with a "days" key.
+    """
+    text = text.replace("```json", "").replace("```", "").strip()
+    decoder = json.JSONDecoder()
+    i = text.find("{")
+    while i != -1:
+        try:
+            obj, _ = decoder.raw_decode(text, i)
+            if isinstance(obj, dict) and "days" in obj:
+                return obj
+        except json.JSONDecodeError:
+            pass
+        i = text.find("{", i + 1)
+    raise ValueError("No plan JSON object found in model response")
+
+
+def validate_plan(plan: dict, week_start: str) -> dict:
+    """Check the plan's shape before it overwrites the live one.
+
+    Raises ValueError on anything the dashboard can't render, so a bad
+    response fails the workflow loudly and the previous plan stays up.
+    Minor issues (unknown intensity, wrong day label) are normalised.
+    """
+    days = plan.get("days")
+    if not isinstance(days, list) or len(days) != 7:
+        raise ValueError(f"Plan must have exactly 7 days, got {len(days) if isinstance(days, list) else days!r}")
+    for i, d in enumerate(days):
+        if not isinstance(d, dict) or not d.get("session"):
+            raise ValueError(f"Day {i} is missing a session: {d!r}")
+        if d.get("sport") not in VALID_SPORTS:
+            raise ValueError(f"Day {i} has unknown sport {d.get('sport')!r}")
+        if d.get("intensity") not in VALID_INTENSITY:
+            d["intensity"] = "easy"
+        d["day"] = DAY_NAMES[i]
+        try:
+            d["duration_min"] = int(d.get("duration_min") or 0)
+        except (TypeError, ValueError):
+            d["duration_min"] = 0
+        d["details"] = str(d.get("details") or "")
+    if plan.get("week_start") != week_start:
+        print(f"Model returned week_start {plan.get('week_start')!r}, correcting to {week_start}")
+        plan["week_start"] = week_start
+    return plan
 
 
 def main():
+    import sys
+    debug = "--debug" in sys.argv
     summary = build_summary()
-    client = anthropic.Anthropic()
     week_start = next_monday().isoformat()
     overrides = load_week_override(week_start)
     user_msg = build_user_message(summary, week_start, overrides)
+
+    if debug:
+        # Documented in the README: inspect the prompt without spending tokens
+        # or overwriting plan.json
+        print("=" * 60 + "\nUSER MESSAGE\n" + "=" * 60)
+        print(user_msg)
+        print(f"\nModel: {MODEL}")
+        print(f"Approx system tokens: {len(SYSTEM) // 4}")
+        print(f"Approx user tokens:   {len(user_msg) // 4}")
+        return
+
+    client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
         max_tokens=8000,
         system=SYSTEM,
         messages=[{"role": "user", "content": user_msg}],
     )
-    text = "".join(b.text for b in msg.content if b.type == "text")
-    text = text.replace("```json", "").replace("```", "").strip()
+    text = "".join(b.text for b in msg.content if b.type == "text").strip()
     if not text:
         print(f"Model returned empty response. Stop reason: {msg.stop_reason}")
         print(f"Content blocks: {msg.content}")
         raise ValueError("Empty response from model")
-    plan = json.loads(text)
+    if msg.stop_reason == "max_tokens":
+        print("Warning: response hit max_tokens and may be truncated")
+    plan = validate_plan(parse_plan_json(text), week_start)
     plan["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     (DATA_DIR / "plan.json").write_text(json.dumps(plan, indent=1))
     print(f"Plan written for week starting {plan.get('week_start')}")

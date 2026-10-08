@@ -2,45 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f7f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101a11" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Training">
+<meta name="format-detection" content="telephone=no">
 <title>Training — Plan</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
+<script src="theme.js"></script>
+<script src="shared.js" defer></script>
+<script src="plan.js" defer></script>
 </head>
-<body><script>
-(function() {
-  var t = localStorage.getItem("theme") || "green";
-  document.body.setAttribute("data-theme", t);
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".theme-btn").forEach(function(btn) {
-      if (btn.dataset.theme === t) btn.classList.add("active");
-      btn.addEventListener("click", function() {
-        var theme = btn.dataset.theme;
-        document.body.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-        document.querySelectorAll(".theme-btn").forEach(function(b) {
-          b.classList.toggle("active", b.dataset.theme === theme);
-        });
-        document.dispatchEvent(new Event("themechange"));
-      });
-    });
-  });
-})();
-</script>
+<body>
 <header>
   <h1>Training</h1>
-  <nav>
-    <a href="index.html" class="nav-link">Dashboard</a>
-    <a href="plan.html" class="nav-link active">Plan</a>
+  <nav aria-label="Pages">
+    <a href="./" class="nav-link">Dashboard</a>
+    <a href="plan.html" class="nav-link active" aria-current="page">Plan</a>
   </nav>
-  <span id="synced" class="muted"></span>
+  <span id="synced" class="muted" role="status"></span>
 </header>
 
+<main>
 <section id="plan-section">
   <div class="plan-head">
     <h2 id="plan-week">This week's plan</h2>
     <span id="plan-generated" class="muted"></span>
   </div>
+  <div id="plan-banner"></div>
   <p id="coach-says"></p>
   <div id="plan-days"></div>
 </section>
@@ -60,16 +57,14 @@
   <h2>Garmin assessment</h2>
   <div id="garmin-status"></div>
 </section>
+</main>
 
-
-<script src="shared.js"></script>
-<script src="plan.js"></script>
-<div class="theme-switcher">
+<footer class="theme-switcher" role="group" aria-label="Colour theme">
   <span class="theme-label">Theme</span>
-  <button class="theme-btn" data-theme="green" title="Forest green" style="background:#2d6a35"></button>
-  <button class="theme-btn" data-theme="slate" title="Slate blue"   style="background:#1d4ed8"></button>
-  <button class="theme-btn" data-theme="warm"  title="Warm neutral" style="background:#b45309"></button>
-  <button class="theme-btn" data-theme="mono"  title="Monochrome"   style="background:#374151"></button>
-</div>
+  <button type="button" class="theme-btn" data-theme="green" aria-label="Forest green" style="--swatch:#2d6a35"></button>
+  <button type="button" class="theme-btn" data-theme="slate" aria-label="Slate blue"   style="--swatch:#1d4ed8"></button>
+  <button type="button" class="theme-btn" data-theme="warm"  aria-label="Warm neutral" style="--swatch:#b45309"></button>
+  <button type="button" class="theme-btn" data-theme="mono"  aria-label="Monochrome"   style="--swatch:#374151"></button>
+</footer>
 </body>
 </html>

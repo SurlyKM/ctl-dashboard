@@ -7,6 +7,7 @@ Uses Haiku to summarise the forecast into a plain-English note.
 
 import json
 import os
+import urllib.parse
 import urllib.request
 import datetime as dt
 
@@ -19,7 +20,7 @@ def fetch_forecast(lat: float, lon: float) -> dict | None:
         f"https://api.open-meteo.com/v1/forecast"
         f"?latitude={lat}&longitude={lon}"
         f"&daily=weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,windspeed_10m_max"
-        f"&timezone=Australia%2FSydney"
+        f"&timezone={urllib.parse.quote(os.environ.get('TIMEZONE') or 'Australia/Sydney', safe='')}"
         f"&forecast_days=7"
     )
     try:
@@ -62,7 +63,7 @@ def summarise_forecast(raw: dict) -> str:
 
     client = anthropic.Anthropic()
     msg = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+        model=os.environ.get("WEATHER_MODEL") or "claude-haiku-4-5-20251001",
         max_tokens=200,
         messages=[{
             "role": "user",
@@ -94,7 +95,12 @@ def get_weather_summary() -> str | None:
     if not raw:
         return None
 
-    summary = summarise_forecast(raw)
+    # Weather is a nice-to-have; never let it fail the weekly plan
+    try:
+        summary = summarise_forecast(raw)
+    except Exception as e:
+        print(f"Weather summary failed: {e}")
+        return None
     print(f"Weather summary: {summary}")
     return summary
 

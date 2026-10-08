@@ -24,7 +24,8 @@ from pathlib import Path
 import anthropic
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "data"
-MODEL = os.environ.get("TRAINER_MODEL", "claude-sonnet-5")
+# `or` rather than a .get() default: an unset Actions variable arrives as ""
+MODEL = os.environ.get("TRAINER_MODEL") or "claude-sonnet-5"
 
 TSB_THRESHOLD       = 15   # points — raised from 10 to avoid triggering on planned hard days
 READINESS_THRESHOLD = 15   # points
@@ -78,11 +79,11 @@ def should_revise(current: dict, snapshot: dict,
         reasons.append(f"TSB {direction} by {abs(tsb_delta):.1f} points ({snapshot_tsb:.1f} → {current_tsb:.1f})")
     if abs(readiness_delta) >= READINESS_THRESHOLD:
         direction = "improved" if readiness_delta > 0 else "declined"
-        reasons.append(f"readiness {direction} by {abs(readiness_delta)} ({snapshot_readiness} → {current_readiness})")
+        reasons.append(f"readiness {direction} by {abs(readiness_delta):.0f} ({snapshot_readiness} → {current_readiness})")
 
     if reasons:
         return True, " and ".join(reasons)
-    return False, f"no significant change (TSB delta {tsb_delta:+.1f}, readiness delta {readiness_delta:+d})"
+    return False, f"no significant change (TSB delta {tsb_delta:+.1f}, readiness delta {readiness_delta:+.0f})"
 
 
 SYSTEM = """
@@ -223,7 +224,7 @@ def build_review_message(current: dict, plan: dict, snapshot: dict, reason: str,
     parts.append(f"  Now (Wednesday): TSB={load.get('tsb')}  CTL={load.get('ctl')}  ATL={load.get('atl')}  readiness={tr.get('score')} ({tr.get('level')})")
     tsb_delta = (load.get('tsb') or 0) - (snapshot.get('tsb') or 0)
     readiness_delta = (tr.get('score') or 0) - (snapshot.get('readiness_score') or 0)
-    parts.append(f"  TSB delta: {tsb_delta:+.1f}  Readiness delta: {readiness_delta:+d}")
+    parts.append(f"  TSB delta: {tsb_delta:+.1f}  Readiness delta: {readiness_delta:+.0f}")
     parts.append("</snapshot_comparison>")
     parts.append("")
 
@@ -367,22 +368,27 @@ def main():
         print(f"Model returned empty response. Stop reason: {response.stop_reason}")
         return
 
-    # Split reasoning from JSON
-    json_start = text.find("{")
-    if json_start == -1:
-        print("No JSON found in response — keeping original plan")
-        print(text[:500])
+    # Split reasoning from JSON. The reasoning block can itself contain "{",
+    # so decode from each candidate brace until a plan object parses.
+    from generate_plan import parse_plan_json, validate_plan
+    try:
+        revised = validate_plan(parse_plan_json(text), plan["week_start"])
+    except ValueError as e:
+        print(f"Revised plan rejected ({e}) — keeping original plan")
+        print(text[:1000])
         return
 
-    reasoning = text[:json_start].strip()
-    json_text = text[json_start:].strip()
-
+    reasoning = text[:text.find("{")].strip()
     if reasoning:
         print("--- Coach reasoning ---")
         print(reasoning)
         print("--- End reasoning ---")
 
-    revised = json.loads(json_text)
+    # Completed days are fixed: restore them from the original in case the
+    # model edited them anyway
+    days_done = max(0, min(7, (_today_local() - dt.date.fromisoformat(plan["week_start"])).days))
+    for i in range(days_done):
+        revised["days"][i] = plan["days"][i]
     revised["generated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     revised["midweek_revision"] = True
     plan_path.write_text(json.dumps(revised, indent=1))

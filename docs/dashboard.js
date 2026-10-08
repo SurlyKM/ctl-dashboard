@@ -5,14 +5,9 @@
 // ---------------------------------------------------------------------------
 
 const WINDOW_KEY = "statWindow";
-let _statWindow = parseInt(localStorage.getItem(WINDOW_KEY), 10) === 30 ? 30 : 7;
+let _statWindow = 7;
+try { _statWindow = parseInt(localStorage.getItem(WINDOW_KEY), 10) === 30 ? 30 : 7; } catch (e) {}
 let _statCtx = null;
-
-function isoLocal(d) {
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
-}
 
 function lastNDates(n) {
   const today = new Date();
@@ -154,7 +149,8 @@ const fmtOne   = v => v.toFixed(1);
 const fmtMs    = v => Math.round(v) + " ms";
 const fmtBpm   = v => Math.round(v) + " bpm";
 const fmtHrs   = v => v.toFixed(1) + " h";
-const fmtSleep = v => Math.floor(v) + "h " + Math.round((v % 1) * 60) + "m";
+// Round to whole minutes first so 7.999 h shows "8h 0m", not "7h 60m"
+const fmtSleep = v => { const m = Math.round(v * 60); return Math.floor(m / 60) + "h " + (m % 60) + "m"; };
 
 function cardDefs(ctx) {
   const { metrics, activities, daily, ts, vo2hist } = ctx;
@@ -167,27 +163,25 @@ function cardDefs(ctx) {
   const [tsbLabel, , tsbFg] = tsbZone(cur.tsb ?? 0);
 
   // HRV status
-  const hrvStatus = (latest.hrv_status || "").toLowerCase();
+  const hrvStatus = (latest.hrv_status || "").toLowerCase().replace(/_/g, " ");
   const hrvColor = hrvStatus === "balanced" ? "var(--fitness)"
-    : hrvStatus === "low" ? "var(--danger)" : "var(--muted)";
+    : hrvStatus === "unbalanced" ? "var(--fatigue)"
+    : hrvStatus === "low" || hrvStatus === "poor" ? "var(--danger)" : "var(--muted)";
 
-  // Stress banding
-  const stress = latest.stress_avg || 0;
-  const stressSub = stress < 30 ? "low" : stress < 60 ? "moderate" : "high";
-  const stressColor = stress < 30 ? "var(--fitness)" : stress < 60 ? "var(--fatigue)" : "var(--danger)";
+  // Stress banding (Garmin bands: 0-25 rest, 26-50 low, 51-75 medium, 76+ high)
+  const stress = latest.stress_avg;
+  const stressSub = stress == null ? "" : stress <= 25 ? "rest" : stress <= 50 ? "low" : stress <= 75 ? "medium" : "high";
+  const stressColor = stress == null || stress <= 50 ? "var(--fitness)" : stress <= 75 ? "var(--fatigue)" : "var(--danger)";
 
   // Week hours, Monday based
-  const now = new Date();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-  const mondayStr = isoLocal(monday);
+  const mondayStr = isoLocal(mondayOf(new Date()));
   const weekHrs = (activities || [])
     .filter(a => a.start && a.start.slice(0, 10) >= mondayStr)
     .reduce((t, a) => t + (a.duration_s || 0) / 3600, 0);
 
   // CTL week on week
   const s = metrics.series || [];
-  const weekAgo = s[Math.max(0, s.length - 8)];
+  const weekAgo = s.length >= 8 ? s[s.length - 8] : null;
   const ctlDelta = weekAgo ? Math.round((cur.ctl || 0) - weekAgo.ctl) : null;
 
   // Resting HR trend from a least squares fit over the window
@@ -212,7 +206,7 @@ function cardDefs(ctx) {
       sub: latest.sleep_score ? "score " + latest.sleep_score : "",
       series: fromDaily(daily, "sleep_s", d, 1 / 3600),
       fmt: fmtSleep, fmtShort: v => v.toFixed(1),
-      fmtDelta: v => (v > 0 ? "+" : "-") + Math.round(Math.abs(v) * 60) + " m" },
+      fmtDelta: v => { const m = Math.round(v * 60); return (m > 0 ? "+" : m < 0 ? "-" : "") + Math.abs(m) + " m"; } },
 
     { key: "battery", label: "Body battery",
       value: latest.body_battery_high ?? "–", sub: "",
@@ -225,7 +219,7 @@ function cardDefs(ctx) {
       fmt: fmtInt, fmtShort: fmtInt, invert: true },
 
     { key: "tsb", label: "Form (TSB)",
-      value: (cur.tsb > 0 ? "+" : "") + (cur.tsb ?? 0), valueColor: tsbFg,
+      value: (cur.tsb > 0 ? "+" : "") + Math.round(cur.tsb ?? 0), valueColor: tsbFg,
       sub: tsbLabel.toLowerCase(), subColor: tsbFg,
       series: fromSeries(s, "tsb", d),
       fmt: fmtOne, fmtShort: fmtInt },
@@ -254,7 +248,7 @@ function cardDefs(ctx) {
       fmt: fmtBpm, fmtShort: fmtInt, invert: true },
 
     { key: "vo2", label: "VO2 max",
-      value: vo2 ? Math.round(vo2) : "–",
+      value: vo2 ? vo2.toFixed(1) : "–",
       sub: ts && ts.fitness_age ? "age " + ts.fitness_age : "",
       series: fromObject(vo2hist, d),
       fmt: fmtOne, fmtShort: fmtOne,
@@ -269,7 +263,7 @@ function cardDefs(ctx) {
 function winPills() {
   return '<div class="win-pills">' + [7, 30].map(n =>
     '<button class="win-pill' + (_statWindow === n ? " active" : "") +
-    '" data-win="' + n + '">' + n + 'd</button>').join("") + '</div>';
+    '" type="button" data-win="' + n + '" aria-pressed="' + (_statWindow === n) + '">' + n + 'd</button>').join("") + '</div>';
 }
 
 function dstat(label, value, color) {
@@ -319,9 +313,9 @@ function cardHtml(c) {
   const mini = sparkSvg(c.series, { h: 22, type: c.chart || "line", sw: 1.5, dot: true });
   return '<span class="label">' + c.label + '</span>' +
     '<span class="num"' + (c.valueColor ? ' style="color:' + c.valueColor + '"' : '') + '>' +
-      c.value + '</span>' +
+      esc(c.value) + '</span>' +
     (c.sub ? '<span class="delta" style="color:' + (c.subColor || "var(--muted)") + '">' +
-      c.sub + '</span>' : '<span class="delta"></span>') +
+      esc(c.sub) + '</span>' : '<span class="delta"></span>') +
     (mini || '<div class="spark-blank"></div>') +
     detailHtml(c);
 }
@@ -330,13 +324,16 @@ function renderStatCards() {
   if (!_statCtx) return;
   cardDefs(_statCtx).forEach(c => {
     const el = $("card-" + c.key);
-    if (el) el.innerHTML = cardHtml(c);
+    if (el) {
+      el.innerHTML = cardHtml(c);
+      el.setAttribute("aria-label", c.label + " " + c.value + (c.sub ? ", " + c.sub : ""));
+    }
   });
 }
 
 function setStatWindow(n) {
   _statWindow = n === 30 ? 30 : 7;
-  localStorage.setItem(WINDOW_KEY, String(_statWindow));
+  try { localStorage.setItem(WINDOW_KEY, String(_statWindow)); } catch (e) {}
   renderStatCards();
 }
 
@@ -354,8 +351,18 @@ function wireStatCards() {
     const card = e.target.closest(".stat");
     if (!card) return;
     const wasOpen = card.classList.contains("expanded");
-    grid.querySelectorAll(".stat.expanded").forEach(c => c.classList.remove("expanded"));
-    if (!wasOpen) card.classList.add("expanded");
+    grid.querySelectorAll(".stat.expanded").forEach(c => {
+      c.classList.remove("expanded");
+      c.setAttribute("aria-expanded", "false");
+    });
+    if (!wasOpen) {
+      card.classList.add("expanded");
+      card.setAttribute("aria-expanded", "true");
+      // On a phone the expanded card spans the grid and can push below the fold
+      if (card.getBoundingClientRect().bottom > window.innerHeight) {
+        card.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+      }
+    }
   });
 
   grid.addEventListener("keydown", e => {
@@ -378,19 +385,19 @@ let _chartDays = 84;
 
 // Chart colour palettes keyed by theme + mode — no CSS variable lookups at render time
 function chartColors() {
-  const theme = document.body.getAttribute("data-theme") || "green";
+  const theme = document.documentElement.getAttribute("data-theme") || "green";
   const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const palettes = {
-    green:  { fitness: dark ? "#5cb86a" : "#2d6a35", fatigue: dark ? "#e09a40" : "#b85c00", bar: dark ? "rgba(92,184,106,0.18)" : "rgba(45,106,53,0.15)", grid: dark ? "#243d27" : "#dceadd", muted: dark ? "#5a7a5c" : "#888888" },
-    slate:  { fitness: dark ? "#60a5fa" : "#1d4ed8", fatigue: dark ? "#fb923c" : "#b45309", bar: dark ? "rgba(96,165,250,0.18)" : "rgba(29,78,216,0.12)", grid: dark ? "#252d42" : "#e2e8f0", muted: dark ? "#6b7599" : "#9ca3af" },
-    warm:   { fitness: dark ? "#fbbf24" : "#b45309", fatigue: dark ? "#fb923c" : "#92400e", bar: dark ? "rgba(251,191,36,0.18)" : "rgba(180,83,9,0.12)",  grid: dark ? "#3a3330" : "#e8e4de", muted: dark ? "#857770" : "#a8a29e" },
-    mono:   { fitness: dark ? "#a3a3a3" : "#374151", fatigue: dark ? "#737373" : "#6b7280", bar: dark ? "rgba(163,163,163,0.18)" : "rgba(55,65,81,0.12)",  grid: dark ? "#2e2e2e" : "#e5e7eb", muted: dark ? "#737373" : "#9ca3af" },
+    green:  { fitness: dark ? "#5cb86a" : "#2d6a35", fatigue: dark ? "#e09a40" : "#b85c00", bar: dark ? "rgba(92,184,106,0.18)" : "rgba(45,106,53,0.15)", grid: dark ? "#243d27" : "#dceadd", muted: dark ? "#86a088" : "#5f6b60" },
+    slate:  { fitness: dark ? "#60a5fa" : "#1d4ed8", fatigue: dark ? "#fb923c" : "#b45309", bar: dark ? "rgba(96,165,250,0.18)" : "rgba(29,78,216,0.12)", grid: dark ? "#252d42" : "#e2e8f0", muted: dark ? "#8b93b3" : "#64748b" },
+    warm:   { fitness: dark ? "#a3e635" : "#4d7c0f", fatigue: dark ? "#fbbf24" : "#b45309", bar: dark ? "rgba(163,230,53,0.16)" : "rgba(77,124,15,0.12)",  grid: dark ? "#3a3330" : "#e8e4de", muted: dark ? "#a39890" : "#78716c" },
+    mono:   { fitness: dark ? "#d4d4d4" : "#374151", fatigue: dark ? "#f59e0b" : "#92400e", bar: dark ? "rgba(212,212,212,0.16)" : "rgba(55,65,81,0.12)",  grid: dark ? "#2e2e2e" : "#e5e7eb", muted: dark ? "#9a9a9a" : "#6b7280" },
   };
   return palettes[theme] || palettes.green;
 }
 
 function buildChart() {
-  if (!_chartMetrics) return;
+  if (!_chartMetrics || typeof Chart === "undefined") return;
   if (_chartInstance) { _chartInstance.destroy(); _chartInstance = null; }
   const wrap = document.querySelector(".chart-wrap");
   if (wrap) {
@@ -402,16 +409,20 @@ function buildChart() {
   }
   const metrics = _chartMetrics, plan = _chartPlan;
   const series = metrics.series.slice(-_chartDays);
-  const _localDay = new Date().getDay();
-  const todayIdx = _localDay === 0 ? 6 : _localDay - 1;
-  const todayPlan = plan?.days?.[todayIdx];
-  const todayLabel = todayPlan
-    ? "Today: " + todayPlan.session + (todayPlan.duration_min ? " · " + todayPlan.duration_min + " min" : "")
-    : null;
-  const [, , intFg] = todayPlan ? (INTENSITY_PILL[todayPlan.intensity] || INTENSITY_PILL.easy) : ["","",""];
-  if (todayLabel) {
-    const label = $("chart-today-label");
-    if (label) { label.textContent = todayLabel; label.style.color = intFg || "#888"; }
+  // Only show "Today" from a plan that covers this week. On Sunday night the
+  // new plan is for next week, and index 6 would be next Sunday's session.
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  const todayPlan = planIsCurrent(plan) ? plan.days?.[todayIdx] : null;
+  const label = $("chart-today-label");
+  if (label) {
+    if (todayPlan) {
+      const [, , intFg] = INTENSITY_PILL[todayPlan.intensity] || INTENSITY_PILL.easy;
+      label.textContent = "Today: " + todayPlan.session +
+        (todayPlan.duration_min ? " · " + todayPlan.duration_min + " min" : "");
+      label.style.color = intFg;
+    } else {
+      label.textContent = "";
+    }
   }
   const col = chartColors();
   const chartEl = $("loadChart");
@@ -430,8 +441,12 @@ function buildChart() {
     },
     options: {
       maintainAspectRatio: false,
+      animation: matchMedia("(prefers-reduced-motion: reduce)").matches ? false : undefined,
       interaction: { mode: "index", intersect: false },
-      plugins: { legend: { labels: { boxWidth: 16, boxHeight: 2, font: { size: 11 }, color: col.muted } } },
+      plugins: {
+        legend: { labels: { boxWidth: 16, boxHeight: 2, font: { size: 11 }, color: col.muted } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ": " + Math.round(ctx.parsed.y) } },
+      },
       scales: {
         x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: col.muted, font: { size: 10 } } },
         y: { grid: { color: col.grid }, ticks: { color: col.muted, font: { size: 10 } } },
@@ -450,50 +465,52 @@ function renderMix(activities) {
   });
   const entries = Object.entries(hours).sort((a,b) => b[1] - a[1]);
   const max = entries[0]?.[1] || 1;
+  if (!entries.length) {
+    $("mix").innerHTML = '<span class="muted">No activities in the last 4 weeks</span>';
+    return;
+  }
   $("mix").innerHTML = entries.map(([sport, h]) =>
     '<div class="mix-row">' +
-      '<span class="mix-label">' + (SPORT_LABELS[sport] || sport) + '</span>' +
+      '<span class="mix-label">' + esc(SPORT_LABELS[sport] || sport) + '</span>' +
       '<div class="mix-bar-wrap"><div class="mix-bar" style="width:' + ((h/max)*100) + '%"></div></div>' +
       '<span class="mix-hours">' + h.toFixed(1) + ' h</span>' +
     '</div>'
   ).join("");
 }
 
-function renderVO2(ts, activities) {
+// VO2 max trend from the stored daily history (vo2_history.json). The old
+// version estimated a "trend" from training load / HR effort, which is a
+// load metric, not VO2 max, and could move opposite to the real value.
+function renderVO2(ts, vo2hist) {
   const el = $("vo2-panel");
-  if (!el || !ts) return;
-  const v = ts.vo2max_cycling || ts.vo2max_generic;
+  if (!el) return;
+  const v = ts ? (ts.vo2max_cycling || ts.vo2max_generic) : null;
   if (!v) { el.innerHTML = '<span class="muted">No data</span>'; return; }
+
+  const pts = Object.entries(vo2hist || {}).sort().slice(-84)
+    .map(([date, val]) => ({ date, v: val }));
+  const first = pts[0], last = pts[pts.length - 1];
+  const change = pts.length > 1 ? last.v - first.v : null;
+  const changeTxt = change == null ? ""
+    : (change > 0 ? "+" : "") + change.toFixed(1) + " since " +
+      new Date(first.date + "T00:00").toLocaleDateString(undefined, { day: "numeric", month: "short" });
+  const changeColor = change == null || Math.abs(change) < 0.05 ? "var(--muted)"
+    : change > 0 ? "var(--fitness)" : "var(--fatigue)";
+  const spark = pts.length > 1 ? sparkSvg(pts, { h: 38, sw: 2, cls: "vo2-spark" }) : "";
+
   el.innerHTML =
     '<div class="vo2-row">' +
       '<div><div class="vo2-num">' + v.toFixed(1) + '</div>' +
-      '<div class="vo2-sub">' + (ts.fitness_age ? "Fitness age " + ts.fitness_age : "") + '</div></div>' +
-      '<div class="vo2-trend"><div class="vo2-trend-label">Trend (from activities)</div>' +
-      '<svg id="vo2svg" viewBox="0 0 120 38" style="width:100%;height:38px;overflow:visible;display:block"></svg>' +
-      '<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:2px"><span>12 wk ago</span><span>now</span></div>' +
+      '<div class="vo2-sub">' + (ts.fitness_age ? "Fitness age " + esc(ts.fitness_age) : "ml/kg/min") + '</div></div>' +
+      '<div class="vo2-trend">' +
+        (spark
+          ? '<div class="vo2-trend-label" style="color:' + changeColor + '">' + changeTxt + '</div>' + spark +
+            '<div class="vo2-axis"><span>' + esc(first.date.slice(5)) + '</span><span>now</span></div>'
+          : '<div class="vo2-trend-label">Trend appears once a few days are logged</div>') +
       '</div></div>';
-  const svg = document.getElementById("vo2svg");
-  const byWeek = {};
-  activities.forEach(a => {
-    if (!a.start || !a.avg_hr || !a.max_hr) return;
-    const wk = Math.floor((Date.now() - new Date(a.start)) / (7*864e5));
-    if (wk > 12) return;
-    const hrr = (a.avg_hr - 50) / (a.max_hr - 50);
-    const effort = Math.max(0.3, Math.min(1, hrr));
-    (byWeek[wk] = byWeek[wk] || []).push((a.training_load || 0) / effort);
-  });
-  const vals = Array.from({length:13}, (_,i) => 12-i).map(w =>
-    byWeek[w] ? byWeek[w].reduce((a,b)=>a+b,0)/byWeek[w].length : null);
-  const filled = vals.map((v,i) => v ?? vals.slice(0,i).reverse().find(x=>x) ?? 0);
-  const mn = Math.min(...filled), mx = Math.max(...filled) || 1;
-  const pts = filled.map((v,i) => ((i/12)*120) + "," + (38 - ((v-mn)/(mx-mn||1))*30 - 4)).join(" ");
-  const last = filled[filled.length-1];
-  const ly = 38 - ((last-mn)/(mx-mn||1))*30 - 4;
-  svg.innerHTML =
-    '<polyline points="' + pts + '" fill="none" stroke="var(--line2)" stroke-width="1.5" stroke-linejoin="round"/>' +
-    '<polyline points="' + pts + '" fill="none" stroke="var(--fitness)" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>' +
-    '<circle cx="120" cy="' + ly + '" r="3" fill="var(--fitness)"/>';
 }
+
+let _wired = false;
 
 async function main() {
   try {
@@ -504,32 +521,39 @@ async function main() {
       load("training_status").catch(() => null),
       load("vo2_history").catch(() => null),
     ]);
+    clearError();
     renderSynced(meta);
-    _statCtx = { metrics, activities, daily, ts, vo2hist };
+    _statCtx = { metrics, activities, daily: daily || {}, ts, vo2hist };
     renderStatCards();
-    wireStatCards();
     _chartMetrics = metrics;
     _chartPlan = plan;
     buildChart();
-    document.addEventListener("themechange", buildChart);
-    document.querySelectorAll(".range-btn").forEach(function(btn) {
-      btn.addEventListener("click", function() {
-        _chartDays = parseInt(btn.dataset.days);
-        document.querySelectorAll(".range-btn").forEach(function(b) {
-          b.classList.toggle("active", b === btn);
-        });
-        var title = $("chart-title");
-        if (title) title.textContent = "Training load, " + (_chartDays === 84 ? "12 weeks" : "6 months");
-        buildChart();
-      });
-    });
     renderMix(activities);
-    renderVO2(ts, activities);
+    renderVO2(ts, vo2hist);
     renderGarminStatus(ts);
     renderLoadBalance(ts);
+
+    if (!_wired) {
+      _wired = true;
+      wireStatCards();
+      document.addEventListener("themechange", buildChart);
+      document.querySelectorAll(".range-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          _chartDays = parseInt(btn.dataset.days, 10);
+          document.querySelectorAll(".range-btn").forEach(b => {
+            b.classList.toggle("active", b === btn);
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          const title = $("chart-title");
+          if (title) title.textContent = "Training load, " + (_chartDays === 84 ? "12 weeks" : "6 months");
+          buildChart();
+        });
+      });
+      refreshOnReturn(main);
+    }
   } catch (e) {
-    document.body.insertAdjacentHTML("beforeend",
-      '<p class="muted" style="padding:20px">No data yet. Run the sync workflow first. (' + e.message + ')</p>');
+    showError("Couldn't load data (" + e.message + "). If this is a new setup, run the sync workflow first.");
+    if (!_wired) { _wired = true; refreshOnReturn(main); }
   }
 }
 main();

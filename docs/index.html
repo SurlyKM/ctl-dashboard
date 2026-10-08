@@ -2,65 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f7f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101a11" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Training">
+<meta name="format-detection" content="telephone=no">
 <title>Training</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
+<script src="theme.js"></script>
+<script src="chart.umd.min.js" defer></script>
+<script src="shared.js" defer></script>
+<script src="dashboard.js" defer></script>
 </head>
-<body><script>
-(function() {
-  var t = localStorage.getItem("theme") || "green";
-  document.body.setAttribute("data-theme", t);
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".theme-btn").forEach(function(btn) {
-      if (btn.dataset.theme === t) btn.classList.add("active");
-      btn.addEventListener("click", function() {
-        var theme = btn.dataset.theme;
-        document.body.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-        document.querySelectorAll(".theme-btn").forEach(function(b) {
-          b.classList.toggle("active", b.dataset.theme === theme);
-        });
-        document.dispatchEvent(new Event("themechange"));
-      });
-    });
-  });
-})();
-</script>
+<body>
 <header>
   <h1>Training</h1>
-  <nav>
-    <a href="index.html" class="nav-link active">Dashboard</a>
+  <nav aria-label="Pages">
+    <a href="./" class="nav-link active" aria-current="page">Dashboard</a>
     <a href="plan.html" class="nav-link">Plan</a>
   </nav>
-  <span id="synced" class="muted"></span>
+  <span id="synced" class="muted" role="status"></span>
 </header>
 
-<section>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <div style="display:flex;align-items:center;gap:10px">
-      <h2 style="margin:0" id="chart-title">Training load, 12 weeks</h2>
-      <div class="range-toggle">
-        <button class="range-btn active" data-days="84">12w</button>
-        <button class="range-btn" data-days="182">6m</button>
+<main>
+<section aria-labelledby="chart-title">
+  <div class="chart-head">
+    <div class="chart-head-left">
+      <h2 id="chart-title">Training load, 12 weeks</h2>
+      <div class="range-toggle" role="group" aria-label="Chart range">
+        <button type="button" class="range-btn active" data-days="84" aria-pressed="true">12w</button>
+        <button type="button" class="range-btn" data-days="182" aria-pressed="false">6m</button>
       </div>
     </div>
-    <span id="chart-today-label" class="muted" style="font-size:11px"></span>
+    <span id="chart-today-label" class="today-label"></span>
   </div>
-  <div class="chart-wrap"><canvas id="loadChart"></canvas></div>
+  <div class="chart-wrap"><canvas id="loadChart" role="img" aria-label="Daily training load with fitness and fatigue lines"></canvas></div>
 </section>
 
 <section class="stats" aria-label="Key metrics">
-  <div class="stat" id="card-hrv"     role="button" tabindex="0"></div>
-  <div class="stat" id="card-sleep"   role="button" tabindex="0"></div>
-  <div class="stat" id="card-battery" role="button" tabindex="0"></div>
-  <div class="stat" id="card-stress"  role="button" tabindex="0"></div>
-  <div class="stat" id="card-tsb"     role="button" tabindex="0"></div>
-  <div class="stat" id="card-ctl"     role="button" tabindex="0"></div>
-  <div class="stat" id="card-atl"     role="button" tabindex="0"></div>
-  <div class="stat" id="card-week"    role="button" tabindex="0"></div>
-  <div class="stat" id="card-rhr"     role="button" tabindex="0"></div>
-  <div class="stat" id="card-vo2"     role="button" tabindex="0"></div>
+  <div class="stat" id="card-hrv"     role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-sleep"   role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-battery" role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-stress"  role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-tsb"     role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-ctl"     role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-atl"     role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-week"    role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-rhr"     role="button" tabindex="0" aria-expanded="false"></div>
+  <div class="stat" id="card-vo2"     role="button" tabindex="0" aria-expanded="false"></div>
 </section>
 
 <div class="two-col">
@@ -84,17 +81,14 @@
     <div id="load-balance"></div>
   </section>
 </div>
+</main>
 
-
-<script src="chart.umd.min.js"></script>
-<script src="shared.js"></script>
-<script src="dashboard.js"></script>
-<div class="theme-switcher">
+<footer class="theme-switcher" role="group" aria-label="Colour theme">
   <span class="theme-label">Theme</span>
-  <button class="theme-btn" data-theme="green" title="Forest green" style="background:#2d6a35"></button>
-  <button class="theme-btn" data-theme="slate" title="Slate blue"   style="background:#1d4ed8"></button>
-  <button class="theme-btn" data-theme="warm"  title="Warm neutral" style="background:#b45309"></button>
-  <button class="theme-btn" data-theme="mono"  title="Monochrome"   style="background:#374151"></button>
-</div>
+  <button type="button" class="theme-btn" data-theme="green" aria-label="Forest green" style="--swatch:#2d6a35"></button>
+  <button type="button" class="theme-btn" data-theme="slate" aria-label="Slate blue"   style="--swatch:#1d4ed8"></button>
+  <button type="button" class="theme-btn" data-theme="warm"  aria-label="Warm neutral" style="--swatch:#b45309"></button>
+  <button type="button" class="theme-btn" data-theme="mono"  aria-label="Monochrome"   style="--swatch:#374151"></button>
+</footer>
 </body>
 </html>

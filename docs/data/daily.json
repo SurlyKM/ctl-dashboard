@@ -2203,7 +2203,7 @@
  },
  "2026-10-09": {
   "body_battery_high": 98,
-  "body_battery_low": 63,
+  "body_battery_low": 28,
   "hrv_baseline_high": 57,
   "hrv_baseline_low": 44,
   "hrv_last_night": 45,
@@ -2212,6 +2212,6 @@
   "resting_hr": 51,
   "sleep_s": 26520,
   "sleep_score": 85,
-  "stress_avg": 22
+  "stress_avg": 33
  }
 }

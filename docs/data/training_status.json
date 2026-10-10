@@ -4,7 +4,7 @@
  "fitness_age": 20,
  "training_status": "PRODUCTIVE_2",
  "fitness_trend": 2,
- "load_aerobic_low": 1078,
+ "load_aerobic_low": 1127,
  "load_aerobic_low_target": [
   544,
   1196
@@ -14,7 +14,7 @@
   652,
   1305
  ],
- "load_anaerobic": 767,
+ "load_anaerobic": 793,
  "load_anaerobic_target": [
   217,
   652

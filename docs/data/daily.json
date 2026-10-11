@@ -2208,16 +2208,16 @@
   "stress_avg": 16
  },
  "2026-10-12": {
-  "body_battery_high": 52,
+  "body_battery_high": 56,
   "body_battery_low": 48,
   "hrv_baseline_high": null,
   "hrv_baseline_low": null,
   "hrv_last_night": null,
   "hrv_status": null,
   "hrv_weekly_avg": null,
-  "resting_hr": 54,
+  "resting_hr": 52,
   "sleep_s": null,
   "sleep_score": null,
-  "stress_avg": 13
+  "stress_avg": 9
  }
 }

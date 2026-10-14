@@ -1,39 +1,5 @@
 [
  {
-  "id": 22322226856,
-  "type": "virtual_ride",
-  "start": "2026-03-28 14:33:48",
-  "duration_s": 1801.0,
-  "distance_m": 14388.9501953125,
-  "elev_gain_m": 61.0,
-  "avg_hr": 135.0,
-  "max_hr": 169.0,
-  "avg_power": 161.0,
-  "norm_power": 185.04263465796632,
-  "calories": 278.0,
-  "training_load": 39.08137512207031,
-  "aerobic_te": 2.200000047683716,
-  "load": 39.1,
-  "sport": "cycling"
- },
- {
-  "id": 22322300536,
-  "type": "virtual_ride",
-  "start": "2026-03-28 15:05:33",
-  "duration_s": 1448.0,
-  "distance_m": 12419.5400390625,
-  "elev_gain_m": 47.0,
-  "avg_hr": 136.0,
-  "max_hr": 172.0,
-  "avg_power": 159.0,
-  "norm_power": 180.7753078467792,
-  "calories": 221.0,
-  "training_load": 39.96693420410156,
-  "aerobic_te": 2.200000047683716,
-  "load": 40.0,
-  "sport": "cycling"
- },
- {
   "id": 22333349046,
   "type": "virtual_ride",
   "start": "2026-03-29 15:33:50",
@@ -5353,5 +5319,22 @@
   "aerobic_te": 2.200000047683716,
   "load": 39.9,
   "sport": "cycling"
+ },
+ {
+  "id": 24718328283,
+  "type": "yoga",
+  "start": "2026-10-14 17:55:26",
+  "duration_s": 5367.26123046875,
+  "distance_m": null,
+  "elev_gain_m": null,
+  "avg_hr": 80.0,
+  "max_hr": 160.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 248.0,
+  "training_load": 11.840774536132812,
+  "aerobic_te": 0.4000000059604645,
+  "load": 11.8,
+  "sport": "yoga"
  }
 ]

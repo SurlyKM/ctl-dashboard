@@ -1,34 +1,34 @@
 {
  "vo2max_generic": 56.4,
  "vo2max_cycling": 56.4,
- "fitness_age": 20,
- "training_status": "MAINTAINING_2",
+ "fitness_age": null,
+ "training_status": "PRODUCTIVE_2",
  "fitness_trend": 2,
  "load_aerobic_low": 1061,
  "load_aerobic_low_target": [
   544,
   1196
  ],
- "load_aerobic_high": 449,
+ "load_aerobic_high": 610,
  "load_aerobic_high_target": [
   652,
   1305
  ],
- "load_anaerobic": 806,
+ "load_anaerobic": 867,
  "load_anaerobic_target": [
   217,
   652
  ],
  "load_balance_feedback": "AEROBIC_HIGH_SHORTAGE",
- "readiness_score": 85,
- "readiness_level": "high",
- "readiness_feedback": "well recovered",
- "readiness_recovery_hours": 0,
+ "readiness_score": 60,
+ "readiness_level": "moderate",
+ "readiness_feedback": "recovery in progress",
+ "readiness_recovery_hours": 31,
  "readiness_hrv_factor": "very good",
  "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "good",
  "readiness_sleep_history": "moderate",
  "readiness_stress_history": "good",
- "readiness_recovery_factor": "good",
+ "readiness_recovery_factor": "moderate",
  "readiness_hrv_weekly_avg": 49
 }

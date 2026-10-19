@@ -5302,5 +5302,22 @@
   "aerobic_te": 2.0999999046325684,
   "load": 49.3,
   "sport": "mtb"
+ },
+ {
+  "id": 24774071962,
+  "type": "mountain_biking",
+  "start": "2026-10-19 12:46:16",
+  "duration_s": 3534.89501953125,
+  "distance_m": 14971.8203125,
+  "elev_gain_m": 458.0,
+  "avg_hr": 127.0,
+  "max_hr": 181.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 492.0,
+  "training_load": 86.49617004394531,
+  "aerobic_te": 2.200000047683716,
+  "load": 86.5,
+  "sport": "mtb"
  }
 ]

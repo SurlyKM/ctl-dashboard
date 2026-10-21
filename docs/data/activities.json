@@ -1,22 +1,5 @@
 [
  {
-  "id": 22401930736,
-  "type": "indoor_cycling",
-  "start": "2026-04-04 19:36:52",
-  "duration_s": 1062.406982421875,
-  "distance_m": 0.0,
-  "elev_gain_m": null,
-  "avg_hr": 80.0,
-  "max_hr": 121.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 62.0,
-  "training_load": 2.091827392578125,
-  "aerobic_te": 0.10000000149011612,
-  "load": 2.1,
-  "sport": "cycling"
- },
- {
   "id": 22413616720,
   "type": "indoor_cycling",
   "start": "2026-04-05 19:24:57",
@@ -5335,6 +5318,23 @@
   "training_load": 48.91392517089844,
   "aerobic_te": 2.0,
   "load": 48.9,
+  "sport": "cycling"
+ },
+ {
+  "id": 24800622041,
+  "type": "cycling",
+  "start": "2026-10-21 18:14:53",
+  "duration_s": 1979.3409423828125,
+  "distance_m": 5101.6201171875,
+  "elev_gain_m": 59.0,
+  "avg_hr": 97.0,
+  "max_hr": 142.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 176.0,
+  "training_load": 7.3147430419921875,
+  "aerobic_te": 0.4000000059604645,
+  "load": 7.3,
   "sport": "cycling"
  }
 ]

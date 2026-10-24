@@ -5353,5 +5353,39 @@
   "aerobic_te": 0.4000000059604645,
   "load": 5.3,
   "sport": "walk_hike"
+ },
+ {
+  "id": 24839604258,
+  "type": "indoor_cycling",
+  "start": "2026-10-24 12:06:13",
+  "duration_s": 1934.5780029296875,
+  "distance_m": 0.0,
+  "elev_gain_m": null,
+  "avg_hr": 130.0,
+  "max_hr": 160.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 326.0,
+  "training_load": 32.029754638671875,
+  "aerobic_te": 2.0999999046325684,
+  "load": 32.0,
+  "sport": "cycling"
+ },
+ {
+  "id": 24839684810,
+  "type": "strength_training",
+  "start": "2026-10-24 12:42:09",
+  "duration_s": 676.6110229492188,
+  "distance_m": 0.0,
+  "elev_gain_m": null,
+  "avg_hr": 128.0,
+  "max_hr": 169.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 110.0,
+  "training_load": 27.60009765625,
+  "aerobic_te": 1.399999976158142,
+  "load": 27.6,
+  "sport": "gym"
  }
 ]

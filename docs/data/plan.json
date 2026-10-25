@@ -1,17 +1,17 @@
 {
- "week_start": "2026-10-19",
- "training_phase": "Recovery",
- "weekly_objective": "Absorb the recent build block and Tuesday's committed double while holding strength and aerobic fitness, arriving fresh for next week.",
- "quality_sessions": 1,
- "coach_says": "Missing Wednesday's swim is no problem. You rode easy instead, and your HRV (45 ms, balanced) and resting HR (51 bpm, stable) say you're recovering well, so the swim is simply dropped rather than squeezed in. The only change is trimming Saturday's ride from 120 to 100 minutes, because this recovery week is already running a little heavier than planned (load 471 by Wednesday). The rest stays as written: Friday maintenance gym at lunch and Sunday recovery yoga.",
+ "week_start": "2026-10-26",
+ "training_phase": "Build",
+ "weekly_objective": "Resume building after last week's lighter load with two quality days (the committed Tuesday double and a Thursday threshold session), a long Saturday endurance ride, and a restart of twice-weekly heavy strength.",
+ "quality_sessions": 2,
+ "coach_says": "Last week was a lighter week (load ~550 after 686, 848 and 896). Your form is +3% and your 7-day HRV of 49 ms sits above your 47 ms baseline, so this is a build week: about 10.5 h, the Tuesday double, Thursday threshold intervals and a 3.5 h Saturday ride. Your lunch sessions were missed last week, so Thursday's ride moves to before work, and the second gym session goes on Saturday afternoon, where you actually trained last week. Resting HR is 54 against a 50 average, so if it climbs past 55 alongside poor sleep or falling HRV, use the fallbacks.",
  "days": [
   {
    "day": "Mon",
-   "sport": "cycling",
-   "session": "Indoor recovery spin (after work)",
-   "duration_min": 45,
+   "sport": "swim",
+   "session": "Easy technique swim (lunch)",
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "45 min | Flush legs before the Tuesday double | Z1-2, RPE 2-3\n10 min easy warm-up Z1\n30 min steady low Z2, cadence 90-95 rpm, no efforts\n5 min easy cool-down\nIndoor because of 80% drizzle. If it is dry after work, an easy flat MTB spin at the same effort is fine.",
+   "details": "Warmup: 200 m easy (100 free / 50 back / 50 choice)\nMain set: 4x50 m drill/swim by 25 (catch-up, fingertip drag) @ easy, 15s rest; 4x100 m pull buoy @ RPE 4, smooth bilateral breathing, 20s rest\nCooldown: 200 m easy mixed strokes\nTotal: 1000 m\nObjective: Loosen up and add aerobic volume without leg load before Tuesday's double.",
    "fallback": ""
   },
   {
@@ -20,55 +20,54 @@
    "session": "Committed double: AM controlled hills + PM hard MTB group ride",
    "duration_min": 150,
    "intensity": "hard",
-   "details": "AM (before work), road: 60 min | Aerobic climbing, controlled | Z2, RPE 4, top of Z2 on climbs only\n15 min easy warm-up\n35 min rolling hills, seated, steady Z2. No surges and no Z4+ (anaerobic load is already over target)\n10 min easy cool-down\nPM (after work), MTB: ~90 min hard group ride (committed). Ride it as the week's one hard session; efforts are as the group dictates.\nFuelling: eat a carb-rich lunch, take 40-60 g carbs/hr and a bottle on the group ride, and have a recovery meal with protein within 1 hr. Wet trails (100% drizzle), so ride with care.",
-   "fallback": "If HRV is below baseline or resting HR is 5+ bpm up: replace the AM hills with 30 min easy Z1 spin or skip it entirely. Still do the PM group ride but sit in, skip the sprints and let gaps go on climbs."
+   "details": "AM (before work):\n60 min | Climbing strength, save legs for PM | Z2 with climbs at Z3, RPE 5-6\n15 min Z2 warm-up\n4x5 min seated climbing at Z3, low cadence 65-75 rpm, RPE 6, with ~4 min easy descent/spin between\n10 min Z1-2 cool-down\nWet roads: take descents cautiously; if the drizzle turns heavy, do the same efforts on the trainer.\nBetween: eat a carb-rich lunch and snack mid-afternoon.\n\nPM (after work):\n~90 min | Committed hard MTB group ride | Ride as the group dictates\nTrails will be greasy, so choose lines over speed.\nFuel 40-60 g carbs/h and bring a bottle with electrolytes.",
+   "fallback": "If RHR is 5+ bpm above average with low HRV or poor sleep: replace the AM hills with a 40 min Z1-2 spin (or skip it). Still do the PM group ride, but sit in, skip the attacks and let gaps go on climbs."
   },
   {
    "day": "Wed",
-   "sport": "swim",
-   "session": "Easy recovery swim (lunch)",
-   "duration_min": 35,
+   "sport": "cycling",
+   "session": "Recovery spin",
+   "duration_min": 45,
    "intensity": "easy",
-   "details": "Warmup: 200 m easy freestyle, mixing in backstroke\nMain set: 6x100 m easy aerobic, RPE 3-4, 20 s rest; 2x50 m relaxed drill (catch-up), 20 s rest\nCooldown: 100 m very easy\nTotal: 1000 m\nObjective: Promote recovery from Tuesday with low-impact movement and no hard efforts.",
+   "details": "45 min | Recovery from Tuesday | Z1-2, RPE 2-3\nFlat road route, cadence 90+ rpm, no efforts, avoid hills.\nOvercast and dry. Before or after work, whichever suits. Swap for 45 min yoga if legs are very heavy.",
    "fallback": ""
   },
   {
    "day": "Thu",
    "sport": "cycling",
-   "session": "Indoor Z2 endurance (after work)",
-   "duration_min": 60,
-   "intensity": "easy",
-   "details": "60 min | Aerobic maintenance | Z2, RPE 3-4\n10 min easy warm-up\n45 min steady Z2, cadence 85-95 rpm, conversational\n5 min easy cool-down\nIndoor because of drizzle and wind up to 29 km/h. Keep it truly easy and don't turn it into a big ride like last Thursday.",
-   "fallback": ""
+   "session": "AM threshold intervals + Workout A (lunch)",
+   "duration_min": 95,
+   "intensity": "hard",
+   "details": "AM (before work, outdoors, clear):\n50 min | Threshold | Z4, ~95-100% FTP, RPE 7-8\n12 min Z2 warm-up incl. 2x1 min high-cadence spin-ups\n3x8 min Z4 with 3 min Z1 recovery\n8 min Z1-2 cool-down\nUse a flat road or a steady drag with no junctions.\n\nLunch:\nWorkout A:\nWarm-up: 5 min row, bodyweight squats, hip hinges, glute bridges, 2 ramp-up sets on squat\nBack Squat 3x6 (3 RIR, controlled descent)\nRomanian Deadlift 3x6 (3 RIR)\nPull-up 3x6 (assisted if needed)\nDumbbell Bench Press 3x8 (2 RIR)\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s for the rest\nObjective: Restart heavy lower-body strength for pedalling force on a hard day, so easy days stay easy.",
+   "fallback": "If signals are poor: ride the full 50 min in Z2 with no intervals. Do Workout A with 2 sets per lift at 4 RIR, or skip it."
   },
   {
    "day": "Fri",
-   "sport": "gym",
-   "session": "Workout A - maintenance (lunch)",
-   "duration_min": 40,
-   "intensity": "moderate",
-   "details": "Workout A:\nWarm-up: 5 min row or bike, leg swings, glute bridges 2x10, 2 ramp-up sets of squat\nBack Squat 2x5 (same load as your last completed session, 2-3 RIR)\nRomanian Deadlift 2x6 (2-3 RIR)\nPull-Up 2x6 (2 RIR)\nDumbbell Bench Press 2x8 (2 RIR)\nSide Plank 2x30s/side\nDead Bug 2x8/side\nRest: 2-3 min between squat and RDL sets, 60-90 s for the rest\nObjective: Keep strength in a recovery week with half the sets and the load held, avoiding fatigue.",
-   "fallback": "If signals are poor: drop the squat and RDL and do pull-ups, bench and core only, or swap for 30 min mobility/yoga."
+   "sport": "mtb",
+   "session": "Z2 trail endurance ride",
+   "duration_min": 90,
+   "intensity": "easy",
+   "details": "90 min | Aerobic endurance on trails | Z2, RPE 3-4\nSteady flowing trails. Spin or walk the steep pitches rather than surging, and keep HR in Z2.\nDry but breezy (up to 24 km/h), so wooded trails are a good choice.\nFuelling: 30-60 g carbs and a bottle.",
+   "fallback": ""
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Outdoor Z2 endurance road ride",
-   "duration_min": 100,
-   "intensity": "easy",
-   "details": "100 min | Aerobic endurance, recovery-week volume | Z2, RPE 3-4\n15 min easy warm-up\n75 min steady Z2 on rolling roads. Take the climbs seated and stay in Z2, with no surges or town-sign sprints\n10 min easy cool-down\nFuelling: 40-60 g carbs/hr from the start and 1 bottle/hr.\nShortened from 120 min because the week's load is already near the recovery-week target. Light drizzle (67%, 0.4 mm), wind up to 20 km/h. Still the least wet day, so ride outdoors with mudguards and a light jacket. If it is raining steadily, do 75 min steady Z2 indoors instead.",
-   "fallback": ""
+   "session": "Long Z2 road ride + Workout B (afternoon)",
+   "duration_min": 250,
+   "intensity": "moderate",
+   "details": "Ride (start mid-morning):\n210 min | Long aerobic endurance | Z2, RPE 3-4\nRolling route at steady Z2. Hold climbs at Z2 to low Z3, never above. Last 20 min easy Z1-2.\nFuelling: 60-80 g carbs/h from the first 30 min, 500-750 ml fluid/h with electrolytes. Warm (up to 27\u00b0C) with light drizzle possible.\n\nAfternoon (4+ h after the ride, after a proper meal):\nWorkout B:\nWarm-up: 5 min bike or row, walking lunges, hip airplanes, 2 ramp-up sets on split squat\nBulgarian Split Squat 3x6/leg (3 RIR)\nHip Thrust 3x8 (2-3 RIR)\nSingle-arm Dumbbell Row 3x8/side\nHalf-kneeling Overhead Press 3x8/side\nDead Bug 3x10/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets, 60-90 s for the rest\nObjective: Build single-leg strength and hip stability for seated power and MTB handling.",
+   "fallback": "If signals are poor: shorten the ride to 2.5 h, all Z2. Do Workout B as 2 sets with the upper-body and trunk work only, or skip it."
   },
   {
    "day": "Sun",
    "sport": "yoga",
-   "session": "Recovery yoga",
+   "session": "Recovery yoga and mobility",
    "duration_min": 45,
    "intensity": "easy",
-   "details": "45 min gentle yoga focused on hips, hamstrings, thoracic spine and breathing. Light drizzle (78%, 1.6 mm) and warm (up to 29\u00b0C), so stay indoors. An easy walk is also fine.",
+   "details": "45 min gentle flow: hips, hamstrings, thoracic rotation and breathing. Wetter day, so stay indoors. An easy 30-45 min walk is fine as an alternative or add-on.",
    "fallback": ""
   }
  ],
- "generated_at": "2026-10-21T14:26:33.736463+00:00",
- "midweek_revision": true
+ "generated_at": "2026-10-25T12:10:31.157566+00:00"
 }

@@ -2225,14 +2225,14 @@
  "2026-10-25": {
   "body_battery_high": 100,
   "body_battery_low": 50,
-  "hrv_baseline_high": null,
-  "hrv_baseline_low": null,
-  "hrv_last_night": null,
-  "hrv_status": null,
-  "hrv_weekly_avg": null,
+  "hrv_baseline_high": 57,
+  "hrv_baseline_low": 44,
+  "hrv_last_night": 56,
+  "hrv_status": "BALANCED",
+  "hrv_weekly_avg": 50,
   "resting_hr": 48,
-  "sleep_s": null,
-  "sleep_score": null,
+  "sleep_s": 26640,
+  "sleep_score": 82,
   "stress_avg": 9
  }
 }

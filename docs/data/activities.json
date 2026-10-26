@@ -1,22 +1,5 @@
 [
  {
-  "id": 22461062299,
-  "type": "virtual_ride",
-  "start": "2026-04-09 13:13:06",
-  "duration_s": 3668.0,
-  "distance_m": 33153.08984375,
-  "elev_gain_m": 242.0,
-  "avg_hr": 161.0,
-  "max_hr": 190.0,
-  "avg_power": 188.0,
-  "norm_power": 211.7070357563392,
-  "calories": 660.0,
-  "training_load": 176.80763244628906,
-  "aerobic_te": 3.9000000953674316,
-  "load": 176.8,
-  "sport": "cycling"
- },
- {
   "id": 22471856329,
   "type": "virtual_ride",
   "start": "2026-04-10 09:01:49",

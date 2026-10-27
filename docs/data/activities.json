@@ -1,22 +1,5 @@
 [
  {
-  "id": 22471856329,
-  "type": "virtual_ride",
-  "start": "2026-04-10 09:01:49",
-  "duration_s": 3632.0,
-  "distance_m": 30214.58984375,
-  "elev_gain_m": 332.0,
-  "avg_hr": 161.0,
-  "max_hr": 186.0,
-  "avg_power": 185.0,
-  "norm_power": 205.11154367588486,
-  "calories": 643.0,
-  "training_load": 166.79261779785156,
-  "aerobic_te": 3.5999999046325684,
-  "load": 166.8,
-  "sport": "cycling"
- },
- {
   "id": 22482720667,
   "type": "hiking",
   "start": "2026-04-11 09:56:51",

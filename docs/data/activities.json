@@ -1,22 +1,5 @@
 [
  {
-  "id": 22482720667,
-  "type": "hiking",
-  "start": "2026-04-11 09:56:51",
-  "duration_s": 2928.51611328125,
-  "distance_m": 1667.5799560546875,
-  "elev_gain_m": 63.0,
-  "avg_hr": 80.0,
-  "max_hr": 125.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 162.0,
-  "training_load": 4.2856597900390625,
-  "aerobic_te": 0.30000001192092896,
-  "load": 4.3,
-  "sport": "walk_hike"
- },
- {
   "id": 22499735289,
   "type": "hiking",
   "start": "2026-04-12 22:13:45",

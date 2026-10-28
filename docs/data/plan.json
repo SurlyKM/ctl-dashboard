@@ -1,9 +1,9 @@
 {
  "week_start": "2026-10-26",
  "training_phase": "Build",
- "weekly_objective": "Resume building after last week's lighter load with two quality days (the committed Tuesday double and a Thursday threshold session), a long Saturday endurance ride, and a restart of twice-weekly heavy strength.",
- "quality_sessions": 2,
- "coach_says": "Last week was a lighter week (load ~550 after 686, 848 and 896). Your form is +3% and your 7-day HRV of 49 ms sits above your 47 ms baseline, so this is a build week: about 10.5 h, the Tuesday double, Thursday threshold intervals and a 3.5 h Saturday ride. Your lunch sessions were missed last week, so Thursday's ride moves to before work, and the second gym session goes on Saturday afternoon, where you actually trained last week. Resting HR is 54 against a 50 average, so if it climbs past 55 alongside poor sleep or falling HRV, use the fallbacks.",
+ "weekly_objective": "Restart cleanly after three missed days, using today's threshold session as the week's one quality stimulus, and protect aerobic volume and the second strength session around the wet weekend.",
+ "quality_sessions": 1,
+ "coach_says": "You missed Monday to Wednesday, including Tuesday's group ride, but your recovery numbers look good: HRV is balanced, resting HR is normal and form is +13%. So I'm not cramming the lost intensity back in. Today's threshold session and gym are your one quality day, and Friday's trail ride grows to 2 hours because it's the only dry day. The heavy drizzle on Saturday moves the long ride onto the trainer at 2 hours, with Workout B in the afternoon. If illness or exhaustion caused the missed days, ride today's fallback, keep Friday at 90 min and tell me.",
  "days": [
   {
    "day": "Mon",
@@ -44,20 +44,20 @@
   {
    "day": "Fri",
    "sport": "mtb",
-   "session": "Z2 trail endurance ride",
-   "duration_min": 90,
+   "session": "Z2 trail endurance ride (extended)",
+   "duration_min": 120,
    "intensity": "easy",
-   "details": "90 min | Aerobic endurance on trails | Z2, RPE 3-4\nSteady flowing trails. Spin or walk the steep pitches rather than surging, and keep HR in Z2.\nDry but breezy (up to 24 km/h), so wooded trails are a good choice.\nFuelling: 30-60 g carbs and a bottle.",
+   "details": "120 min | Aerobic endurance on trails, recover lost volume on the only dry day | Z2, RPE 3-4\nSteady flowing trails. Spin or walk the steep pitches rather than surging, and keep HR in Z2. Legs may feel Thursday's squats in the first 20 min, so start very easy.\nOvercast and dry, breezy (up to 23 km/h), so wooded trails are a good choice.\nFuelling: 40-60 g carbs/h from the first 30 min, 1-2 bottles with electrolytes.\nIf the missed days were due to illness, or Thursday was skipped, keep it to 90 min.",
    "fallback": ""
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Long Z2 road ride + Workout B (afternoon)",
-   "duration_min": 250,
+   "session": "Indoor Z2 endurance ride + Workout B (afternoon)",
+   "duration_min": 165,
    "intensity": "moderate",
-   "details": "Ride (start mid-morning):\n210 min | Long aerobic endurance | Z2, RPE 3-4\nRolling route at steady Z2. Hold climbs at Z2 to low Z3, never above. Last 20 min easy Z1-2.\nFuelling: 60-80 g carbs/h from the first 30 min, 500-750 ml fluid/h with electrolytes. Warm (up to 27\u00b0C) with light drizzle possible.\n\nAfternoon (4+ h after the ride, after a proper meal):\nWorkout B:\nWarm-up: 5 min bike or row, walking lunges, hip airplanes, 2 ramp-up sets on split squat\nBulgarian Split Squat 3x6/leg (3 RIR)\nHip Thrust 3x8 (2-3 RIR)\nSingle-arm Dumbbell Row 3x8/side\nHalf-kneeling Overhead Press 3x8/side\nDead Bug 3x10/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets, 60-90 s for the rest\nObjective: Build single-leg strength and hip stability for seated power and MTB handling.",
-   "fallback": "If signals are poor: shorten the ride to 2.5 h, all Z2. Do Workout B as 2 sets with the upper-body and trunk work only, or skip it."
+   "details": "Ride (morning, indoor trainer/Zwift because of heavy drizzle):\n120 min | Aerobic endurance, replaces the outdoor long ride | Z2, RPE 3-4\nSteady Z2 throughout with no structured intervals. Cadence 85-95 rpm, and alternate 10 min seated with 1-2 min standing to stay comfortable. Last 10 min Z1-2.\nUse a strong fan. It's warm (up to 27\b0C), so drink 750 ml+ fluid/h with electrolytes.\nFuelling: 60-80 g carbs/h from the first 20 min.\n\nAfternoon (4+ h after the ride, after a proper meal):\nWorkout B:\nWarm-up: 5 min bike or row, walking lunges, hip airplanes, 2 ramp-up sets on split squat\nBulgarian Split Squat 3x6/leg (3 RIR)\nHip Thrust 3x8 (2-3 RIR)\nSingle-arm Dumbbell Row 3x8/side\nHalf-kneeling Overhead Press 3x8/side\nDead Bug 3x10/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets, 60-90 s for the rest\nObjective: Build single-leg strength and hip stability for seated power and MTB handling, 72 h clear of Tuesday's committed double.",
+   "fallback": "If signals are poor (RHR 5+ bpm above average with low HRV or poor sleep): ride 75-90 min, all Z1-2. Do Workout B as 2 sets with the upper-body and trunk work only, or skip it."
   },
   {
    "day": "Sun",
@@ -69,5 +69,6 @@
    "fallback": ""
   }
  ],
- "generated_at": "2026-10-25T12:10:31.157566+00:00"
+ "generated_at": "2026-10-28T15:53:14.203680+00:00",
+ "midweek_revision": true
 }

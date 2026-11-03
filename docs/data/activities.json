@@ -1,39 +1,5 @@
 [
  {
-  "id": 22552553580,
-  "type": "hiking",
-  "start": "2026-04-17 06:31:14",
-  "duration_s": 5212.39892578125,
-  "distance_m": 4755.41015625,
-  "elev_gain_m": 124.0,
-  "avg_hr": 105.0,
-  "max_hr": 151.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 435.0,
-  "training_load": 14.578643798828125,
-  "aerobic_te": 1.100000023841858,
-  "load": 14.6,
-  "sport": "walk_hike"
- },
- {
-  "id": 22553990704,
-  "type": "virtual_ride",
-  "start": "2026-04-17 11:28:08",
-  "duration_s": 1935.0,
-  "distance_m": 16915.359375,
-  "elev_gain_m": 105.0,
-  "avg_hr": 151.0,
-  "max_hr": 176.0,
-  "avg_power": 190.0,
-  "norm_power": 212.08465329195283,
-  "calories": 352.0,
-  "training_load": 86.84442138671875,
-  "aerobic_te": 3.0999999046325684,
-  "load": 86.8,
-  "sport": "cycling"
- },
- {
   "id": 22570642892,
   "type": "indoor_cycling",
   "start": "2026-04-18 23:06:50",
@@ -5352,6 +5318,23 @@
   "training_load": 3.3036041259765625,
   "aerobic_te": 0.20000000298023224,
   "load": 3.3,
+  "sport": "walk_hike"
+ },
+ {
+  "id": 24953899541,
+  "type": "walking",
+  "start": "2026-11-03 08:30:51",
+  "duration_s": 2905.152099609375,
+  "distance_m": 2798.64990234375,
+  "elev_gain_m": 80.0,
+  "avg_hr": 93.0,
+  "max_hr": 123.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 241.0,
+  "training_load": 5.4027099609375,
+  "aerobic_te": 0.4000000059604645,
+  "load": 5.4,
   "sport": "walk_hike"
  }
 ]

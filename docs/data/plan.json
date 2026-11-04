@@ -1,9 +1,9 @@
 {
  "week_start": "2026-11-02",
  "training_phase": "Base",
- "weekly_objective": "Return safely to about 10 hours of training after an unplanned week off, with only two hard days, while watching HRV that is below baseline and a rising resting HR.",
- "quality_sessions": 2,
- "coach_says": "Last week was effectively a full week off (load 16, no planned sessions done), so your form is very fresh (+46%), but HRV of 41 ms is below your 44-58 baseline and resting HR is 3 bpm up and rising. That makes this a controlled re-entry week of about 10 hours: Tuesday's committed rides and an indoor Saturday threshold session plus gym are the only hard days, and the long ride goes on dry Friday. If resting HR reaches 56+ or HRV stays under 44 alongside poor sleep, use the fallbacks, and if last week's break was illness, keep everything easy until you have had 2-3 normal mornings.",
+ "weekly_objective": "Get back to riding safely after nearly three weeks of minimal training, rebuilding aerobic volume and reintroducing heavy strength while HRV is below baseline.",
+ "quality_sessions": 1,
+ "coach_says": "Monday to Wednesday didn't happen and your HRV has slipped to unbalanced (7-day average 43 ms, just under your 44-57 baseline, with resting HR creeping up). So I've shortened Friday's long ride to 2 hours and turned Saturday's threshold intervals into a gentler tempo session plus re-entry Workout A. Tuesday's rides are not being made up. If the missed days were down to illness, or you feel run down, keep everything in Z1-2 or rest, and we'll pick up properly with next Tuesday's committed rides.",
  "days": [
   {
    "day": "Mon",
@@ -44,30 +44,31 @@
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "Long Z2 road endurance ride",
-   "duration_min": 150,
+   "session": "Long Z2 road endurance ride (shortened)",
+   "duration_min": 120,
    "intensity": "easy",
-   "details": "150 min | Aerobic base rebuild | Z2, RPE 3-4\nWarm-up: 15 min Z1-2\nMain: 2 h steady Z2, low cadence drift on climbs allowed but stay in Z2; ride into the wind (up to 22 km/h) on the way out\nCool-down: 15 min easy Z1\nDriest day of the week (4% rain).\nFuel: 40-60 g carbs per hour from the start, 1 bottle per hour.\nIf you wake with HRV under 44 ms and resting HR 56+, cut to 90 min Z1-2.",
+   "details": "120 min | Aerobic base rebuild after ~3 weeks off | Z2, RPE 3-4\nWarm-up: 15 min Z1-2\nMain: 95 min steady Z2; stay seated and in Z2 on climbs, no surges. Head out into the wind (up to 21 km/h) and come home with it behind you.\nCool-down: 10 min easy Z1\nBest riding day of the weekend: mild (16-21\u00b0C), only light drizzle risk (0.1 mm).\nFuel: 40-60 g carbs per hour from the start, 1 bottle per hour.\nIf you wake with HRV under 41 ms or resting HR 56+ bpm, cut to 75-90 min Z1-2. If you feel unwell, rest.",
    "fallback": ""
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "AM indoor threshold + PM Workout A",
+   "session": "AM indoor tempo + PM Workout A",
    "duration_min": 95,
-   "intensity": "hard",
-   "details": "AM (indoor trainer, drizzle and gusts to 35 km/h):\n50 min | Threshold re-entry | Z4, 95-100% FTP, RPE 7\nWarm-up: 12 min progressive Z1-Z2 incl. 2x30 s high cadence\nMain: 3x8 min Z4, 4 min Z1-2 recovery between\nCool-down: 6 min Z1\n\nPM (6+ h after the ride):\nWorkout A:\nWarm-up: 5 min easy bike, hip/ankle mobility, 2 ramp-up sets on squat\nBack Squat 3x6 (re-entry: start ~10% below last working load, 3 RIR)\nRomanian Deadlift 3x6 (3 RIR)\nSingle-arm Dumbbell Row 3x8/side (2 RIR)\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s on accessories\nObjective: Reintroduce heavy lower-body loading after ~6 weeks of minimal gym work without soreness that compromises next Tuesday's committed rides.",
-   "fallback": "If HRV is below 44 ms with resting HR 56+ or poor sleep: ride 50 min steady Z2 indoors instead of the intervals, and do Workout A with 2 sets per lift at 4 RIR. If you feel unwell, rest completely."
+   "intensity": "moderate",
+   "details": "AM (indoor trainer, thunderstorm and gusts to 39 km/h):\n50 min | Aerobic re-entry with a tempo touch (downgraded from threshold) | Z2 with Z3 blocks at 80-88% FTP, RPE 5-6\nWarm-up: 12 min progressive Z1-Z2 incl. 2x30 s high cadence\nMain: 3x6 min Z3, 3 min Z2 recovery between, then 8 min steady Z2\nCool-down: 6 min Z1\n\nPM (6+ h after the ride):\nWorkout A:\nWarm-up: 5 min easy bike, hip/ankle mobility, 2 ramp-up sets on squat\nBack Squat 3x6 (re-entry: start ~15% below last working load, 3 RIR)\nRomanian Deadlift 3x6 (3 RIR)\nSingle-arm Dumbbell Row 3x8/side (2 RIR)\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s on accessories\nObjective: Reintroduce heavy lower-body loading after a long break without soreness that compromises next Tuesday's committed rides.",
+   "fallback": "If HRV is below 41 ms or still unbalanced with resting HR 56+ bpm, or sleep was poor: ride 50 min steady Z2 indoors with no tempo blocks, and do Workout A with 2 sets per lift at 4 RIR. If you have any illness symptoms, rest completely."
   },
   {
    "day": "Sun",
    "sport": "mtb",
-   "session": "Easy Z2 trail ride",
+   "session": "Easy Z2 trail ride (sheltered)",
    "duration_min": 90,
    "intensity": "easy",
-   "details": "90 min | Aerobic volume, easy legs after Saturday | Z1-2, RPE 2-4\nWarm-up: 10 min Z1\nMain: 70 min relaxed Z2 on sheltered, tree-covered trails out of the wind (gusts to 29 km/h)\nCool-down: 10 min Z1\nLight drizzle (0.6 mm) and cool (13-18\u00b0C): bring a light shell. Take a bottle with carbs.",
+   "details": "90 min | Aerobic volume, easy legs after Saturday | Z1-2, RPE 2-4\nWarm-up: 10 min Z1\nMain: 70 min relaxed Z2 on sheltered, tree-covered trails out of the wind (gusts to 36 km/h); no efforts on climbs\nCool-down: 10 min Z1\nDrizzle likely (47%, 1.6 mm) and cool (12-17\u00b0C): bring a light shell and a bottle with carbs. If rain turns heavy or gusts make the trails unsafe, ride 60 min Z2 on Zwift instead.\nOptional: 15 min evening mobility (hips, hamstrings, thoracic spine) to replace Wednesday's missed yoga.",
    "fallback": ""
   }
  ],
- "generated_at": "2026-11-01T13:53:50.317843+00:00"
+ "generated_at": "2026-11-04T16:59:50.485332+00:00",
+ "midweek_revision": true
 }

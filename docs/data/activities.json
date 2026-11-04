@@ -1,22 +1,5 @@
 [
  {
-  "id": 22570642892,
-  "type": "indoor_cycling",
-  "start": "2026-04-18 23:06:50",
-  "duration_s": 141.1959991455078,
-  "distance_m": 0.0,
-  "elev_gain_m": null,
-  "avg_hr": 64.0,
-  "max_hr": 68.0,
-  "avg_power": null,
-  "norm_power": null,
-  "calories": 4.0,
-  "training_load": 0.0,
-  "aerobic_te": 0.0,
-  "load": 0.1,
-  "sport": "cycling"
- },
- {
   "id": 22578781134,
   "type": "virtual_ride",
   "start": "2026-04-19 17:20:04",

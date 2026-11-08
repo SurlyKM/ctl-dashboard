@@ -1,12 +1,11 @@
 {
- "tsb": 39.5,
- "ctl": 86.4,
- "atl": 42.5,
+ "tsb": 47.2,
+ "ctl": 75.6,
+ "atl": 26.2,
  "readiness_score": null,
  "readiness_level": "",
- "hrv_status": "UNBALANCED",
- "resting_hr_14d_avg": 51.0,
+ "hrv_status": null,
+ "resting_hr_14d_avg": 53.0,
  "override": [],
- "generated_at": "2026-11-01T13:53:50.317843+00:00",
- "reviewed_week": "2026-11-02"
+ "generated_at": "2026-11-08T13:57:32.289121+00:00"
 }

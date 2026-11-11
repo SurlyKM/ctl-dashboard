@@ -1,9 +1,9 @@
 {
  "week_start": "2026-11-09",
  "training_phase": "Base",
- "weekly_objective": "Re-establish routine and aerobic rhythm after two near-zero weeks, with two controlled quality rides and a conservative return to heavy strength, holding load near the recent 4-week average (~480).",
+ "weekly_objective": "Rebuild aerobic and strength routine after the break while respecting a below-baseline HRV trend, with one controlled tempo session as the week's only remaining quality.",
  "quality_sessions": 2,
- "coach_says": "This week is about getting back into rhythm after two weeks of mostly walking. Your fitness has slipped (CTL 92.9 to 75.6) but you are very fresh (form +62%), so you get two quality rides: Tuesday's group ride and Friday's tempo. Your 7-day HRV (43.8 ms) is a bit below baseline and resting HR is up 4 bpm, so if you wake to an RHR of 58 or more with low HRV, or feel unwell, use the fallbacks and tell me what kept you off the bike last week.",
+ "coach_says": "Monday's unplanned MTB counts as this week's first hard day, and we won't try to replace Tuesday's missed group ride; that slot belongs to Tuesday, and squeezing it in elsewhere would add intensity while your HRV is below baseline. Friday stays outdoors but the tempo drops from 3 to 2 x 10 min, and only goes ahead if Friday morning's numbers look normal. Saturday's thunderstorms and 34\u00b0C move the trail ride indoors, and both strength sessions stay so the routine gets going again.",
  "days": [
   {
    "day": "Mon",
@@ -44,19 +44,19 @@
   {
    "day": "Fri",
    "sport": "cycling",
-   "session": "AM endurance road ride with tempo + PM Workout A",
-   "duration_min": 165,
+   "session": "AM endurance road ride with short tempo + PM Workout A",
+   "duration_min": 155,
    "intensity": "moderate",
-   "details": "AM: 120 min | Aerobic endurance with first tempo since the break | Z2 RPE 3-4, tempo Z3 RPE 5-6\nWarm-up: 20 min Z1-Z2 building\nMain: 3 x 10 min Z3 tempo, 5 min Z2 recovery between (40 min block)\nThen: 50 min steady Z2 on rolling roads\nCool-down: 10 min Z1\nFuelling: 40-60 g carbs/h from the first 30 min, plus 500-750 ml fluid/h with electrolytes (up to 24\u00b0C, light drizzle).\n\nPM (6+ h after the ride):\nWorkout A:\nWarm-up: 8 min easy bike + banded lateral walks, bodyweight squats, leg swings\nBack Squat 3x6 (~70-75% of previous working load, 3 RIR)\nRomanian Deadlift 3x6 (3 RIR)\nSingle-Arm Dumbbell Row 3x8/side (2-3 RIR)\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s for accessories\nObjective: Reintroduce heavy squat and hinge patterns conservatively to restart strength gains without lingering soreness.",
-   "fallback": "If HRV/RHR are poor or legs are heavy from Tuesday: ride 90-120 min all Z2 with no tempo, and do Workout A at 2 sets per exercise, or skip it if you are sore."
+   "details": "AM: 110 min | Aerobic endurance with a controlled first tempo block | Z2 RPE 3-4, tempo Z3 RPE 5-6\nGate: do the tempo only if this morning's HRV is 44 ms or higher (or within 2 ms of it) and RHR is under 58; otherwise ride it all Z2\nWarm-up: 20 min Z1-Z2 building\nMain: 2 x 10 min Z3 tempo, 5 min Z2 recovery between (25 min block)\nThen: 55 min steady Z2 on rolling roads\nCool-down: 10 min Z1\nFuelling: 40-60 g carbs/h from the first 30 min, plus 500-750 ml fluid/h with electrolytes (up to 26\u00b0C, light drizzle possible).\n\nPM (6+ h after the ride):\nWorkout A:\nWarm-up: 8 min easy bike + banded lateral walks, bodyweight squats, leg swings\nBack Squat 3x6 (~70-75% of previous working load, 3 RIR)\nRomanian Deadlift 3x6 (3 RIR)\nSingle-Arm Dumbbell Row 3x8/side (2-3 RIR)\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s for accessories\nObjective: Reintroduce heavy squat and hinge patterns conservatively to restart strength gains without lingering soreness.",
+   "fallback": "If HRV stays below 44 ms with RHR 58+, sleep was poor, or legs feel heavy: ride 90 min all Z2 with no tempo, and do Workout A at 2 sets per exercise, or skip it if you are sore."
   },
   {
    "day": "Sat",
-   "sport": "mtb",
-   "session": "Easy Z2 trail ride (early)",
+   "sport": "cycling",
+   "session": "Indoor Z2 ride + mobility",
    "duration_min": 75,
    "intensity": "easy",
-   "details": "75 min | Easy endurance on trails | Z2 (RPE 3), stay out of the red on climbs\nStart early (before ~9 am) because it reaches 31\u00b0C later. Drizzle is possible, so pick well-draining trails or a road loop if the trails are greasy. Carry 1-2 bottles with electrolytes.",
+   "details": "60 min | Easy aerobic endurance, indoors because of thunderstorms and 34\u00b0C heat | Z2 (RPE 3)\nWarm-up: 10 min Z1\nMain: 45 min steady Z2, cadence 85-95 rpm, no efforts\nCool-down: 5 min Z1\nUse a fan and drink 1-2 bottles with electrolytes.\nAfter: 15 min mobility (hips, hamstrings, thoracic rotation, calves) to replace Wednesday's missed yoga.",
    "fallback": ""
   },
   {
@@ -65,9 +65,10 @@
    "session": "Workout B (lunch) + mobility",
    "duration_min": 50,
    "intensity": "moderate",
-   "details": "Workout B:\nWarm-up: 8 min easy bike + glute bridges, walking lunges, band pull-aparts\nBulgarian Split Squat 3x6/leg (3 RIR)\nHip Thrust 3x8 (2-3 RIR)\nPull-Up or Lat Pulldown 3x6 (2-3 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets, 60-90 s for the rest\nObjective: Build single-leg strength and hip stability for pedalling, finishing ~54 h before Tuesday's group ride.\nAfter: 5 min easy stretching. Rain is likely (87%), so this is an indoor day.",
+   "details": "Workout B:\nWarm-up: 8 min easy bike + glute bridges, walking lunges, band pull-aparts\nBulgarian Split Squat 3x6/leg (3 RIR)\nHip Thrust 3x8 (2-3 RIR)\nPull-Up or Lat Pulldown 3x6 (2-3 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets, 60-90 s for the rest\nObjective: Build single-leg strength and hip stability for pedalling, finishing ~54 h before Tuesday's group ride.\nAfter: 5 min easy stretching. Thunderstorms are likely (92%), so this is an indoor day.",
    "fallback": "If you are still sore from Friday or signals are poor (RHR 58+ with low HRV): do 40 min yoga/mobility instead and resume strength next week."
   }
  ],
- "generated_at": "2026-11-08T13:57:32.289121+00:00"
+ "generated_at": "2026-11-11T17:01:02.390389+00:00",
+ "midweek_revision": true
 }

@@ -5251,5 +5251,22 @@
   "aerobic_te": 3.0,
   "load": 177.4,
   "sport": "mtb"
+ },
+ {
+  "id": 25038565415,
+  "type": "yoga",
+  "start": "2026-11-10 20:13:05",
+  "duration_s": 1623.5469970703125,
+  "distance_m": null,
+  "elev_gain_m": null,
+  "avg_hr": 65.0,
+  "max_hr": 77.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 42.0,
+  "training_load": 0.009735107421875,
+  "aerobic_te": 0.0,
+  "load": 0.0,
+  "sport": "yoga"
  }
 ]

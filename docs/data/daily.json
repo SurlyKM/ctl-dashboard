@@ -2263,7 +2263,7 @@
   "stress_avg": 23
  },
  "2026-11-14": {
-  "body_battery_high": 89,
+  "body_battery_high": 90,
   "body_battery_low": 48,
   "hrv_baseline_high": 56,
   "hrv_baseline_low": 44,
@@ -2273,6 +2273,6 @@
   "resting_hr": 53,
   "sleep_s": 29880,
   "sleep_score": 79,
-  "stress_avg": 18
+  "stress_avg": 19
  }
 }

@@ -1,9 +1,9 @@
 {
  "week_start": "2026-11-16",
  "training_phase": "Base",
- "weekly_objective": "Rebuild aerobic and threshold fitness after three lighter weeks, with two quality days (the committed Tuesday double and a Thursday threshold session) and two re-entry heavy strength sessions, while increasing volume only moderately because HRV is below baseline.",
+ "weekly_objective": "Keep the committed Tuesday double and Thursday's threshold and strength day, then absorb them with easy aerobic riding while HRV is unbalanced.",
  "quality_sessions": 2,
- "coach_says": "You're fresh after three lighter weeks (form +32%, fitness down from ~99 to ~79), so this week rebuilds with two quality days: Tuesday's committed double and a Thursday threshold session, plus a return to two short heavy gym sessions. Your 7-day HRV average (42 ms) is below your ~45 ms baseline and resting HR was 58 against a 53.6 average, so volume rises only moderately and the long ride waits a week. Use the fallback on any key day if HRV stays low or resting HR is 5+ bpm up that morning, and take care on wet roads and trails on Monday and Tuesday.",
+ "coach_says": "Your HRV has dropped to unbalanced (36 ms last night, 7-day average 42 ms, just under your 43-55 ms baseline), and resting HR is a few beats up, so I've trimmed the weekend instead of adding anything. Friday's easy MTB stays as planned. Saturday's Workout B keeps the heavy lifts but at half the lower-body volume, with a short yoga flow to replace Wednesday's missed session, and Sunday's ride is cut from 120 to 90 minutes, all in zone 2. Monday's missed swim isn't rescheduled because you swam on Tuesday anyway; just keep sleeping well, as that's what's holding things together.",
  "days": [
   {
    "day": "Mon",
@@ -47,27 +47,28 @@
    "session": "Easy endurance MTB (after work)",
    "duration_min": 75,
    "intensity": "easy",
-   "details": "75 min | Aerobic endurance, flushing the legs | Z1-2, RPE 3, conversational\nStructure: steady Z2 on flowing trails. Soft-pedal or walk the steep pitches rather than surging, and keep every effort at Z2 or below.\nOvercast and mostly dry (48% chance of a shower). If it rains, swap for 60 min indoor Z2.",
+   "details": "75 min | Aerobic endurance, flushing the legs | Z1-2, RPE 3, conversational\nStructure: steady Z2 on flowing trails. Soft-pedal or walk the steep pitches rather than surging, and keep every effort at Z2 or below.\nConditions: overcast, 42% chance of rain but no measurable rain forecast, wind up to ~26 km/h. If it does rain, swap for 60 min indoor Z2.\nHRV is unbalanced, so keep this truly easy. If HRV is still under ~40 ms on Friday morning, cut the ride to 60 min.",
    "fallback": ""
   },
   {
    "day": "Sat",
    "sport": "gym",
-   "session": "Workout B (lunch) + mobility",
-   "duration_min": 60,
+   "session": "Workout B (lunch, reduced volume) + yoga flow",
+   "duration_min": 55,
    "intensity": "moderate",
-   "details": "Workout B:\nWarm-up: 5 min rower, glute bridges, 2 ramp-up sets of split squats\nBulgarian Split Squat 3x6/side (2-3 RIR)\nHip Thrust 3x8 (2 RIR)\nLat Pulldown 3x8 (2 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 3x20s/side\nRest: 2-3 min between split squat and hip thrust sets; 60-90 s for the other exercises\nObjective: Build single-leg strength and hip power for the pedal stroke, done indoors on the thunderstorm day.\nAfter the session: 15 min mobility (hips, hamstrings, thoracic spine).",
-   "fallback": "If signals are poor: do 2 sets per exercise at the same load (3 RIR), or replace the session with 40 min yoga."
+   "details": "Workout B:\nWarm-up: 5 min rower, glute bridges, 2 ramp-up sets of split squats\nBulgarian Split Squat 2x6/side (3 RIR, same load as planned)\nHip Thrust 2x8 (3 RIR)\nLat Pulldown 3x8 (2 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 2x20s/side\nRest: 2-3 min between split squat and hip thrust sets; 60-90 s for the other exercises\nObjective: Keep the week's second heavy strength stimulus while halving lower-body volume, so Sunday's ride and next Tuesday's double aren't compromised while HRV is unbalanced.\nAfter the session: 15 min yoga flow (hips, hamstrings, thoracic spine, slow breathing) to replace Wednesday's missed yoga. Indoors, as light drizzle is forecast.",
+   "fallback": "If HRV is still below ~40 ms or resting HR is 5+ bpm above average: skip the split squats and hip thrusts, do Lat Pulldown, Dead Bug and Copenhagen Plank only, then 30 min yoga. Or replace the whole session with 45 min recovery yoga."
   },
   {
    "day": "Sun",
    "sport": "cycling",
-   "session": "Endurance road ride",
-   "duration_min": 120,
+   "session": "Endurance road ride (shortened)",
+   "duration_min": 90,
    "intensity": "easy",
-   "details": "120 min | Aerobic base | Z2, RPE 3-4\nStructure: 15 min Z1 warm-up, 95 min steady Z2 on rolling roads (keep the climbs in Z2), 10 min Z1 cool-down.\nFuelling: 40-60 g carbs/h starting in the first 30 min, plus 500-750 ml fluid/h; it will be warm (up to ~28\u00b0C).\nConditions: overcast and dry, wind up to ~25 km/h, so ride into the wind on the way out.",
+   "details": "90 min | Aerobic base | Z2, RPE 3-4\nStructure: 15 min Z1 warm-up, 65 min steady Z2 on rolling roads (keep the climbs in Z2), 10 min Z1 cool-down.\nFuelling: 40-60 g carbs/h starting in the first 30 min, plus 500-750 ml fluid/h; warm and humid (up to ~29\u00b0C).\nConditions: light drizzle possible (~0.9 mm), wind up to ~24 km/h. Lights on, and ride into the wind on the way out. If the roads are properly wet, ride 75 min Z2 on the trainer instead.\nShortened from 120 min because HRV is unbalanced. No surges or hard climbs.",
    "fallback": ""
   }
  ],
- "generated_at": "2026-11-15T14:25:33.701031+00:00"
+ "generated_at": "2026-11-18T17:55:41.647962+00:00",
+ "midweek_revision": true
 }

@@ -1,15 +1,4 @@
 {
- "2026-05-02": {
-  "body_battery_high": 79,
-  "body_battery_low": 21,
-  "hrv_last_night": 42,
-  "hrv_status": "UNBALANCED",
-  "hrv_weekly_avg": 44,
-  "resting_hr": 55,
-  "sleep_s": 28380,
-  "sleep_score": 87,
-  "stress_avg": 29
- },
  "2026-05-03": {
   "body_battery_high": 84,
   "body_battery_low": 34,
@@ -2280,5 +2269,18 @@
   "sleep_s": 27420,
   "sleep_score": 74,
   "stress_avg": 33
+ },
+ "2026-11-18": {
+  "body_battery_high": 55,
+  "body_battery_low": 16,
+  "hrv_baseline_high": 55,
+  "hrv_baseline_low": 43,
+  "hrv_last_night": 36,
+  "hrv_status": "UNBALANCED",
+  "hrv_weekly_avg": 42,
+  "resting_hr": 57,
+  "sleep_s": 26760,
+  "sleep_score": 74,
+  "stress_avg": 27
  }
 }

@@ -5115,5 +5115,22 @@
   "aerobic_te": 0.30000001192092896,
   "load": 4.0,
   "sport": "walk_hike"
+ },
+ {
+  "id": 25167728597,
+  "type": "walking",
+  "start": "2026-11-21 20:39:52",
+  "duration_s": 1352.7900390625,
+  "distance_m": 557.8099975585938,
+  "elev_gain_m": 14.0,
+  "avg_hr": 75.0,
+  "max_hr": 117.0,
+  "avg_power": null,
+  "norm_power": null,
+  "calories": 63.0,
+  "training_load": 1.86749267578125,
+  "aerobic_te": 0.10000000149011612,
+  "load": 1.9,
+  "sport": "walk_hike"
  }
 ]

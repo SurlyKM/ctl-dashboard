@@ -192,7 +192,7 @@ function cardDefs(ctx) {
   const rhrColor = rhrTrend === "rising" ? "var(--fatigue)"
     : rhrTrend === "falling" ? "var(--fitness)" : "var(--muted)";
 
-  const vo2 = ts ? (ts.vo2max_cycling || ts.vo2max_generic) : null;
+  const vo2 = ts ? (ts.vo2max_generic || ts.vo2max_cycling) : null;   // generic first: matches Garmin Connect
 
   return [
     { key: "hrv", label: "HRV",
@@ -484,7 +484,7 @@ function renderMix(activities) {
 function renderVO2(ts, vo2hist) {
   const el = $("vo2-panel");
   if (!el) return;
-  const v = ts ? (ts.vo2max_cycling || ts.vo2max_generic) : null;
+  const v = ts ? (ts.vo2max_generic || ts.vo2max_cycling) : null;   // generic first: matches Garmin Connect
   if (!v) { el.innerHTML = '<span class="muted">No data</span>'; return; }
 
   const pts = Object.entries(vo2hist || {}).sort().slice(-84)

@@ -1,74 +1,73 @@
 {
- "week_start": "2026-11-16",
+ "week_start": "2026-11-23",
  "training_phase": "Base",
- "weekly_objective": "Keep the committed Tuesday double and Thursday's threshold and strength day, then absorb them with easy aerobic riding while HRV is unbalanced.",
+ "weekly_objective": "Rebuild aerobic base and reintroduce heavy strength after a low-load month, with one committed hard Tuesday, one controlled threshold session and Z2 volume elsewhere, kept in check by suppressed HRV.",
  "quality_sessions": 2,
- "coach_says": "Your HRV has dropped to unbalanced (36 ms last night, 7-day average 42 ms, just under your 43-55 ms baseline), and resting HR is a few beats up, so I've trimmed the weekend instead of adding anything. Friday's easy MTB stays as planned. Saturday's Workout B keeps the heavy lifts but at half the lower-body volume, with a short yoga flow to replace Wednesday's missed session, and Sunday's ride is cut from 120 to 90 minutes, all in zone 2. Monday's missed swim isn't rescheduled because you swam on Tuesday anyway; just keep sleeping well, as that's what's holding things together.",
+ "coach_says": "Your fitness has slid (CTL 101 to 70) and you're very fresh (form +56%), but your HRV is low (7-day average 39 ms against a 43-55 baseline), so this is a gradual rebuild: Tuesday's double as usual, one threshold session Thursday, a 2-hour Z2 ride Saturday and two short gym sessions at reduced loads. Last week stopped after Wednesday, so this week's sessions are short and simple; if that was illness or life stress, let me know. On any morning when HRV is below about 37 ms or resting HR is 5+ bpm above 54, use the fallback, and since no forecast was available, every ride has an indoor option.",
  "days": [
   {
    "day": "Mon",
    "sport": "swim",
    "session": "Easy aerobic swim (lunch)",
-   "duration_min": 35,
+   "duration_min": 30,
    "intensity": "easy",
-   "details": "Warmup: 200 m easy (100 m freestyle, 100 m backstroke or drill)\nMain set: 4x150 m steady aerobic freestyle at RPE 4-5, 20 s rest between reps\nCooldown: 200 m easy, mixed strokes\nTotal: 1000 m\nObjective: Flush the legs and add easy aerobic volume on a wet day without any fatigue going into Tuesday's double.",
+   "details": "Warmup: 200 m easy freestyle, mixing in backstroke every 4th length\nMain set: 6x100 m freestyle at easy aerobic effort (RPE 4-5), 20 s rest; then 4x25 m catch-up drill, 15 s rest\nCooldown: 100 m easy choice stroke\nTotal: 1000 m\nObjective: Low-stress aerobic movement to start the week fresh for Tuesday's committed double.",
    "fallback": ""
   },
   {
    "day": "Tue",
    "sport": "mtb",
-   "session": "Committed double: AM controlled hills road ride + PM hard MTB group ride",
+   "session": "Committed double: controlled AM hills ride + PM hard MTB group ride",
    "duration_min": 150,
    "intensity": "hard",
-   "details": "AM hills road ride (before work):\n60 min | Controlled climbing, saving the legs for the evening | Z2, climbs at low Z3 max, RPE 4-5\nStructure: 15 min Z1-2 warm-up, then 35 min on your usual hill loop climbing seated and controlled (no climb above low Z3, no sprints or Strava efforts), then 10 min easy spin home.\nHeavy drizzle is forecast: lights on, slightly lower tyre pressure, brake early on descents.\n\nPM MTB group ride (after work):\n90 min | Committed hard group ride | Surges Z4-Z5, RPE 7-9 on climbs\nStructure: 10-15 min easy before the group rolls, then race the climbs and recover fully on descents and at regroups.\nTrails will be wet, so ride within your skill margin.\nFuelling: carb-rich snack 60-90 min before; 30-60 g carbs/h plus a bottle during; protein and carb recovery meal within an hour after.",
-   "fallback": "If HRV is well below baseline or resting HR is 5+ bpm above average (or the roads are slick), replace the AM ride with 45 min indoor Z1-2 spin or skip it. Still ride the PM group ride, but sit in, cap efforts at RPE 7 and skip the sprints."
+   "details": "150 min total (60 AM + ~90 PM) | Controlled climbing volume AM, group intensity PM | AM: Z2 with climbs capped at low Z3 / RPE 6; PM: RPE 8-9 on chosen efforts\nAM Hills road ride (60 min): 15 min Z1-2 warm-up, then rolling hills; climb seated at Z2 to low Z3 (RPE 6 max), no attacks or all-out efforts, 10 min Z1 spin home. Wet alternative: 50 min indoor Z2 with 4x4 min low Z3 at 80-85 rpm, 3 min easy between.\nLunch: no gym, eat a carb-rich lunch.\nPM Hard MTB group ride (~90 min): pick 2-3 climbs or segments to ride hard, recover fully in between, ride the rest at conversational pace.\nFuelling: 1 bottle with 30-60 g carbs for the PM ride, plus a carb and protein meal within 60 min after.",
+   "fallback": "AM: cut to 40 min flat Z1-2 or skip it. PM (non-negotiable): ride with the group but sit in, let surges go and cap effort at RPE 7."
   },
   {
    "day": "Wed",
    "sport": "yoga",
    "session": "Recovery yoga and mobility",
-   "duration_min": 45,
+   "duration_min": 40,
    "intensity": "easy",
-   "details": "Recovery yoga, 40-45 min: hip flexors, hamstrings, glutes, thoracic spine and calves, with slow nasal breathing throughout.\nOptional: 20-30 min easy walk outside (dry, overcast day).\nNo riding today, so you recover fully from Tuesday.",
+   "details": "40 min restorative/yin flow: hips, hamstrings, glutes, thoracic spine and neck, finishing with 5 min of slow nasal breathing. Optional 20-30 min easy walk at lunch.",
    "fallback": ""
   },
   {
    "day": "Thu",
    "sport": "cycling",
-   "session": "AM threshold intervals + lunch Workout A",
+   "session": "AM threshold intervals (indoor) + lunch Workout A",
    "duration_min": 95,
    "intensity": "hard",
-   "details": "AM ride (before work):\n50 min | Threshold development | Z4 work intervals, RPE 7\nWarm-up: 12 min Z1-2 building, including 2x30 s high cadence\nMain set: 3 x 8 min Z4 (steady, controlled, not all-out) with 4 min Z1-2 recovery between reps\nCool-down: 6 min Z1\nConditions: dry but breezy (gusts to ~28 km/h). Use a sheltered climb or loop, or the trainer if it's gusty.\n\nLunch gym (~6 h after the ride):\nWorkout A:\nWarm-up: 5 min easy bike, glute bridges and leg swings, 2 ramp-up sets of squats\nBack Squat 3x6 (first heavy session in weeks: 3 RIR)\nRomanian Deadlift 3x8 (2-3 RIR)\nSingle-arm Dumbbell Row 3x8/side\nPallof Press 3x10/side\nSide Plank 3x30s/side\nRest: 2-3 min between squat and RDL sets; 60-90 s for the other exercises\nObjective: Re-establish heavy lower-body strength for cycling economy without leaving soreness that carries into the weekend.",
-   "fallback": "If signals are poor: ride the 50 min fully in Z2 with no intervals, and do Workout A with 2 sets per exercise at 3 RIR, keeping the same loads."
+   "details": "50 min | Threshold to build aerobic-high capacity | Z4 low, 90-95% FTP, RPE 7\nWarm-up: 12 min Z1-2 building, including 2x1 min Z3\nMain set: 3x8 min Z4 low (90-95% FTP, 85-95 rpm), 4 min Z1-2 recovery between\nCool-down: 6 min Z1\n\nLunch (4+ h after the ride), 45 min:\nWorkout A:\nWarm-up: 5 min easy row, leg swings, glute bridges 2x10, 2 ramp sets of goblet squat\nBack Squat 3x6 (~70-75% of previous working load, 3 RIR)\nRomanian Deadlift 3x8 (3 RIR)\nSingle-arm Dumbbell Row 3x8/side\nPallof Press 3x10/side\nSide Plank 2x30s/side\nRest: 2-3 min between squat and RDL sets, 60-90 s on accessories\nObjective: Reintroduce heavy lower-body loading after ~4 weeks out of the gym without causing soreness that carries into Saturday's long ride.",
+   "fallback": "Ride 50 min steady Z2 with no intervals. Gym: do Pallof Press, Side Plank and the row only, plus 15 min mobility, and skip squats and RDLs."
   },
   {
    "day": "Fri",
    "sport": "mtb",
    "session": "Easy endurance MTB (after work)",
-   "duration_min": 75,
+   "duration_min": 60,
    "intensity": "easy",
-   "details": "75 min | Aerobic endurance, flushing the legs | Z1-2, RPE 3, conversational\nStructure: steady Z2 on flowing trails. Soft-pedal or walk the steep pitches rather than surging, and keep every effort at Z2 or below.\nConditions: overcast, 42% chance of rain but no measurable rain forecast, wind up to ~26 km/h. If it does rain, swap for 60 min indoor Z2.\nHRV is unbalanced, so keep this truly easy. If HRV is still under ~40 ms on Friday morning, cut the ride to 60 min.",
+   "details": "60 min | Aerobic base | Z2, RPE 3-4\nSteady ride on flowing trails, seated on climbs and HR held in Z2. Solo or easy company, no chasing.\nDark/wet alternative: 60 min indoor Z2 spin with 4x30 s high-cadence spin-ups (100+ rpm) in the second half.",
    "fallback": ""
   },
   {
    "day": "Sat",
-   "sport": "gym",
-   "session": "Workout B (lunch, reduced volume) + yoga flow",
-   "duration_min": 55,
-   "intensity": "moderate",
-   "details": "Workout B:\nWarm-up: 5 min rower, glute bridges, 2 ramp-up sets of split squats\nBulgarian Split Squat 2x6/side (3 RIR, same load as planned)\nHip Thrust 2x8 (3 RIR)\nLat Pulldown 3x8 (2 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 2x20s/side\nRest: 2-3 min between split squat and hip thrust sets; 60-90 s for the other exercises\nObjective: Keep the week's second heavy strength stimulus while halving lower-body volume, so Sunday's ride and next Tuesday's double aren't compromised while HRV is unbalanced.\nAfter the session: 15 min yoga flow (hips, hamstrings, thoracic spine, slow breathing) to replace Wednesday's missed yoga. Indoors, as light drizzle is forecast.",
-   "fallback": "If HRV is still below ~40 ms or resting HR is 5+ bpm above average: skip the split squats and hip thrusts, do Lat Pulldown, Dead Bug and Copenhagen Plank only, then 30 min yoga. Or replace the whole session with 45 min recovery yoga."
+   "sport": "cycling",
+   "session": "Long Z2 endurance road ride",
+   "duration_min": 120,
+   "intensity": "easy",
+   "details": "120 min | Aerobic endurance to close the Garmin aerobic-low gap | Z2, RPE 3-4, talk-test pace\nStart around midday, \u226548 h after Thursday's lifting. Ride rolling terrain steadily, climb seated in Z2 and spin Z1 on descents; no surges.\nFuelling: 40-60 g carbs/h starting in the first 30 min, 500-750 ml fluid/h.\nWet/windy alternative: 90 min indoor Z2 on Zwift (indoor time is denser), or 2 h MTB on sheltered trails kept in Z2.",
+   "fallback": ""
   },
   {
    "day": "Sun",
-   "sport": "cycling",
-   "session": "Endurance road ride (shortened)",
-   "duration_min": 90,
-   "intensity": "easy",
-   "details": "90 min | Aerobic base | Z2, RPE 3-4\nStructure: 15 min Z1 warm-up, 65 min steady Z2 on rolling roads (keep the climbs in Z2), 10 min Z1 cool-down.\nFuelling: 40-60 g carbs/h starting in the first 30 min, plus 500-750 ml fluid/h; warm and humid (up to ~29\u00b0C).\nConditions: light drizzle possible (~0.9 mm), wind up to ~24 km/h. Lights on, and ride into the wind on the way out. If the roads are properly wet, ride 75 min Z2 on the trainer instead.\nShortened from 120 min because HRV is unbalanced. No surges or hard climbs.",
-   "fallback": ""
+   "sport": "gym",
+   "session": "Workout B (lunch) + easy walk",
+   "duration_min": 75,
+   "intensity": "moderate",
+   "details": "Workout B:\nWarm-up: 5 min easy bike, hip airplanes 2x5/side, glute bridges 2x10, 2 ramp sets of leg press\nLeg Press 3x6 (~70-75% of previous working load, 3 RIR)\nHip Thrust 3x8 (3 RIR)\nDumbbell Bench Press 3x8 (2-3 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 2x20s/side\nRest: 2-3 min on leg press and hip thrust, 60-90 s on the rest\nObjective: Second heavy stimulus of the week, done \u226548 h before Tuesday's key MTB ride, with hip-dominant work that supports climbing power.\nAfter: optional 30 min easy walk.",
+   "fallback": "Swap for 40 min yoga or mobility plus Dead Bug and Copenhagen Plank only, and skip the heavy lower-body lifts."
   }
  ],
- "generated_at": "2026-11-18T17:55:41.647962+00:00",
- "midweek_revision": true
+ "generated_at": "2026-11-22T14:58:36.302797+00:00"
 }

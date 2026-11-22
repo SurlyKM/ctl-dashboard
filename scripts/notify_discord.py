@@ -30,3 +30,23 @@ def send_plan(plan: dict):
     )
     resp.raise_for_status()
     print("Plan posted to Discord")
+
+
+def send_alert(title: str, message: str, ok: bool = False):
+    """Post a short status alert (used by sync_garmin.py).
+
+    Silently does nothing if DISCORD_WEBHOOK_URL isn't set, so the sync
+    never fails because of notifications.
+    """
+    url = os.environ.get("DISCORD_WEBHOOK_URL")
+    if not url:
+        print("DISCORD_WEBHOOK_URL not set; alert not sent")
+        return
+    embed = {
+        "title": title,
+        "description": message[:4000],
+        "color": 0x1D9E75 if ok else 0xD85A30,
+    }
+    resp = requests.post(url, json={"embeds": [embed]}, timeout=15)
+    resp.raise_for_status()
+    print(f"Alert posted to Discord: {title}")

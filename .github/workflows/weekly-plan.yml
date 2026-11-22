@@ -31,7 +31,9 @@ jobs:
 
       - name: Fresh sync before planning
         env:
+          GARMIN_PERSONAL_API_KEY: ${{ secrets.GARMIN_PERSONAL_API_KEY }}
           GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
         run: |
           python scripts/sync_garmin.py

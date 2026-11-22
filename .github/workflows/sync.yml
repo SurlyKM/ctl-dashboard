@@ -4,7 +4,12 @@ on:
   schedule:
     - cron: "30 5,7,9,13,17,20 * * *"
       timezone: "Australia/Sydney"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Refetch the full 200-day window (fills gaps, replaces stale days)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -29,9 +34,19 @@ jobs:
 
       - name: Sync from Garmin
         env:
+          GARMIN_PERSONAL_API_KEY: ${{ secrets.GARMIN_PERSONAL_API_KEY }}
           GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           TIMEZONE: ${{ vars.TIMEZONE || 'Australia/Sydney' }}
-        run: python scripts/sync_garmin.py
+          # Empty on scheduled runs, "true"/"false" on manual runs. Passed via
+          # env rather than inlined into the script, so it can't inject shell.
+          BACKFILL: ${{ inputs.backfill }}
+        run: |
+          if [ "$BACKFILL" = "true" ]; then
+            python scripts/sync_garmin.py --backfill
+          else
+            python scripts/sync_garmin.py
+          fi
 
       - name: Compute metrics
         run: python scripts/compute_metrics.py

@@ -246,7 +246,10 @@ def fetch_daily(api: GarminPersonalApiClient, existing: dict, full: bool) -> dic
 
 
 def fetch_vo2_and_fitness_age(api: GarminPersonalApiClient) -> dict:
-    """Newest VO2 max per sport within VO2_LOOKBACK_DAYS, plus fitness age.
+    """Newest VO2 max per sport, plus fitness age.
+
+    Both sports are stored; the dashboard and VO2 history use generic
+    (what Garmin Connect shows), with cycling kept for reference.
 
     maxmet/daily returns one entry per day with optional 'generic' and
     'cycling' blocks; each sport keeps its own newest value because they
@@ -417,11 +420,12 @@ def garminconnect_side() -> tuple[dict, str | None]:
 # Outputs
 # ===========================================================================
 def update_vo2_history(data_dir: Path, status: dict) -> dict:
-    """Append today's VO2 max to the rolling history (cycling preferred,
-    matching what the dashboard shows). Returns the history dict."""
+    """Append today's VO2 max to the rolling history. Generic first,
+    matching the dashboard and Garmin Connect; cycling only if there's no
+    generic value. Returns the history dict."""
     path = data_dir / "vo2_history.json"
     history = json.loads(path.read_text()) if path.exists() else {}
-    value = status.get("vo2max_cycling") or status.get("vo2max_generic")
+    value = status.get("vo2max_generic") or status.get("vo2max_cycling")
     if value:
         today = _today_local()
         history[today.isoformat()] = round(float(value), 1)

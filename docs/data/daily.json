@@ -2598,5 +2598,11 @@
   "sleep_s": 21120,
   "sleep_score": 64,
   "stress_avg": 19
+ },
+ "2026-11-23": {
+  "body_battery_high": 77,
+  "body_battery_low": 19,
+  "resting_hr": 59,
+  "stress_avg": 27
  }
 }

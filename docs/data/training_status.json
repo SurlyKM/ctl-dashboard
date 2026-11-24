@@ -1,38 +1,38 @@
 {
  "vo2max_generic": 55.7,
  "vo2max_cycling": 56.4,
- "fitness_age": 32,
+ "fitness_age": 33,
  "vo2max_generic_date": "2026-11-21",
  "vo2max_cycling_date": "2026-10-21",
- "status_date": "2026-11-23",
+ "status_date": "2026-11-24",
  "training_status": "STRAINED_4",
  "fitness_trend": 0,
- "load_aerobic_low": 366,
+ "load_aerobic_low": 363,
  "load_aerobic_low_target": [
-  544,
-  1196
+  433,
+  952
  ],
  "load_aerobic_high": 242,
  "load_aerobic_high_target": [
-  652,
-  1305
+  519,
+  1039
  ],
  "load_anaerobic": 588,
  "load_anaerobic_target": [
-  217,
-  652
+  173,
+  519
  ],
  "load_balance_feedback": "AEROBIC_LOW_SHORTAGE",
- "readiness_date": "2026-11-23",
- "readiness_score": 34,
+ "readiness_date": "2026-11-24",
+ "readiness_score": 38,
  "readiness_level": "low",
  "readiness_feedback": "take it easy",
- "readiness_recovery_hours": 31,
+ "readiness_recovery_hours": 17,
  "readiness_hrv_factor": "poor",
- "readiness_acwr_factor": "good",
- "readiness_sleep_factor": "none",
+ "readiness_acwr_factor": "very good",
+ "readiness_sleep_factor": "moderate",
  "readiness_sleep_history": "moderate",
  "readiness_stress_history": "good",
- "readiness_recovery_factor": "moderate",
+ "readiness_recovery_factor": "good",
  "readiness_hrv_weekly_avg": 40
 }

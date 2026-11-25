@@ -2593,9 +2593,16 @@
   "stress_avg": 27
  },
  "2026-11-25": {
-  "body_battery_high": 46,
+  "body_battery_high": 77,
   "body_battery_low": 35,
-  "resting_hr": 59,
-  "stress_avg": 23
+  "hrv_baseline_high": 54,
+  "hrv_baseline_low": 42,
+  "hrv_last_night": 41,
+  "hrv_status": "UNBALANCED",
+  "hrv_weekly_avg": 41,
+  "resting_hr": 55,
+  "sleep_s": 29640,
+  "sleep_score": 80,
+  "stress_avg": 19
  }
 }

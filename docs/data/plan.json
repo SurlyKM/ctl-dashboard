@@ -1,9 +1,9 @@
 {
  "week_start": "2026-11-23",
- "training_phase": "Base",
- "weekly_objective": "Rebuild aerobic base and reintroduce heavy strength after a low-load month, with one committed hard Tuesday, one controlled threshold session and Z2 volume elsewhere, kept in check by suppressed HRV.",
+ "training_phase": "Build",
+ "weekly_objective": "Absorb the extra MTB load from Monday and Wednesday, keep the weekend easy and aerobic, and protect one heavy strength stimulus before next Tuesday's committed double.",
  "quality_sessions": 2,
- "coach_says": "Your fitness has slid (CTL 101 to 70) and you're very fresh (form +56%), but your HRV is low (7-day average 39 ms against a 43-55 baseline), so this is a gradual rebuild: Tuesday's double as usual, one threshold session Thursday, a 2-hour Z2 ride Saturday and two short gym sessions at reduced loads. Last week stopped after Wednesday, so this week's sessions are short and simple; if that was illness or life stress, let me know. On any morning when HRV is below about 37 ms or resting HR is 5+ bpm above 54, use the fallback, and since no forecast was available, every ride has an indoor option.",
+ "coach_says": "The two extra MTB rides on Monday and Wednesday took the place of your swim and yoga. With readiness at 12 this morning, today's Thursday session should default to its fallback: 50 min Z2 and core-only gym. I've swapped Friday's ride for the recovery yoga you missed and shortened Saturday to a 75 min indoor Z2 ride because of the thunderstorms. Sunday's Workout B stays with no load increase, so you still get one heavy lift this week, with a lighter option if you still feel flat.",
  "days": [
   {
    "day": "Mon",
@@ -43,31 +43,32 @@
   },
   {
    "day": "Fri",
-   "sport": "mtb",
-   "session": "Easy endurance MTB (after work)",
-   "duration_min": 60,
+   "sport": "yoga",
+   "session": "Recovery yoga and mobility (after work)",
+   "duration_min": 40,
    "intensity": "easy",
-   "details": "60 min | Aerobic base | Z2, RPE 3-4\nSteady ride on flowing trails, seated on climbs and HR held in Z2. Solo or easy company, no chasing.\nDark/wet alternative: 60 min indoor Z2 spin with 4x30 s high-cadence spin-ups (100+ rpm) in the second half.",
+   "details": "40 min restorative/yin flow: hips, hamstrings, glutes, thoracic spine and neck, finishing with 5 min of slow nasal breathing. This replaces Wednesday's missed recovery session and gives the legs a full day off the bike after three MTB days this week.\nOptional: 20-30 min easy walk at lunch if the drizzle holds off.",
    "fallback": ""
   },
   {
    "day": "Sat",
    "sport": "cycling",
-   "session": "Long Z2 endurance road ride",
-   "duration_min": 120,
+   "session": "Indoor Z2 endurance ride (shortened)",
+   "duration_min": 75,
    "intensity": "easy",
-   "details": "120 min | Aerobic endurance to close the Garmin aerobic-low gap | Z2, RPE 3-4, talk-test pace\nStart around midday, \u226548 h after Thursday's lifting. Ride rolling terrain steadily, climb seated in Z2 and spin Z1 on descents; no surges.\nFuelling: 40-60 g carbs/h starting in the first 30 min, 500-750 ml fluid/h.\nWet/windy alternative: 90 min indoor Z2 on Zwift (indoor time is denser), or 2 h MTB on sheltered trails kept in Z2.",
+   "details": "75 min | Aerobic base, easy volume for the Garmin aerobic-low gap | Z2, RPE 3-4, talk-test pace\nIndoor on Zwift or trainer because of the thunderstorms. Warm up 10 min Z1 building to Z2, ride 60 min steady Z2 at 85-95 rpm, cool down 5 min Z1.\nNo intervals or surges. If HR drifts above Z2, ease off rather than push.\nFuelling: 1 bottle with ~30-40 g carbs; indoor rides run hot, so drink 500-750 ml/h.",
    "fallback": ""
   },
   {
    "day": "Sun",
    "sport": "gym",
-   "session": "Workout B (lunch) + easy walk",
-   "duration_min": 75,
+   "session": "Workout B (lunch, loads held)",
+   "duration_min": 45,
    "intensity": "moderate",
-   "details": "Workout B:\nWarm-up: 5 min easy bike, hip airplanes 2x5/side, glute bridges 2x10, 2 ramp sets of leg press\nLeg Press 3x6 (~70-75% of previous working load, 3 RIR)\nHip Thrust 3x8 (3 RIR)\nDumbbell Bench Press 3x8 (2-3 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 2x20s/side\nRest: 2-3 min on leg press and hip thrust, 60-90 s on the rest\nObjective: Second heavy stimulus of the week, done \u226548 h before Tuesday's key MTB ride, with hip-dominant work that supports climbing power.\nAfter: optional 30 min easy walk.",
+   "details": "Workout B:\nWarm-up: 5 min easy bike, hip airplanes 2x5/side, glute bridges 2x10, 2 ramp sets of leg press\nLeg Press 3x6 (~70-75% of previous working load, 3 RIR, no increase this week)\nHip Thrust 3x8 (3 RIR)\nDumbbell Bench Press 3x8 (2-3 RIR)\nDead Bug 3x8/side\nCopenhagen Plank 2x20s/side\nRest: 2-3 min on leg press and hip thrust, 60-90 s on the rest\nObjective: Keep one heavy lower-body stimulus this week without progressing load, finishing ~44 h before Tuesday's controlled AM ride and ~52 h before the PM group ride.",
    "fallback": "Swap for 40 min yoga or mobility plus Dead Bug and Copenhagen Plank only, and skip the heavy lower-body lifts."
   }
  ],
- "generated_at": "2026-11-22T14:58:36.302797+00:00"
+ "generated_at": "2026-11-25T19:04:51.831270+00:00",
+ "midweek_revision": true
 }

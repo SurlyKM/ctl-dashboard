@@ -4,8 +4,9 @@
  "atl": 28.3,
  "readiness_score": 55,
  "readiness_level": "moderate",
- "hrv_status": "LOW",
+ "hrv_status": null,
  "resting_hr_14d_avg": 54.6,
  "override": [],
- "generated_at": "2026-11-22T14:58:36.302797+00:00"
+ "generated_at": "2026-11-22T14:58:36.302797+00:00",
+ "reviewed_week": "2026-11-23"
 }

@@ -5,29 +5,29 @@
  "vo2max_generic_date": "2026-11-21",
  "vo2max_cycling_date": "2026-10-21",
  "status_date": "2026-11-25",
- "training_status": "MAINTAINING_1",
+ "training_status": "PRODUCTIVE_1",
  "fitness_trend": 0,
  "load_aerobic_low": 361,
  "load_aerobic_low_target": [
   433,
   952
  ],
- "load_aerobic_high": 339,
+ "load_aerobic_high": 397,
  "load_aerobic_high_target": [
   519,
   1039
  ],
- "load_anaerobic": 686,
+ "load_anaerobic": 743,
  "load_anaerobic_target": [
   173,
   519
  ],
  "load_balance_feedback": "AEROBIC_LOW_SHORTAGE",
  "readiness_date": "2026-11-25",
- "readiness_score": 25,
- "readiness_level": "low",
- "readiness_feedback": "listen to your body",
- "readiness_recovery_hours": 45,
+ "readiness_score": 12,
+ "readiness_level": "poor",
+ "readiness_feedback": "time to slow down",
+ "readiness_recovery_hours": 53,
  "readiness_hrv_factor": "moderate",
  "readiness_acwr_factor": "good",
  "readiness_sleep_factor": "good",
